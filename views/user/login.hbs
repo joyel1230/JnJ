@@ -1,0 +1,31 @@
+
+<head><link rel="stylesheet" href="/stylesheets/user/login.css"></head>
+
+  <section class="d-flex  flex-column justify-content-center align-items-center">
+    <div class="container-fluid p-0 rounded-4  col-9 col-md-6 d-flex justify-content-sm-end justify-content-center sec-1 position-relative"
+      style="box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);">
+      <div class="w-100 position-absolute"><a href="/login" style="text-decoration: none;">
+          <h4 class="text-white mt-4 fw-bold text-center">Login <span class="fw-normal">or</span> Signup</h4>
+        </a>
+      </div>
+      <div class="row m-2 align-items-center">
+        <form class="me-4 mt-4 p-0 w-100 text-white " action="/login" method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Mobile Number</label>
+            <input type="text" class="form-control" name="mobile" id="mobile" disabled placeholder="Mobile Number" value="{{mobile}}">
+          </div>
+          <div class="mb-4">
+            <label for="" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+            <div class="d-flex justify-content-between">
+              <a class="forgot text-light ps-5 pe-4" href="/password/{{mobile}}">forgot password ?</a>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="loginBtn border mb-4 text-white  fs-5 fw-bold">Login</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>

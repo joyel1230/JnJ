@@ -1,0 +1,79 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+.logo {
+    width: 50px;
+}
+
+.search-logo {
+    width: 10px;
+    height: 10px;
+}
+
+.search-logo img {
+    width: 20px;
+    height: 18px;
+    margin-left: 5.5rem;
+}
+
+li a {
+    color: white !important;
+
+}
+
+.logo1 {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    margin-left: 12px;
+}
+
+.profile a {
+    font-weight: 500;
+    color: white;
+}
+
+.profile a:hover {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-weight: 500;
+}
+
+ul li {
+    font-weight: 500;
+    font-size: medium
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    border-spacing: 20px 0;
+}
+
+nav li {
+    display: inline-block;
+    border-right: 1px solid black;
+}
+
+nav li:last-child {
+    border-right: none;
+}
+
+@media screen and (min-width:775px) {
+    .profile {
+        margin-top: 1rem !important;
+        margin-left: -7.3rem !important;
+    }
+}

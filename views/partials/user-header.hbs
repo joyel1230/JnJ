@@ -1,0 +1,58 @@
+<header>
+  <nav class="navbar p-2 navbar-expand-md bg-black align-items-center">
+    <div class="container-fluid p-0 ">
+      <a class="navbar-brand p-0" href="/"><img src="/images/user/j&j.png" class="logo" alt=""></a>
+      <button class="navbar-toggler bg-body" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mb-2 me-auto mb-lg-0 ">
+          <li class="nav-item">
+            <a class="nav-link" href="#">WOMEN</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">MEN</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">KIDS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">MY ORDERS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">CONTACT US</a>
+          </li>
+        </ul>
+        <form class="d-flex mb-2 mb-md-0" style="max-width: fit-content; width: 150px;" role="search">
+
+          <input class="form-control position-relative w-75 rounded-5" style="height: 30px;" type="search"
+            placeholder="Search" aria-label="Search">
+          <a href="" class="search-logo position-absolute"><img src="/images/user/search-icon.png" class="" alt=""></a>
+        </form>
+        <a href="" title="wishlist"><img src="/images/user/wishlist-icon.png" class="logo1 float-start" alt=""></a>
+        <a href="" title="my cart"><img src="/images/user/cart-icon.png" class="logo1 float-start" alt=""></a>
+
+        <div class="dropdown dropdown-menu-lg-start dropdown-menu-end ">
+          <a class="" href="#" title="profile" data-bs-toggle="dropdown">
+            <img src="/images/user/profile-icon.png" class="dropdown-toggle logo1 mb-1">
+          </a>
+
+          <div class="dropdown-menu bg-black profile" aria-labelledby="dropdownMenuButton"
+            data-bs-placement="left-start">
+
+            {{#if userID}}
+            <a class="dropdown-item" href="">Account Details</a>
+            <a class="dropdown-item" href="">Addresses</a>
+            <a class="dropdown-item text-danger" href="/logout">Logout</a>
+            {{else}}
+            <a class="dropdown-item" href="/login">Login</a>
+            {{/if}}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

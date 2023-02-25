@@ -1,0 +1,75 @@
+
+<head><link rel="stylesheet" href="/stylesheets/admin/admin-home.css"></head>
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="#">Orders</a></li>
+        <li><a class="dropdown-item" href="#">Customers</a></li>
+        <li><a class="dropdown-item" href="#">Coupons</a></li>
+        <li><a class="dropdown-item" href="#">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+<div class=" w-100 h-75 d-flex justify-content-center">
+
+    <div class="mt-5 border-5 border-dark w-75 h-100">
+        <div class="search  w-100">
+            <form action="" class="w-100 d-flex justify-content-center align-items-center m-4">
+                <input type="search" class="w-25 m-1 p-1 rounded-3">
+                <button class="btn border-3 border-dark h-25" type="submit">Search</button>
+            </form>
+        </div>
+        <table class="table d-none d-lg-block">
+            <thead>
+                <tr class="">
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {{#each products}}
+                <tr class="">
+                    <th scope="row"><img src="/images/products/{{this._id}}.jpg" class="rounded-5" style="width: 40px;height: 40px;" alt=""></th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.stock}}</td>
+                    <td>{{this.status}}</td>
+                    <td><a href=""><img src="/images/admin/edit-icon.svg" style="width: 25px;" class="me-2" alt=""></a>
+                        <a href=""><img src="/images/admin/delete-icon.svg" style="width: 20px;" alt=""></a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" class="d-none d-lg-block" >
+            <ul class="pagination float-end">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <a href="/admin/add-product" style="text-decoration: none;" class="text-dark fs-3 pb-5"><button class="btn border-dark w-100">+</button></a>
+    </div>
+</div>

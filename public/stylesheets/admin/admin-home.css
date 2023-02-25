@@ -1,0 +1,50 @@
+
+
+.logout{
+    width: 40px;
+    padding-right: 1rem;
+}
+.profile a {
+    font-weight: 500;
+    color: white;
+}
+
+.profile a:hover {
+    background-color: rgb(167, 251, 244);
+    color: black;
+    font-weight: 500;
+}
+
+.box {
+    height: 175px;
+    border-radius: 15px;
+    font-weight: bolder;
+    font-size: larger;
+    padding: 1rem;
+  }
+.box-1{
+    background-color: rgb(121, 121, 191);
+}
+.box-2{
+    background-color: rgb(121, 165, 191);
+}
+.box-3{
+    background-color: rgb(179, 191, 121);
+}
+.box-4{
+    background-color: rgb(191, 121, 121);
+}
+.box-5{
+    background-color: rgb(121, 191, 121);
+}
+.box-6{
+    background-color: rgb(121, 191, 170);
+}
+.box-7{
+    background-color: rgb(191, 179, 121);
+}
+.box-8{
+    background-color: rgb(191, 148, 121);
+}
+  
+  

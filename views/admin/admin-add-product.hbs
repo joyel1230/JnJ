@@ -1,0 +1,46 @@
+<head><link rel="stylesheet" href="/stylesheets/admin/admin-home.css"></head>
+
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="#">Orders</a></li>
+        <li><a class="dropdown-item" href="#">Customers</a></li>
+        <li><a class="dropdown-item" href="#">Coupons</a></li>
+        <li><a class="dropdown-item" href="#">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+<section>
+    <div class="m-5 p-5 pt-0 mt-0">
+        <h2 class="fw-bold">ADD PRODUCT</h2>
+    <form class="row g-3" action="/admin/add-product" method="post" enctype="multipart/form-data">
+  <div class="col-md-6">
+    <label for="" class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" required>
+    <label for="" class="form-label">Category</label>
+    <input type="text" name="category" class="form-control" required>
+    <label for="" class="form-label">Description</label>
+    <input type="text" name="description" class="form-control" required>
+    <label for="" class="form-label">Price</label>
+    <input type="text" name="price" class="form-control" required>
+    <label for="" class="form-label">Stock</label>
+    <input type="text" name="stock" class="form-control" required>
+    <label for="" class="form-label">Image</label>
+    <input type="file" name="image" class="form-control" required>
+  </div>
+  
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="/admin/products" class="btn btn-danger ms-auto">Cancel</a>
+  </div>
+</form>
+</div>
+</section>

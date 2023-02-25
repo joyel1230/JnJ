@@ -1,0 +1,31 @@
+
+
+.sec-1 {
+    background-image: url(/images/user/login.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 437px;
+    margin-top: 4rem;
+}
+.forgot{
+    text-decoration: none;
+    cursor: pointer;
+}
+.loginBtn{
+    height: 40px;
+    width: 100px;
+    border: 1px;
+    border-radius: 10px;
+    background-color: rgba(245, 245, 220, 0);
+
+}
+.loginBtn:hover{
+    background-color: #00000031;
+}
+@media (max-width: 575px) {
+    .sec-1 {
+        background-image: none;
+        background-color: #0098CA;
+    }
+}

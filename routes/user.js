@@ -12,10 +12,17 @@ router.get('/', function(req, res, next) {
 /* login */
 
 router.get('/login',(req,res)=>{
+  if (req.session.login) {
+    res.redirect('/');
+  }else{
   res.render('user/mobile')
+  }
 })
 
 router.get('/password',(req,res)=>{
+  if (req.session.login) {
+    res.redirect('/');
+  }else{
   userHelpers.validUser(req.query.mobile).then((valid)=>{
     var newMobile=req.query.mobile
     if (valid) {
@@ -25,21 +32,28 @@ router.get('/password',(req,res)=>{
       res.render('user/forgot',{newMobile});
       }
   })
+}
 })
 
 router.get('/password/:id',(req,res)=>{
     var newMobile=req.params.id
+    if (req.session.user) {
+      res.redirect('/')
+    }else{
       res.render('user/forgot',{newMobile});
+    }
 })
 
 
 router.post('/password',(req,res)=>{
-  console.log(req.body);
   var mobile=req.body.mobile;
-  console.log(mobile);
+  if (req.session.login) {
+    res.redirect('/');
+  }else{
   userHelpers.doSignup(req.body).then((response)=>{
     res.render('user/login',{mobile})
   })
+}
 })
 
 
@@ -47,6 +61,7 @@ router.post('/password',(req,res)=>{
 router.post('/login/:id',(req,res)=>{
   // console.log(req.body);
   let id=req.params.id;
+  let mobile=id;
   let pass=req.body.password;
   userHelpers.doLogin(id,pass).then((response)=>{
     if (response.status) {
@@ -54,7 +69,8 @@ router.post('/login/:id',(req,res)=>{
       req.session.user=response.user;
       res.redirect('/');
     }else{
-      res.redirect('/login');
+      let err='Invalid password'
+      res.render('user/login',{mobile,err})
     }
   })
 })

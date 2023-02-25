@@ -34,7 +34,9 @@ router.get('/password/:id',(req,res)=>{
 
 
 router.post('/password',(req,res)=>{
+  console.log(req.body);
   var mobile=req.body.mobile;
+  console.log(mobile);
   userHelpers.doSignup(req.body).then((response)=>{
     res.render('user/login',{mobile})
   })
@@ -42,8 +44,11 @@ router.post('/password',(req,res)=>{
 
 
 
-router.post('/login',(req,res)=>{
-  userHelpers.doLogin(req.body).then((response)=>{
+router.post('/login/:id',(req,res)=>{
+  // console.log(req.body);
+  let id=req.params.id;
+  let pass=req.body.password;
+  userHelpers.doLogin(id,pass).then((response)=>{
     if (response.status) {
       req.session.login=true;
       req.session.user=response.user;

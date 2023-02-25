@@ -16,13 +16,13 @@ module.exports = {
                 }
         })
     },
-    doLogin: (userData) => {
+    doLogin: (mob,pass) => {
         return new Promise(async (resolve, reject) => {
             let loginStatus = false
             let response = {}
-            let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: userData.mobile })
+            let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
             if (user) {
-                bcrypt.compare(userData.password, user.password).then((status) => {
+                bcrypt.compare(pass, user.password).then((status) => {
                     if (status) {
                         console.log('login success');
                         response.user = user

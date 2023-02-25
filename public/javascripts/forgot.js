@@ -3,8 +3,8 @@
 function isValid() {
     let mobile=document.getElementById('mobile').value.trim();
     let OTP=document.getElementById('OTP').value.trim();
-    let pass=document.getElementById('pass').value.trim();
-    let rePass=document.getElementById('rePass').value.trim();
+    let pass=document.getElementById('pass').value;
+    let rePass=document.getElementById('rePass').value;
     let OTPn=mobile[6]+mobile[7]+mobile[8]+mobile[9];
     if (mobile.length===10 && /^\d+$/.test(mobile)) {
         if (OTP===OTPn) {

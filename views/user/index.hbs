@@ -1,9 +1,25 @@
+{{#if pop}}
+<div class="position-absolute popup" id="popup">
+  <h2>Login Successfull!</h2>
+  <p></p>
+  <button type="button" onclick="closePop()" class="w-25 btn btn-success rounded-2">OK</button>
+</div>
+{{/if}}
+
+{{#if boo}}
+<div class="position-absolute popup" id="popup">
+  <h2>Logout Successfull!</h2>
+  <p></p>
+  <button type="button" onclick="closePop()" class="w-25 btn btn-success rounded-2">OK</button>
+</div>
+{{/if}}
+
 <section class="first-sec">
     <div class="bg-opacity-25 bg-black w-100 h-100 align-items-center">
         <div class="text-center w-100">
             <h1 class="text-light">JOUIS JUITTON</h1>
         </div>
-        <div class="text-center pt-3"><button type="submit" class="btn border-light"><span>SHOP NOW</span></button>
+        <div class="text-center pt-3"><button type="submit" class="btn1 btn border-light"><span>SHOP NOW</span></button>
         </div>
     </div>
 </section>
@@ -37,3 +53,35 @@
     </div>
     <div class="position-absolute text-center last-foot">© j&j India Ltd, 2023.</div>
 </footer>
+
+<style>
+    .popup{
+    width: 400px;
+    background: #fff;
+    border-radius: 6px;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    z-index: 1;
+    padding: 20px;
+    color: #333;
+    text-align: center;
+    visibility: hidden;
+}
+.open-pop{
+    visibility: visible;
+    transform: translate(-50%,-50%) scale(1);
+}
+</style>
+
+<script>
+    openPop();
+  function openPop() {
+    let pop = document.getElementById('popup');
+    pop.classList.add('open-pop');
+}
+  function closePop() {
+    let pop = document.getElementById('popup');
+    pop.classList.remove('open-pop');
+  }
+</script>

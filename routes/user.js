@@ -2,11 +2,22 @@ const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 const userHelpers=require('../helpers/user-helpers');
-
+var count=1;
+var boo;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   let userID=req.session.user;
-  res.render('user/index', {user:1,userID});
+  if (userID) {
+    if (count===1) {
+     var pop=true
+      count++;
+    }
+  }else{
+   count=1;
+  }
+  console.log(count);
+  res.render('user/index', {user:1,userID,pop,boo});
+  boo=false;
 });
 
 /* login */
@@ -51,7 +62,7 @@ router.post('/password',(req,res)=>{
     res.redirect('/');
   }else{
   userHelpers.doSignup(req.body).then((response)=>{
-    res.render('user/login',{mobile})
+    res.render('user/login',{mobile,pop:true})
   })
 }
 })
@@ -77,6 +88,7 @@ router.post('/login/:id',(req,res)=>{
 
 router.get('/logout',(req,res)=>{
   req.session.destroy();
+  boo=true;
   res.redirect('/');
 })
 

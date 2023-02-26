@@ -2,6 +2,28 @@
   <link rel="stylesheet" href="/stylesheets/user/login.css">
 </head>
 
+{{!-- popup --}}
+{{#if pop}}
+<div class="position-absolute popup" id="popup">
+  <h2>Done Successfully!</h2>
+  <p>OK to Continue</p>
+  <button type="button" onclick="closePop()" class="w-25 btn btn-success rounded-2">OK</button>
+</div>
+{{/if}}
+
+<script>
+openPop();
+  function openPop() {
+    let pop = document.getElementById('popup');
+    pop.classList.add('open-pop');
+}
+  function closePop() {
+    let pop = document.getElementById('popup');
+    pop.classList.remove('open-pop');
+  }
+</script>
+
+
 <section class="d-flex  flex-column justify-content-center align-items-center">
   <div
     class="container-fluid p-0 rounded-4  col-9 col-md-6 d-flex justify-content-sm-end justify-content-center sec-1 position-relative"

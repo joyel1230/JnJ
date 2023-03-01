@@ -32,10 +32,9 @@
 
         <select class="form-select" name="category" aria-label="Default select example" required>
           <option selected value=""></option>
-          <option value="Boys Shirts">Boys Shirts</option>
-          <option value="Boys Trousers">Boys Trousers</option>
-          <option value="Girls Shirts">Girls Shirts</option>
-          <option value="Girls Trousers">Girls Trousers</option>
+          {{#each category}}
+          <option value={{this.category}}>{{this.category}}</option>
+          {{/each}}
         </select>
 
         <label for="" class="form-label">Description</label>

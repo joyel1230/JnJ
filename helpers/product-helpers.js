@@ -11,8 +11,10 @@ module.exports = {
     },
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
+            let category = await db.get().collection(collections.CATEGORY_COLLECTION).find().toArray()
             let products = await db.get().collection(collections.PRODUCT_COLLECTIONS).find().toArray()
-            resolve(products)
+            let array=[products,category]
+            resolve(array)
         })
     },
     deleteProduct: (proId) => {
@@ -40,6 +42,19 @@ module.exports = {
             }).then(()=>{
                 resolve()
             })
+        })
+    },
+    addCategory:(cat)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.CATEGORY_COLLECTION).insertOne({category:cat}).then(()=>{
+                resolve(true)
+            })
+        })
+    },
+    getCategory:()=>{
+        return new Promise(async (resolve, reject) => {
+            let cat =await db.get().collection(collections.CATEGORY_COLLECTION).find().toArray()
+            resolve(cat)
         })
     }
 }

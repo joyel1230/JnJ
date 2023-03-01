@@ -25,6 +25,8 @@ router.get('/edit-product/:id', adminCont.verifyLogin, adminCont.getEditProductI
 
 router.post('/edit-product/:id', adminCont.verifyLogin, adminCont.postEditProductId)
 
+router.post('/add-category',adminCont.verifyLogin, adminCont.postAddCategory)
+
 // users
 
 router.get('/users', adminCont.verifyLogin, adminCont.getUsers)

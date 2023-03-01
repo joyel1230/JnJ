@@ -23,13 +23,32 @@
 
 <div class="w-100 d-flex justify-content-end">
     <button class="btn bg-dark text-light h-25 m-3" onclick="addCat()" id="addcat">ADD CATEGORY</button>
-    <div class=" mt-3 me-5 border-1 border-black cat-div"  id="catbox"
-        style="width: 250px;height: 150px;">
-        <form action="">
-            <label for="" class="form-label fw-bolder">Category</label>
-            <input type="text" name="name" class="form-control mb-4" >
-            <button type="submit" class="btn bg-success text-light h-25 me-4">ADD</button> <a
-                href="/admin/products"><button type="button" class="btn bg-danger text-light h-25" onclick="canCat()">CANCEL</button></a>
+    <button class="btn bg-dark text-light h-25 m-3" onclick="editCat()" id="editcat">EDIT CATEGORY</button>
+    <div class=" mt-3 me-5 border-1 border-black cat-div" id="catbox" style="width: 250px;height: 150px;">
+        <form action="/admin/add-category" method="post">
+            <label for="" class="form-label fw-bolder">Add Category</label>
+            <span id="wcat" class="text-danger bg-white rounded-3"></span>
+            <input type="text" name="name" id="category" class="form-control mb-4" required>
+            <button type="submit" onclick="return catValid()" class="btn bg-success text-light h-25 me-4">ADD</button>
+            <a href="/admin/products"><button type="button" class="btn bg-danger text-light h-25"
+                    onclick="canCat()">CANCEL</button></a>
+        </form>
+    </div>
+    <div class=" mt-3 me-5 border-1 border-black cat-div" id="editbox" style="width: 250px;height: 150px;">
+        <form action="/admin/edit-category" method="post">
+            <label for="" class="form-label fw-bolder">Edit Category</label>
+            <span id="wcat1" class="text-danger bg-white rounded-3"></span>
+            <select class="form-select" name="category"  aria-label="Default select example" required>
+          <option selected value=""></option>
+          {{#each category}}
+          <option value={{this.category}}>{{this.category}}</option>
+          {{/each}}
+        </select>
+            <input type="text" name="name" id="category1" class="form-control mb-4" required>
+            
+            <button type="submit" onclick="return catValid1()" class="btn bg-success text-light h-25 me-4">EDIT</button>
+            <a href="/admin/products"><button type="button" class="btn bg-danger text-light h-25"
+                    onclick="canCat()">CANCEL</button></a>
         </form>
     </div>
 </div>
@@ -109,10 +128,10 @@
 <script>
     isStock();
     function isStock() {
-        var stock1 = document.getElementsByClassName('stock');
-        var instock = document.getElementsByClassName('instock');
-        var outstock = document.getElementsByClassName('outstock');
-        for (var i = 0; i < stock1.length; i++) {
+        let stock1 = document.getElementsByClassName('stock');
+        let instock = document.getElementsByClassName('instock');
+        let outstock = document.getElementsByClassName('outstock');
+        for (let i = 0; i < stock1.length; i++) {
             if (parseInt(stock1[i].innerHTML) !== 0) {
                 outstock[i].style.display = 'none'
             } else {
@@ -120,15 +139,56 @@
             }
         }
     }
-    var cat = document.getElementById('addcat')
-    var box = document.getElementById('catbox')
+    let cat = document.getElementById('addcat')
+    let box = document.getElementById('catbox')
+    let editB = document.getElementById('editbox')
+    let edit = document.getElementById('editcat')
     
+    function catValid() {
+    let category = document.getElementById('category').value.trim()
+        let arr = category.toString()
+        arr=arr.split(' ')
+        console.log(arr)
+        if (arr.length!== 1 || category==='') {
+            document.getElementById('wcat').innerHTML = 'use single word'
+            return false;
+        }
+        document.getElementById('wcat').innerHTML = ''
+        return true;
+
+    }
+     function catValid1() {
+    let category = document.getElementById('category1').value.trim()
+        let arr = category.toString()
+        arr=arr.split(' ')
+        console.log(arr)
+        if (arr.length!== 1 || category==='') {
+            document.getElementById('wcat1').innerHTML = 'use single word'
+            return false;
+        }
+        document.getElementById('wcat1').innerHTML = ''
+        return true;
+
+    }
+
+
     function addCat() {
         cat.style.display = 'none'
         box.classList.add('cat-div1')
+        edit.style.display = 'none'
+
     }
     function canCat() {
         box.classList.remove('cat-div1')
-        cat.style.display ='block'
+        cat.style.display = 'block'
+        editB.classList.remove('cat-div1')
+        edit.style.display = 'block'
+    }
+
+    function editCat() {
+        edit.style.display = 'none'
+        editB.classList.add('cat-div1')
+        cat.style.display = 'none'
+
     }
 </script>

@@ -1,5 +1,10 @@
+const express = require('express');
+
 const productHelpers = require('../helpers/product-helpers')
 const userHelpers = require('../helpers/user-helpers')
+require('dotenv').config()
+
+
 
 module.exports = {
     verifyLogin: (req, res, next) => {
@@ -24,7 +29,7 @@ module.exports = {
         }
     },
     postLogin: (req, res, next) => {
-        if (req.body.email === "admin@gmail.com" && req.body.password === "123") {
+        if (req.body.email === process.env.ADMIN_EMAIL && req.body.password === process.env.ADMIN_KEY) {
             req.session.admin = true
             res.redirect('/admin')
         } else {
@@ -37,14 +42,19 @@ module.exports = {
         res.redirect('/admin/login')
     },
     getProducts: (req, res, next) => {
-        productHelpers.getAllProducts().then((products) => {
-            res.render('admin/admin-products', { products })
+        productHelpers.getAllProducts().then((array) => {
+            let products=array[0];
+            let category=array[1];
+            res.render('admin/admin-products', { products, category})
         })
     },
     getAddProduct: (req, res, next) => {
-        res.render('admin/admin-add-product')
+        productHelpers.getCategory().then((category) => {
+            res.render('admin/admin-add-product', { category })
+        })
     },
     postAddProduct: (req, res) => {
+        console.log(req.body.category);
         productHelpers.addProduct(req.body, (id) => {
             let image = req.files.image;
             image.mv('./public/images/products/' + id + '.jpg', (err, done) => {
@@ -76,7 +86,16 @@ module.exports = {
             }
         })
     },
+    postAddCategory: (req, res) => {
+        let cat = req.body.name
+        productHelpers.addCategory(cat).then(() => {
+            res.redirect('/admin/products')
+        })
+    },
+
+
     //   user
+
     getUsers: (req, res, next) => {
         userHelpers.getAllUsers().then((users) => {
             res.render('admin/admin-users', { users })

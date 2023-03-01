@@ -1,0 +1,51 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+</head>
+
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+<section>
+    <div class="m-5 p-5 pt-0 mt-0">
+        <h2 class="fw-bold">EDIT PRODUCT</h2>
+        <form class="row g-3" action="/admin/edit-user/{{product._id}}" method="post" enctype="multipart/form-data">
+            <div class="col-md-6">
+                <label for="" class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" value="{{product.name}}" required>
+                <label for="" class="form-label">Mobile</label>
+                <input type="text" name="mobile" class="form-control" value="{{product.mobile}}" required>
+               
+                <label for="" class="form-label">Email</label>
+                <input type="text" name="email" class="form-control" value="{{product.email}}" required>
+
+
+
+                <span id="wprice" class="text-danger bg-white rounded-3"></span>
+
+                <label for="" class="form-label">Address</label>
+                <input type="text" name="address" id="address" class="form-control" value="{{product.address}}" required>
+
+            </div>
+
+            <div class="col-12">
+                <button type="submit"  class="btn btn-primary">Submit</button>
+                <a href="/admin/users" class="btn btn-danger ms-auto">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

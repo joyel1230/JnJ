@@ -1,0 +1,111 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+</head>
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+<div class=" w-100 h-75 d-flex justify-content-center">
+
+    <div class="mt-5  w-75 h-100">
+        <div class="search  w-100">
+            <form action="/admin/get-user" method="get"
+                class="w-100 d-flex justify-content-center align-items-center m-4">
+                <input type="search" class="w-25 m-1 p-1 rounded-3" name="user">
+                <button class="btn border-3 border-dark h-25" type="submit">Search</button>
+            </form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Block/Unblock</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Email</th>
+                    {{!-- <th scope="col">Orders</th> --}}
+                    <th scope="col">Address</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {{#each users}}
+                <tr class="text-center">
+                    <th scope="row">
+
+                        {{#if this.blocked}}
+                        {{!-- <p class="online">Online</p> --}}
+                        <a href="/admin/unblock-user/{{this.mobile}}"><img src="/images/admin/block.svg" width="20px"
+                                class="m-2 me-3" alt=""></a>
+
+                        {{else}}
+                        {{!-- <p class="offline">Offline</p> --}}
+                        <a href="/admin/block-user/{{this.mobile}}"><img src="/images/admin/unblock.svg" width="20px"
+                                class="m-2 me-3" alt=""></a>
+
+                        {{/if}}
+
+
+
+                        <img src="/images/usersdp/{{this.mobile}}.jpg" class="rounded-5" style="width: 35px;height: 35px;"
+                            alt="">
+                    </th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.mobile}}</td>
+                    <td>{{this.email}}</td>
+                    {{!-- <td>₹{{this.orders}}</td> --}}
+                    <td>{{this.address}}</td>
+                    <td>
+                        {{#if this.active}}
+                        {{!-- <p class="online">Online</p> --}}
+                        <img src="/images/admin/online.svg" width="20px" alt="">
+                        {{else}}
+                        {{!-- <p class="offline">Offline</p> --}}
+                        <img src="/images/admin/offline.svg" width="20px" alt="">
+                        {{/if}}
+
+                    </td>
+                    <td>
+                        <a href="/admin/edit-user/{{this._id}}"><img src="/images/admin/edit-icon.svg"
+                                style="width: 25px;" class="me-3" alt=""></a>
+
+
+
+                        <a href="/admin/delete-user/{{this._id}}"
+                            onclick="return confirm('Are you want to delete {{this.mobile}} ?')"><img
+                                src="/images/admin/delete-icon.svg" style="width: 20px;" alt=""></a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" class="d-none d-lg-block">
+            <ul class="pagination float-end">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

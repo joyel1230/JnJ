@@ -1,6 +1,8 @@
-var db = require('../config/connection');
+const db = require('../config/connection');
 const collections = require('../config/collections');
 const bcrypt = require('bcrypt')
+const ObjectId = require('mongodb').ObjectId;
+
 
 module.exports = {
     doSignup: (userData) => {
@@ -43,6 +45,102 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let valid = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
             resolve(valid);
+        })
+    },
+    getAllUsers:()=>{
+        return new Promise(async(resolve, reject) => {
+            let users=db.get().collection(collections.USER_COLLECTIONS).find().toArray()
+            resolve(users)
+        })
+    },
+    deleteUser:(proId)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.USER_COLLECTIONS).deleteOne({_id:ObjectId(proId)}).then(()=>{
+                resolve(true)
+            })
+        })
+    },
+    getUserDetails:(proId)=>{
+        return new Promise((resolve, reject) => {
+             db.get().collection(collections.USER_COLLECTIONS).findOne({_id:ObjectId(proId)}).then((product)=>{
+                 resolve(product)
+             })
+         })
+     },
+     updateUser:(proId,userDetails)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({_id:ObjectId(proId)},
+            {$set:{name:userDetails.name,
+                mobile:userDetails.mobile,
+                email:userDetails.email,
+                address:userDetails.address,}
+            }).then(()=>{
+                resolve()
+            })
+        })
+    },
+    getUsers:(user)=>{
+        return new Promise(async (resolve, reject) => {
+        console.log(user);
+        //    let users= await db.get().collection(collections.USER_COLLECTIONS).find({$text:{$search: user}}).toArray()
+        //    let users= await db.get().collection(collections.USER_COLLECTIONS).find({name:{$regex:`^${user}`}}).toArray()
+
+        let regex = new RegExp(user, "i");
+        let users = await db.get().collection(collections.USER_COLLECTIONS).find({
+          $or: [
+            { name: { $regex: regex } },
+            { email: { $regex: regex } },
+            { address: { $regex: regex } },
+            { mobile: { $regex: regex } }
+          ]
+        }).toArray();
+
+
+           console.log(users);
+           resolve(users)
+        })
+    },
+    getProducts:(user)=>{
+        return new Promise(async (resolve, reject) => {
+        console.log(user);
+        //    let users= await db.get().collection(collections.USER_COLLECTIONS).find({$or:[{$text:{$search: user}},{$match:{name:'0'}}]}).toArray()
+        
+        let regex = new RegExp(user, "i");
+        let users = await db.get().collection(collections.PRODUCT_COLLECTIONS).find({
+          $or: [
+            { name: { $regex: regex } },
+            { category: { $regex: regex } }
+          ]
+        }).toArray();
+        
+
+        //    let users= await db.get().collection(collections.PRODUCT_COLLECTIONS).find({name: /^user/}).toArray()
+           console.log(users);
+           resolve(users)
+        })
+    },
+    active:(mob)=>{
+        return new Promise(async (resolve, reject) => {
+           await db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:mob},{$set:{active:true}})
+           resolve(true)
+        })
+    },
+    inActive:(mob)=>{
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:mob},{$set:{active:false}})
+            resolve(true)
+         })
+    },
+    blockUser:(mob)=>{
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:mob},{$set:{blocked:true}})
+            resolve(true)
+        })
+    },
+    unblockUser:(mob)=>{
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:mob},{$set:{blocked:false}})
+            resolve(true)
         })
     }
 }

@@ -6,8 +6,9 @@
 
 body {
     height: 100vh;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 .logo {
     width: 50px;
+    margin-left: 0.5rem;
 }

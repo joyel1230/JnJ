@@ -1,0 +1,84 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+</head>
+
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+<section>
+    <div class="m-5 p-5 pt-0 mt-0">
+        <h2 class="fw-bold">EDIT PRODUCT</h2>
+        <form class="row g-3" action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data">
+            <div class="col-md-6">
+                <label for="" class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" value="{{product.name}}" required>
+                <label for="" class="form-label">Category</label>
+                {{!-- <input type="text" name="category" class="form-control" value="{{product.category}}" required>
+                --}}
+                <select class="form-select" name="category" aria-label="Default select example" required>
+                    <option selected value="{{product.category}}">{{product.category}}</option>
+                    <option value="Boys Shirts">Boys Shirts</option>
+                    <option value="Boys Trousers">Boys Trousers</option>
+                    <option value="Girls Shirts">Girls Shirts</option>
+                    <option value="Girls Trousers">Girls Trousers</option>
+                </select>
+                <label for="" class="form-label">Description</label>
+                <input type="text" name="description" class="form-control" value="{{product.description}}" required>
+
+
+
+                <span id="wprice" class="text-danger bg-white rounded-3"></span>
+
+                <label for="" class="form-label">Price</label>
+                <input type="text" name="price" id="price" class="form-control w-50" value="{{product.price}}" required>
+
+                <span id="wstock" class="text-danger bg-white rounded-3"></span>
+                <label for="" class="form-label">Stock</label>
+                <input type="text" name="stock" id="stock" class="form-control w-50" value="{{product.stock}}" required>
+
+                <label for="" class="form-label">Image</label>
+                <img src="/images/products/{{product._id}}.jpg" class="m-2" style="width: 100px;height: auto;" alt="">
+                <input type="file" name="image" class="form-control" value="{{product.name}}">
+            </div>
+
+            <div class="col-12">
+                <button type="submit" onclick="return isValid()" class="btn btn-primary">Submit</button>
+                <a href="/admin/products" class="btn btn-danger ms-auto">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function isValid() {
+        let stock = document.getElementById('stock').value.trim()
+        let price = document.getElementById('price').value.trim()
+        if (/^\d+$/.test(price)) {
+            document.getElementById('wprice').innerHTML = ''
+            if (/^\d+$/.test(stock)) {
+                document.getElementById('wstock').innerHTML = ''
+                return true;
+            } else {
+                document.getElementById('wstock').innerHTML = 'invalid'
+            }
+        } else {
+            document.getElementById('wprice').innerHTML = 'invalid'
+        }
+        return false;
+    }
+</script>

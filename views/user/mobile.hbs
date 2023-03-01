@@ -12,6 +12,9 @@
     </div>
     <div class="row m-2 align-items-center">
       <form class="me-4 mt-4 p-0 w-100 text-white " action="/password" method="get">
+      {{#if block}}
+        <span class="text-danger bg-white rounded-3">The number is blocked by Admin</span>
+      {{/if}}
         <div class="mb-2">
           <label for="mobile" class="form-label">Mobile Number</label>
           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number">

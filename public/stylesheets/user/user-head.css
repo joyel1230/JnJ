@@ -175,7 +175,6 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000;
 }
 footer>div{
     border: #000;

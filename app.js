@@ -1,16 +1,22 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+// const axios = require('axios');
 
-var userRouter = require('./routes/user');
-var adminRouter = require('./routes/admin');
-var hbs=require('express-handlebars')
-var app = express();
-var fileUpload=require('express-fileupload')
-var db=require('./config/connection')
-var session=require('express-session')
+
+const userRouter = require('./routes/user');
+const adminRouter = require('./routes/admin');
+const hbs=require('express-handlebars')
+const app = express();
+const fileUpload=require('express-fileupload')
+const db=require('./config/connection')
+const session=require('express-session')
+require('dotenv').config()
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -22,7 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload())
-app.use(session({secret:'key',cookie:{maxAge:600000}}))
+
+
+app.use(session({secret:process.env.SESSION_KEY,cookie:{maxAge:6000000}}))
 app.use((req,res,next)=>{
   res.header('Cache-Control','no-cache,private,no-Store,must-revalidate,max-scale=0,post-check=0,pre-check=0');
   next();
@@ -31,13 +39,14 @@ db.connect((err)=>{
   if (err) console.log('connection error');
   else console.log('Database connected');
 })
-app.use('/', userRouter);
 app.use('/admin', adminRouter);
+app.use('/', userRouter);
 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+  res.render('error')
 });
 
 // error handler
@@ -50,5 +59,29 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+
+
+// // Set the interval (in milliseconds)
+// const interval = 5000; // 5 seconds
+
+// // Define the function to be called repeatedly
+// function sendRequest() {
+//   axios.get('http://localhost:3000/admin/users')
+//     .then(response => {
+//       // console.log(response.data);
+//     })
+//     .catch(error => {
+//       // console.error(error);
+//     });
+// }
+
+// // Call the function repeatedly at the defined interval
+// setInterval(sendRequest, interval);
+
+
+
 
 module.exports = app;

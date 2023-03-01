@@ -1,0 +1,36 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-login.css">
+</head>
+
+<section class="d-flex w-100 flex-column justify-content-center align-items-center">
+    <div class="container-fluid p-0 rounded-4  col-9 col-md-6 d-flex justify-content-center sec-1 position-relative"
+        style="box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);">
+        <div class="w-100 position-absolute"><a href="mobile.html" style="text-decoration: none;">
+                <h4 class="text-white mt-4 fw-bold text-center">ADMIN LOGIN</h4>
+            </a>
+        </div>
+        <div class="row w-75 align-items-center d-flex justify-content-center">
+            <form class="mt-4 p-0  col-12 col-md-10 text-white" action="/admin/login" method="post">
+            {{#if msg}}
+            <span class="text-danger bg-white rounded-3">Invalid Email or Password</span>
+            {{/if}}
+
+                <div class="mb-4">
+                    <!-- <label for="username" class="form-label">Email</label> -->
+                    <input type="email" class="form-control" name="email" value="admin@gmail.com" id="email" placeholder="Email" required>
+                </div>
+                <div class="mb-4">
+                    <!-- <label for="" class="form-label">Password</label> -->
+                    <input type="password" class="form-control" name="password" value="123" id="password" placeholder="Password" required>
+                    <div class="d-flex justify-content-between">
+                        <!-- <a class="forgot text-light ps-5 pe-4" href="forgot.html">forgot password ?</a> -->
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="loginBtn border mb-4 text-white  fs-5 fw-bold">Login</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>

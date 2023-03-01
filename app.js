@@ -29,7 +29,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload())
 
-
 app.use(session({secret:process.env.SESSION_KEY,cookie:{maxAge:6000000}}))
 app.use((req,res,next)=>{
   res.header('Cache-Control','no-cache,private,no-Store,must-revalidate,max-scale=0,post-check=0,pre-check=0');

@@ -36,7 +36,7 @@
     </div>
     <div class=" mt-3 me-5 border-1 border-black cat-div" id="editbox" style="width: 250px;height: 150px;">
         <form action="/admin/edit-category" method="post">
-            <label for="" class="form-label fw-bolder">Edit Category</label>
+            <label for="" class="form-label fw-bolder">Select Category</label>
             <span id="wcat1" class="text-danger bg-white rounded-3"></span>
             <select class="form-select" name="category"  aria-label="Default select example" required>
           <option selected value=""></option>
@@ -44,9 +44,10 @@
           <option value={{this.category}}>{{this.category}}</option>
           {{/each}}
         </select>
-            <input type="text" name="name" id="category1" class="form-control mb-4" required>
+            <label for="" class="form-label fw-bolder">Change to</label>
+            <input type="text" name="editedCat" id="category1" class="form-control mb-4" required>
             
-            <button type="submit" onclick="return catValid1()" class="btn bg-success text-light h-25 me-4">EDIT</button>
+            <button type="submit" onclick="return catValid1()" class="btn bg-success text-light h-25 me-4">UPDATE</button>
             <a href="/admin/products"><button type="button" class="btn bg-danger text-light h-25"
                     onclick="canCat()">CANCEL</button></a>
         </form>
@@ -55,7 +56,7 @@
 
 <div class=" w-100 h-75 d-flex justify-content-center">
 
-    <div class="mt-3  w-75 h-100">
+    <div class="mt-5  w-75 h-100">
         <div class="search  w-100">
             <form action="/admin/get-product" method="get"
                 class="w-100 d-flex justify-content-center align-items-center m-4">
@@ -82,7 +83,9 @@
                     <th scope="row"><img src="/images/products/{{this._id}}.jpg" class="rounded-5"
                             style="width: 40px;height: 40px;" alt=""></th>
                     <td>{{this.name}}</td>
-                    <td>{{this.category}}</td>
+                    <td>
+                        {{this.categoryAs.[0].category}}
+                    </td>
                     <td>{{this.description}}</td>
                     <td>₹{{this.price}}</td>
                     <td class="stock">{{this.stock}}</td>

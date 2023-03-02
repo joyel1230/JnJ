@@ -31,11 +31,11 @@
                 {{!-- <input type="text" name="category" class="form-control" value="{{product.category}}" required>
                 --}}
                 <select class="form-select" name="category" aria-label="Default select example" required>
-                    <option selected value="{{product.category}}">{{product.category}}</option>
-                    <option value="Boys Shirts">Boys Shirts</option>
-                    <option value="Boys Trousers">Boys Trousers</option>
-                    <option value="Girls Shirts">Girls Shirts</option>
-                    <option value="Girls Trousers">Girls Trousers</option>
+                    <option selected value={{product.categoryAs.[0].category}}>{{product.categoryAs.[0].category}}</option>
+                    {{#each category}}
+                    <option value={{this.category}}>{{this.category}}</option>
+                    {{/each}}
+
                 </select>
                 <label for="" class="form-label">Description</label>
                 <input type="text" name="description" class="form-control" value="{{product.description}}" required>

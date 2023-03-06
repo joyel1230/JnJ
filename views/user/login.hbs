@@ -12,11 +12,11 @@
 {{/if}}
 
 <script>
-openPop();
+  openPop();
   function openPop() {
     let pop = document.getElementById('popup');
     pop.classList.add('open-pop');
-}
+  }
   function closePop() {
     let pop = document.getElementById('popup');
     pop.classList.remove('open-pop');
@@ -58,3 +58,11 @@ openPop();
     </div>
   </div>
 </section>
+
+<style>
+  body {
+    height: 100vh;
+    background-image: linear-gradient(16deg, #359edb 0%, #EAB5AD 64%, #abe479 100%);
+    background-repeat: no-repeat;
+  }
+</style>

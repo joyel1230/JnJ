@@ -5,9 +5,10 @@
 }
 
 body {
-    height: 100vh;
+    /* height: 100vh; */
     /* overflow-x: hidden; */
 }
+
 .logo {
     width: 50px;
     margin-left: 0.5rem;

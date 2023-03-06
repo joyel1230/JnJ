@@ -5,10 +5,10 @@
 {{!-- popup --}}
 
 <div class="position-absolute popup" id="popup">
-    <h2>Done Successfully!</h2>
-    <p>OK to Continue</p>
-    <button type="button" onclick="closePop()" class="w-25 btn btn-success rounded-2">OK</button>
-  </div>
+  <h2>Done Successfully!</h2>
+  <p>OK to Continue</p>
+  <button type="button" onclick="closePop()" class="w-25 btn btn-success rounded-2">OK</button>
+</div>
 
 
 <section class="d-flex  flex-column justify-content-center align-items-center">
@@ -30,7 +30,7 @@
         <span id="sameMob" class="text-danger fs-6 bg-white rounded-3"></span>
         <div class="">
           <label for="username" class="form-label">OTP</label>
-          <span>(hint : last4)</span>
+          <span>(hint : 0000)</span>
           <input type="text" class="form-control" id="OTP" placeholder="OTP">
         </div>
         <span id="sameOTP" class="text-danger bg-white rounded-3"></span>
@@ -54,5 +54,12 @@
     </div>
   </div>
 </section>
+<style>
+  body {
+    height: 100vh;
+    background-image: linear-gradient(16deg, #359edb 0%, #EAB5AD 64%, #abe479 100%);
+    background-repeat: no-repeat;
+  }
+</style>
 
 <script src="/javascripts/forgot.js"></script>

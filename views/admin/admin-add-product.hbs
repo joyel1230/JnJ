@@ -21,7 +21,7 @@
 </div>
 
 <section>
-  <div class="m-5 p-5 pt-0 mt-0">
+  <div class="m-5  pt-0 mt-0">
     <h2 class="fw-bold">ADD PRODUCT</h2>
     <form class="row g-3" action="/admin/add-product" method="post" enctype="multipart/form-data">
       <div class="col-md-6">
@@ -42,11 +42,15 @@
         <span id="wprice" class="text-danger bg-white rounded-3"></span>
 
         <label for="" class="form-label">Price</label>
-        <input type="text" name="price"  id="price" class="form-control w-50 m-0" required>
+        <input type="text" name="price" id="price" class="form-control w-50 m-0" required>
         <span id="wstock" class="text-danger bg-white rounded-3"></span>
         <label for="" class="form-label ">Stock</label>
         <input type="text" name="stock" id="stock" class="form-control w-50 m-0" required>
-        <label for="" class="form-label">Image</label>
+        <label for="" class="form-label">Image 1</label>
+        <input type="file" name="image" class="form-control mb-1" required>
+        <label for="" class="form-label">Image 2</label>
+        <input type="file" name="image" class="form-control mb-1" required>
+        <label for="" class="form-label">Image 3</label>
         <input type="file" name="image" class="form-control" required>
       </div>
 

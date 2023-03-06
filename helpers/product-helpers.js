@@ -11,6 +11,7 @@ module.exports = {
                 price: product.price,
                 description: product.description,
                 stock: product.stock
+                
             }
             ).then((data) => {
                 console.log(data);
@@ -36,7 +37,8 @@ module.exports = {
     },
     deleteProduct: (proId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.PRODUCT_COLLECTIONS).deleteOne({ _id: ObjectId(proId) }).then(() => {
+            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({ _id: ObjectId(proId) },
+            {$set:{deleted:true}}).then(() => {
                 resolve(true)
             })
         })

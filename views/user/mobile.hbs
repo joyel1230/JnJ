@@ -12,14 +12,14 @@
     </div>
     <div class="row m-2 align-items-center">
       <form class="me-4 mt-4 p-0 w-100 text-white " action="/password" method="get">
-      {{#if block}}
+        {{#if block}}
         <span class="text-danger bg-white rounded-3">The number is blocked by Admin</span>
-      {{/if}}
+        {{/if}}
         <div class="mb-2">
           <label for="mobile" class="form-label">Mobile Number</label>
           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number">
         </div>
-          <span id="not" class="text-danger bg-white"></span>
+        <span id="not" class="text-danger bg-white"></span>
         <div class="btnclass mt-2">
           <button type="submit" class="loginBtn border mb-4 text-white w-100 fs-6 fw-semibold"
             onclick="return isValid()">CONTINUE</button>
@@ -30,3 +30,10 @@
 </section>
 
 <script src="/javascripts/mobile.js"></script>
+<style>
+  body {
+    height: 100vh;
+    background-image: linear-gradient(16deg, #359edb 0%, #EAB5AD 64%, #abe479 100%);
+    background-repeat: no-repeat;
+  }
+</style>

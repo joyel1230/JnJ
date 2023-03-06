@@ -32,7 +32,7 @@
         <table class="table">
             <thead>
                 <tr class="text-center">
-                    <th scope="col">Block/Unblock</th>
+                    <th scope="col"></th>
                     <th scope="col">Name</th>
                     <th scope="col">Mobile</th>
                     <th scope="col">Email</th>
@@ -47,22 +47,10 @@
                 <tr class="text-center">
                     <th scope="row">
 
-                        {{#if this.blocked}}
-                        {{!-- <p class="online">Online</p> --}}
-                        <a href="/admin/unblock-user/{{this.mobile}}"><img src="/images/admin/block.svg" width="20px"
-                                class="m-2 me-3" alt=""></a>
-
-                        {{else}}
-                        {{!-- <p class="offline">Offline</p> --}}
-                        <a href="/admin/block-user/{{this.mobile}}"><img src="/images/admin/unblock.svg" width="20px"
-                                class="m-2 me-3" alt=""></a>
-
-                        {{/if}}
 
 
-
-                        <img src="/images/usersdp/{{this.mobile}}.jpg" class="rounded-5" style="width: 35px;height: 35px;"
-                            alt="">
+                        <img src="/images/usersdp/{{this.mobile}}.jpg" class="rounded-5"
+                            style="width: 35px;height: 35px;" alt="">
                     </th>
                     <td>{{this.name}}</td>
                     <td>{{this.mobile}}</td>
@@ -83,11 +71,21 @@
                         <a href="/admin/edit-user/{{this._id}}"><img src="/images/admin/edit-icon.svg"
                                 style="width: 25px;" class="me-3" alt=""></a>
 
+                        {{#if this.blocked}}
+                        {{!-- <p class="online">Online</p> --}}
+                        <a href="/admin/unblock-user/{{this.mobile}}"><img src="/images/admin/block.svg" width="20px"
+                                class="m-2 me-3" alt=""></a>
 
+                        {{else}}
+                        {{!-- <p class="offline">Offline</p> --}}
+                        <a href="/admin/block-user/{{this.mobile}}"><img src="/images/admin/unblock.svg" width="20px"
+                                class="m-2 me-3" alt=""></a>
 
-                        <a href="/admin/delete-user/{{this._id}}"
+                        {{/if}}
+
+                        {{!-- <a href="/admin/delete-user/{{this._id}}"
                             onclick="return confirm('Are you want to delete {{this.mobile}} ?')"><img
-                                src="/images/admin/delete-icon.svg" style="width: 20px;" alt=""></a>
+                                src="/images/admin/delete-icon.svg" style="width: 20px;" alt=""></a> --}}
                     </td>
                 </tr>
                 {{/each}}

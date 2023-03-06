@@ -60,13 +60,19 @@ module.exports = {
         console.log(req.body.category);
         productHelpers.addProduct(req.body, (id) => {
             let image = req.files.image;
-            image.mv('./public/images/products/' + id + '.jpg', (err, done) => {
-                if (!err) {
-                    res.render('admin/admin-add-product')
-                } else {
-                    console.log(err);
-                }
-            })
+            let a=0;
+            for (let i = 0; i < image.length; i++) {
+                image[i].mv('./public/images/products/' + id +'_'+a+'.jpg', (err, done) => {
+                    if (!err) {
+                        
+                    } else {
+                        console.log(err);
+                    }
+                })
+                a++;
+            }
+            res.render('admin/admin-add-product')
+            
         })
     },
     getDeleteProductId: (req, res) => {

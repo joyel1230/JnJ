@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>1stOne</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  {{#if user}}
+  {{#if userd}}
   <link rel="icon" href="img/favicon.png">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/animate.css">
   <!-- owl carousel CSS -->
   <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/lightslider.min.css">
   <!-- font awesome CSS -->
   <link rel="stylesheet" href="css/all.css">
   <!-- flaticon CSS -->
@@ -36,9 +37,38 @@
 </head>
 
 <body>
-
-  {{#if user}}
+  
+<div id="preloader" ></div>
+<script>
+    var loader = document.getElementById('preloader');
+    loader.classList.add('prelo')
+    setTimeout(function(){
+    loader.classList.remove('prelo')
+    },800)
+</script>
+  {{#if userd}}
   {{>user-header}}
+
+
+  <script>
+    let prevScrollpos = window.pageYOffset;
+const navbar = document.querySelector("header");
+
+window.onscroll = function() {
+  let currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    navbar.style.top = "0";
+  } else {
+    if (currentScrollPos > 100) {
+      navbar.style.top = "-100px";
+    }
+  }
+  prevScrollpos = currentScrollPos;
+}
+
+  </script>
+
+
   {{else}}
   {{>admin-header}}
   {{/if}}
@@ -47,12 +77,13 @@
   {{{body}}}
 
 
-  {{#if user}}
+  {{#if userd}}
   {{>user-footer}}
 
 
   
   <!-- jquery plugins here-->
+  <!-- jquery -->
   <script src="js/jquery-1.12.1.min.js"></script>
   <!-- popper js -->
   <script src="js/popper.min.js"></script>
@@ -61,7 +92,7 @@
   <!-- easing js -->
   <script src="js/jquery.magnific-popup.js"></script>
   <!-- swiper js -->
-  <script src="js/swiper.min.js"></script>
+  <script src="js/lightslider.min.js"></script>
   <!-- swiper js -->
   <script src="js/masonry.pkgd.js"></script>
   <!-- particles js -->
@@ -69,6 +100,7 @@
   <script src="js/jquery.nice-select.min.js"></script>
   <!-- slick js -->
   <script src="js/slick.min.js"></script>
+  <script src="js/swiper.jquery.js"></script>
   <script src="js/jquery.counterup.min.js"></script>
   <script src="js/waypoints.min.js"></script>
   <script src="js/contact.js"></script>
@@ -76,8 +108,12 @@
   <script src="js/jquery.form.js"></script>
   <script src="js/jquery.validate.min.js"></script>
   <script src="js/mail-script.js"></script>
+  <script src="js/stellar.js"></script>
   <!-- custom js -->
+  <script src="js/theme.js"></script>
   <script src="js/custom.js"></script>
+  {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+  <script src="/javascripts/script.js"></script>
   {{else}}
 
 

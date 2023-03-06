@@ -55,7 +55,8 @@ module.exports = {
     },
     deleteUser:(proId)=>{
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.USER_COLLECTIONS).deleteOne({_id:ObjectId(proId)}).then(()=>{
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({_id:ObjectId(proId)},
+            {$set:{deleted:true}}).then(()=>{
                 resolve(true)
             })
         })
@@ -142,5 +143,71 @@ module.exports = {
             await db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:mob},{$set:{blocked:false}})
             resolve(true)
         })
+    },
+    addWishlist:(proId,user)=>{
+        return new Promise(async(resolve, reject) => {
+            let checkWish=await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:user,wishlist:{$in:[ObjectId(proId)]}})
+            if (!checkWish) {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:user},{$push:{wishlist:ObjectId(proId)}})
+            }
+            resolve(true)
+        })
+    },
+    getAllWishlist:(userMob)=>{
+        return new Promise(async(resolve, reject) => {
+            let wishArr=await db.get().collection(collections.USER_COLLECTIONS).aggregate([{$match:{mobile:userMob}},{$unwind:"$wishlist"},{$lookup:{from:"product",localField:"wishlist",foreignField:"_id",as:"wishItems"}}]).toArray()
+            resolve(wishArr)
+        })
+    },
+    removeWishlist:(proId,user)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:user},{$pull:{wishlist:ObjectId(proId)}})
+            resolve(true)
+        })
+    },
+    addCart:(userMob,proId)=>{
+        return new Promise(async(resolve, reject) => {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:userMob},{$pull:{wishlist:ObjectId(proId)}})
+
+            let checkCart=await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:userMob,cart:{$elemMatch:{proId:ObjectId(proId)}}}) 
+            // console.log(checkCart);
+            if (!checkCart) {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:userMob},{$push:{cart:{proId:ObjectId(proId),qty:1}}})
+            }
+            let wish=await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:userMob})
+            wish=wish.wishlist
+            resolve(wish[0])
+
+            // db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:userMob},{$unset:{wishlist:""}})
+            // db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:userMob},{$set:{cart:wish}})
+        })
+    },
+    getAllCart:(userMob)=>{
+        return new Promise(async(resolve, reject) => {
+            let cartArr=await db.get().collection(collections.USER_COLLECTIONS).aggregate([{$match:{mobile:userMob}},{$unwind:"$cart"},{$lookup:{from:"product",localField:"cart.proId",foreignField:"_id",as:"cartItems"}}]).toArray()
+            // console.log(cartArr);
+            resolve(cartArr)
+        })
+    },
+    removeCart:(proIdn,user)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:user},{$pull:{cart:{ proId: ObjectId(proIdn) } } })
+            resolve(true)
+        })
+    },
+    getSingleProduct:(proId)=>{
+        return new Promise(async(resolve, reject) => {
+         let product =await  db.get().collection(collections.PRODUCT_COLLECTIONS).findOne({_id:ObjectId(proId)})
+         let category =await  db.get().collection(collections.CATEGORY_COLLECTION).findOne({_id:ObjectId(product.categoryId)})
+         let stock=Number(product.stock)
+         let arr=[product,category,stock]
+            resolve(arr)
+        })
     }
 }
+
+arrayField: {
+    $elemMatch: {
+      fieldToCheck: "valueToCheck"
+    }
+  }

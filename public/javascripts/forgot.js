@@ -6,7 +6,7 @@ function isValid() {
     let OTP = document.getElementById('OTP').value.trim();
     let pass = document.getElementById('pass').value;
     let rePass = document.getElementById('rePass').value;
-    let OTPn = mobile[6] + mobile[7] + mobile[8] + mobile[9];
+    let OTPn = process.env.TWILIO_MY_OTP;
     if (mobile.length === 10 && /^\d+$/.test(mobile)) {
         document.getElementById('sameMob').innerHTML = ''
         if (OTP === OTPn) {

@@ -1,0 +1,149 @@
+<!--================Cart Area =================-->
+<section class="cart_area padding_top" style="margin-top: 8rem;">
+  <div class="container">
+    <div class="cart_inner">
+      <h4 style="font-weight: 700;margin-left: 0.7rem;">CART</h4>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr class="text-center">
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              <th scope="col">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#if cartArr}}
+            {{#each cartArr}}
+            <tr class="text-center">
+              <td>
+                <div class="media">
+                  <div class="d-flex">
+                    <img src="/images/products/{{this.cartItems.[0]._id}}_0.jpg" style="width: 80px;height: auto;"
+                      alt="" />
+                  </div>
+                  <div class="media-body">
+                    <p>{{this.cartItems.[0].description}}</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <h5>₹ <span class="onePrice">{{this.cartItems.[0].price}}</span></h5>
+              </td>
+              <td>
+                <div class="product_count" style="user-select: none;">
+                  {{!-- <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
+                  <input class="input-number" type="text" value="1" min="1" max="5">
+                  <span class="input-number-increment"> <i class="ti-angle-up"></i></span> --}}
+                  <i class="ti-angle-down" style="cursor: pointer;" onclick="minusQty({{@index}})"></i>
+                  <span style="margin: 0.5rem;" class="qty" name="qty">1</span>
+                  <i class="ti-angle-up" style="cursor: pointer;margin-left: 1px;" onclick="plusQty({{@index}})"></i>
+                </div>
+              </td>
+              <td>
+                <h5>₹ <span class="totalPrice">{{this.cartItems.[0].price}}</span></h5>
+              </td>
+              <td class="">
+                <a href="/cart-remove/{{this.cartItems.[0]._id}}"
+                  style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-minus"></i></a>
+              </td>
+            </tr>
+            {{/each}}
+            {{else}}
+            <h1>YOUR CART IS EMPTY</h1>
+            {{/if}}
+            <tr class="text-center">
+              <td></td>
+              <td></td>
+              <td>
+                <h5>Subtotal</h5>
+              </td>
+              <td>
+                <h5>₹ <span id="subtotal"></span></h5>
+              </td>
+              <td></td>
+
+            </tr>
+            <tr class="shipping_area">
+              <td></td>
+              <td></td>
+              <td>
+                <h5>Shipping</h5>
+              </td>
+              <td>
+                <div class="shipping_box">
+                  <ul class="list">
+
+                    <li class="active">
+                      <a href="#">Free Shipping</a>
+                    </li>
+
+                  </ul>
+
+                </div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="checkout_btn_inner float-right">
+          <a class="btn_1" href="/">Continue Shopping</a>
+          <a class="btn_1 checkout_btn_1" href="/checkout">Proceed to checkout</a>
+        </div>
+      </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->
+
+<script>
+  function minusQty(index) {
+    let qtyElems = document.getElementsByClassName('qty');
+    let onePriceElems = document.getElementsByClassName('onePrice');
+    let totalElems = document.getElementsByClassName('totalPrice');
+
+    let qty = Number(qtyElems[index].innerHTML);
+    let onePrice = Number(onePriceElems[index].innerHTML);
+    if (qty > 1) {
+      qtyElems[index].innerHTML = qty - 1;
+      let total = onePrice * (qty - 1);
+      totalElems[index].innerHTML = total;
+    } else {
+      let total = onePrice * 1;
+      totalElems[index].innerHTML = total;
+    }
+
+    subTotal();
+  }
+
+  function plusQty(index) {
+    let qtyElems = document.getElementsByClassName('qty');
+    let onePriceElems = document.getElementsByClassName('onePrice');
+    let totalElems = document.getElementsByClassName('totalPrice');
+
+    let qty = Number(qtyElems[index].innerHTML);
+    let onePrice = Number(onePriceElems[index].innerHTML);
+    if (qty < 5) {
+      qtyElems[index].innerHTML = qty + 1;
+      let total = onePrice * (qty + 1);
+      totalElems[index].innerHTML = total;
+    } else {
+      let total = onePrice * 5;
+      totalElems[index].innerHTML = total;
+    }
+
+    subTotal();
+  }
+
+  function subTotal() {
+    let totalArr = document.getElementsByClassName('totalPrice')
+    let sub = document.getElementById('subtotal')
+    let subTotal = 0;
+    for (let i = 0; i < totalArr.length; i++) {
+      subTotal += Number(totalArr[i].innerHTML)
+    }
+    sub.innerHTML = subTotal;
+  }
+  subTotal();
+</script>

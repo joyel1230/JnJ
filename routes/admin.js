@@ -25,9 +25,9 @@ router.get('/edit-product/:id', adminCont.verifyLogin, adminCont.getEditProductI
 
 router.post('/edit-product/:id', adminCont.verifyLogin, adminCont.postEditProductId)
 
-router.post('/add-category',adminCont.verifyLogin, adminCont.postAddCategory)
+router.post('/add-category', adminCont.verifyLogin, adminCont.postAddCategory)
 
-router.post('/edit-category',adminCont.verifyLogin,adminCont.postEditCategory)
+router.post('/edit-category', adminCont.verifyLogin, adminCont.postEditCategory)
 
 // users
 
@@ -37,7 +37,7 @@ router.get('/edit-user/:id', adminCont.verifyLogin, adminCont.getEditUserId)
 
 router.post('/edit-user/:id', adminCont.verifyLogin, adminCont.postEditUserId)
 
-router.get('/delete-user/:id', adminCont.verifyLogin, adminCont.getDeleteUserId)
+// router.get('/delete-user/:id', adminCont.verifyLogin, adminCont.getDeleteUserId)
 
 router.get('/get-user', adminCont.verifyLogin, adminCont.getGetUser)
 

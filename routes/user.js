@@ -19,6 +19,25 @@ router.post('/login/:id', userCont.postLoginId)
 
 router.get('/logout', userCont.getLogout)
 
+router.get('/wishlist', userCont.verifyLogin, userCont.getWishlist)
+
+router.get('/add-to-wishlist/:id', userCont.verifyLogin, userCont.getAddToWishlist)
+
+router.get('/wishlist-remove/:id', userCont.verifyLogin, userCont.getWishlistRemove)
+
+router.get('/cart', userCont.verifyLogin, userCont.getCart)
+
+router.get('/add-to-cart/:id', userCont.getAddCart)
+
+router.get('/cart-remove/:id', userCont.verifyLogin, userCont.getCartRemove)
+
+router.get('/blog', userCont.getBlog)
+
+router.get('/single-blog', userCont.getSingleBlog)
+
+router.get('/single-product', userCont.getSingleProductId)
+
+router.get('/contact', userCont.getContact)
 
 
 module.exports = router;

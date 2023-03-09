@@ -73,8 +73,7 @@ module.exports = {
             db.get().collection(collections.USER_COLLECTIONS).updateOne({_id:ObjectId(proId)},
             {$set:{name:userDetails.name,
                 mobile:userDetails.mobile,
-                email:userDetails.email,
-                address:userDetails.address,}
+                email:userDetails.email}
             }).then(()=>{
                 resolve()
             })
@@ -203,11 +202,92 @@ module.exports = {
          let arr=[product,category,stock]
             resolve(arr)
         })
+    },
+    updateAc:(body,mob,image)=>{
+        return new Promise(async(resolve, reject) => {
+            if(!image){
+                await db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                    {mobile:mob},
+                    {$set:{
+                        username:body.name,
+                        email:body.email
+                    }})
+            }else{
+                await db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                    {mobile:mob},
+                    {$set:{
+                        username:body.name,
+                        email:body.email,
+                        image:image.filename
+                    }})
+            }
+            resolve(true)
+            
+        })
+    },
+    getAccDetails:(mob)=>{
+        return new Promise(async(resolve, reject) => {
+            let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:mob})
+            resolve(user)
+        })
+    },
+    updatePass:(body,mob)=>{
+        return new Promise(async(resolve, reject) => {
+            console.log(body);
+            let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:mob})
+            console.log(user);
+            bcrypt.compare(body.currentPassword,user.password).then(async(status)=>{
+                if (status) {
+                let password = await bcrypt.hash(body.newPassword, 10);
+                db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                    {mobile:mob},
+                    {$set:{
+                        password:password
+                    }})
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            })
+        })
+    },
+    addAddress:(body,user,ind)=>{
+        return new Promise(async(resolve, reject) => {
+            
+            db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                {mobile:user.mobile},
+                {$push:{
+                    address:body
+                }})
+                if (ind>=0) {
+                  await  db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                        {mobile:user.mobile},
+                        {$unset:{
+                            ['address.'+ind]:1
+                        }})
+                }
+                await db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                    {mobile:user.mobile},
+                    {$pull:{
+                        address:{
+                            $eq:null
+                        }
+                    }}
+                )
+                resolve(true)
+        })
+    },
+    getAllAddress:(mob)=>{
+        return new Promise(async(resolve, reject) => {
+            let add= await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:mob})
+            resolve(add.address)
+        })
+    },
+    editAddress:(index,mob)=>{
+        return new Promise(async(resolve, reject) => {
+            let add= await db.get().collection(collections.USER_COLLECTIONS).findOne({mobile:mob})
+            resolve(add.address[index])
+        })
     }
 }
 
-arrayField: {
-    $elemMatch: {
-      fieldToCheck: "valueToCheck"
-    }
-  }

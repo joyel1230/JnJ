@@ -1,4 +1,4 @@
-{{#if pop}}
+{{!-- {{#if pop}}
 <div class="popup" id="popupd">
     <h2>Login Successfull!</h2>
     <p></p>
@@ -12,7 +12,7 @@
     <p></p>
     <button type="button" onclick="closePop()" class="btn">OK</button>
 </div>
-{{/if}}
+{{/if}} --}}
 
 {{!-- preload --}}
 
@@ -51,6 +51,69 @@
     </div>
 </section>
 <!-- banner part start-->
+
+
+<!-- product_list start-->
+<section class="product_list section_padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="section_tittle text-center">
+                    {{!-- <h2>awesome</h2> --}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product_list_slider owl-carousel">
+
+                    <div class="single_product_list_slider">
+                        <div class="row align-items-center justify-content-between">
+                            {{#each products}}
+                            {{#if this.deleted}}
+                            {{else}}
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="single_product_item">
+
+                                    <div class="single_product_text">
+                                        <a href="/single-product?id={{this._id}}"><img
+                                                src="/image/{{this.images.[0]}}"
+                                                style="max-width: 250px;border-radius: 20px;height: 230px;" alt=""></a>
+
+                                        <h4 class="px-3">{{this.name}}</h4>
+                                        <h3 style="float: left;" class="px-3">₹{{this.price}}</h3>
+                                        {{!-- <a href="/add-to-wishlist/{{this._id}}" class="ab"><i
+                                                class="ti-heart"></i></a> --}}
+                                        <a class="ab" style="margin-left: 12rem;" onclick="addtowish(this)">
+                                            <button onclick="addToWish('{{this._id}}')" class=""
+                                                style="background-color: #00000000;border: none;color: #fff"><i
+                                                    class="ti-heart hrtno" style="color: rgb(0, 0, 0);"></i> <i
+                                                    class="ti-heart hrt dis"
+                                                    style="color: rgb(255, 0, 0);"></i></button>
+                                        </a>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="add_cart w-75 ab">+ add to
+                                            cart</a> --}}
+                                        <a class="add_cart w-75 ab addtocart" onclick="addedto(this)"><button
+                                                onclick="addToCart('{{this._id}}')" class="addto px-3"
+                                                style="background-color: #00000000;border: none;color: #fff;">+ add to
+                                                cart</button>
+                                            <span class="added px-3"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+                            {{/each}}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!-- feature_part start-->
 <section class="feature_part padding_top">
@@ -102,62 +165,7 @@
 </section>
 <!-- upcoming_event part start-->
 
-<!-- product_list start-->
-<section class="product_list section_padding">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="section_tittle text-center">
-                    <h2>awesome</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="product_list_slider owl-carousel">
 
-                    <div class="single_product_list_slider">
-                        <div class="row align-items-center justify-content-between">
-                            {{#each products}}
-                            {{#if this.deleted}}
-                            {{else}}
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="single_product_item">
-
-                                    <div class="single_product_text">
-                                        <a href="/single-product?id={{this._id}}"><img
-                                                src="/images/products/{{this._id}}_0.jpg"
-                                                style="width: 260px;border-radius: 20px;height: 230px;" alt=""></a>
-
-                                        <h4>{{this.name}}</h4>
-                                        <h3 style="float: left;">₹{{this.price}}</h3>
-                                        {{!-- <a href="/add-to-wishlist/{{this._id}}" class="ab"><i class="ti-heart"></i></a> --}}
-                                        <a  class="ab" style="margin-left: 12rem;">
-                                        <button
-                                                onclick="addToWish('{{this._id}}')" class=""
-                                                style="background-color: #00000000;border: none;color: #fff"><i class="ti-heart"></i></button>
-                                        </a>
-                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="add_cart w-75 ab">+ add to
-                                            cart</a> --}}
-                                        <a class="add_cart w-75 ab addtocart" ><button
-                                                onclick="addToCart('{{this._id}}')" class=""
-                                                style="background-color: #00000000;border: none;color: #fff">+ add to
-                                                cart</button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            {{/if}}
-                            {{/each}}
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 
 
@@ -178,10 +186,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 2;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+
         padding: 20px;
         color: #333;
         text-align: center;
@@ -190,32 +195,10 @@
 
     .popup h2 {
         font-size: 32px;
-        margin-bottom: 20px;
+
         text-shadow: 2px 2px 2px #bebebe, -2px -2px 2px #ffffff;
     }
 
-    .popup p {
-        font-size: 20px;
-        margin-bottom: 30px;
-        text-shadow: 2px 2px 2px #bebebe, -2px -2px 2px #ffffff;
-    }
-
-    .btn {
-        font-size: 20px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 10px;
-        box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
-        background-color: #f0f0f0;
-        color: #333;
-        cursor: pointer;
-        margin-top: 2rem;
-    }
-
-    .btn:hover {
-        transform: translateY(-5px);
-        box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
-    }
 
     .open-pop {
         display: block;
@@ -233,6 +216,10 @@
     .pre {
         background: none;
     }
+
+    .dis {
+        display: none;
+    }
 </style>
 
 <script>
@@ -247,7 +234,16 @@
         pop.classList.remove('open-pop');
     }
 
+    function addedto(element) {
+        element.querySelector('.addto').style.display = 'none';
+        element.querySelector('.added').textContent = 'added';
+        // Call the addToCart function with the appropriate argument
 
+    }
+    function addtowish(thi) {
+        thi.querySelector('.hrtno').style.display = 'none'
+        thi.querySelector('.hrt').classList.remove('dis')
+    }
 
 
 </script>

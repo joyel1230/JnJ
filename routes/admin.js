@@ -47,5 +47,11 @@ router.get('/block-user/:id', adminCont.verifyLogin, adminCont.getBlockUserId)
 
 router.get('/unblock-user/:id', adminCont.verifyLogin, adminCont.getUnblockUserId)
 
+// coupons
+
+router.get('/coupons', adminCont.verifyLogin, adminCont.getCoupons)
+
+router.post('/coupons',adminCont.verifyLogin, adminCont.postCoupons)
+
 
 module.exports = router;

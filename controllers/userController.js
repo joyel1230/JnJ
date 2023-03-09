@@ -144,7 +144,7 @@ module.exports = {
 
     userHelpers.getAllWishlist(userMob).then((wishArr) => {
       // console.log(wishArr);
-      res.render('user/wishlist', { userd, wishArr , userID })
+      res.render('user/wishlist', { userd, wishArr, userID })
     })
 
   },
@@ -152,7 +152,7 @@ module.exports = {
     let userMob = req.session.user.mobile
     let userID = req.session.user;
     userHelpers.getAllCart(userMob).then((cartArr) => {
-      res.render('user/cart', { userd, cartArr,userID })
+      res.render('user/cart', { userd, cartArr, userID })
     })
   },
   getAddToWishlist: (req, res) => {
@@ -177,7 +177,7 @@ module.exports = {
     userHelpers.addCart(userMob, proId).then((wish) => {
       if (wish) {
         // res.redirect('/wishlist')
-        res.json({status:true})
+        res.json({ status: true })
       } else {
         // res.redirect('/cart')
       }
@@ -198,13 +198,70 @@ module.exports = {
   },
   getSingleProductId: (req, res) => {
     let proId = req.query.id
+    let userID = req.session.user;
     userHelpers.getSingleProduct(proId).then((arr) => {
-      let product =arr[0]
-      let category =arr[1]
+      let product = arr[0]
+      let category = arr[1]
       let stock = arr[2]
       console.log(userd);
-      res.render('user/single-product', { userd,product,category,stock})
+      res.render('user/single-product', { userd, product, category, stock, userID })
+    })
+  },
+  getAccount: (req, res) => {
+    let userID = req.session.user;
+    userHelpers.getAccDetails(userID.mobile).then((user)=>{
+      console.log(user);
+      res.render('user/account-details', { userd, userID ,user})
+
+    })
+    
+  },
+  postUpdateAc:(req,res)=>{
+    let userID = req.session.user;
+    let image = req.files[0]
+    console.log(image);
+
+    userHelpers.updateAc(req.body,userID.mobile,image).then((resp)=>{
+      res.redirect('/account')
+    })
+  },
+  postChangePass:(req,res)=>{
+    let userID = req.session.user;
+    let user=userID
+    userHelpers.updatePass(req.body,userID.mobile).then((status)=>{
+      if (status) {
+      res.render('user/account-details',{pass:true,userd,userID,user})
+      } else {
+      res.render('user/account-details',{passNo:true,userd,userID,user})
+        
+      }
+    })
+  },
+  getAddresses:(req,res)=>{
+    let userID = req.session.user;
+    userHelpers.getAllAddress(userID.mobile).then((add)=>{
+      res.render('user/addresses',{userd,userID,add})
+
+    })
+  },
+  getAddAddresses:(req,res)=>{
+    let userID = req.session.user;
+    res.render('user/add-address',{userd,userID})
+    
+  },
+  postAddress:(req,res)=>{
+    let userID = req.session.user;
+    let ind = req.query.ind
+    userHelpers.addAddress(req.body,userID,ind).then((resp)=>{
+      res.redirect('/add-address')
+    })
+  },
+  getEditAddressId:(req,res)=>{
+    let index =req.query.ind
+    let userID = req.session.user;
+    userHelpers.editAddress(index,userID.mobile ).then((add)=>{
+    res.render('user/add-address',{userd,userID,add,index})
+
     })
   }
-
 }

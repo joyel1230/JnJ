@@ -19,6 +19,25 @@ router.post('/login/:id', userCont.postLoginId)
 
 router.get('/logout', userCont.getLogout)
 
+
+
+router.get('/account',userCont.verifyLogin, userCont.getAccount)
+
+router.post('/update-ac',userCont.verifyLogin, userCont.postUpdateAc)
+
+router.post('/change-pass', userCont.verifyLogin, userCont.postChangePass)
+
+router.get('/addresses',userCont.verifyLogin, userCont.getAddresses)
+
+router.get('/add-address',userCont.verifyLogin,userCont.getAddAddresses)
+
+router.post('/address',userCont.verifyLogin, userCont.postAddress)
+
+router.get('/edit-address',userCont.verifyLogin, userCont.getEditAddressId)
+
+
+
+
 router.get('/wishlist', userCont.verifyLogin, userCont.getWishlist)
 
 router.get('/add-to-wishlist/:id', userCont.verifyLogin, userCont.getAddToWishlist)

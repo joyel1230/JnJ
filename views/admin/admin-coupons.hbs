@@ -1,0 +1,102 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+</head>
+
+
+
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+{{!-- add category --}}
+
+
+
+
+
+<div class=" w-100 h-75 d-flex justify-content-center">
+
+    <div class="mt-5  w-75 h-100">
+        <div class="search  w-100">
+            <form action="/admin/get-product" method="get"
+                class="w-100 d-flex justify-content-center align-items-center m-4">
+                <input type="search" class="w-25 m-1 p-1 rounded-3" name="product">
+                <button class="btn border-3 border-dark h-25" type="submit">Search</button>
+            </form>
+        </div>
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Coupon Code</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Expiry</th>
+                    <th scope="col">Min.Purchase</th>
+                    <th scope="col">Activate</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {{#each coupons}}
+                <tr class="text-center">
+                    <td>{{this.code}}</td>
+                    <td>
+                        {{this.amount}}
+                    </td>
+                    <td>{{this.minPur}}</td>
+                    <td>{{this.expiry}}</td>
+                    <td><a class="btn btn-success rounded-circle"></a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" class="d-none d-lg-block">
+            <ul class="pagination float-end">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="d-flex justify-content-end mb-5" style="margin-top: 8rem;">
+        <form action="/admin/coupons" method="post">
+            <label for="" class="form-label me-3">Code-</label>
+            <input type="text" name="name" id="name" class="rounded-3 h-25 w-25" required>
+            <label for="email">Amt.</label>
+            <input type="text" id="amt" name="amount" class="rounded-3 h-25 w-25" required>
+            <br>
+            <div class="my-4"></div>
+            <label for="password">Min. Pur.</label>
+            <input type="text" id="minPur" name="minPur" class="rounded-3 h-25 w-25" required>
+            <label for="confirm-password">Exp.</label>
+            <input type="date" id="date" name="date" class="rounded-3 h-25" required>
+            
+            <button type="submit"  class="btn float-end mt-3 bg-black text-white">Submit</button>
+        </form>
+</div>
+
+    </div>
+</div>
+
+<script>
+  
+</script>

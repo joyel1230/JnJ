@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // const axios = require('axios');
-
+const multer = require('multer')
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
@@ -27,7 +27,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload())
+app.use('/image',express.static(path.join(__dirname, 'image')));
+// app.use(fileUpload())
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'image');
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const timestamp = Date.now();
+    const newFilename = `${timestamp}_${path.basename(file.originalname, ext)}.jpg`;
+    cb(null, newFilename);
+  }
+});
+
+
+app.use(multer({dest: 'image',storage: fileStorage}).array('image'))
+
 
 app.use(session({ secret: process.env.SESSION_KEY, cookie: { maxAge: 6000000 } }))
 app.use((req, res, next) => {
@@ -80,7 +96,7 @@ app.use(function (err, req, res, next) {
 // // Call the function repeatedly at the defined interval
 // setInterval(sendRequest, interval);
 
-
-
-
-module.exports = app;
+// module.exports = app;
+app.listen(3000,()=>{
+  console.log('started');
+})

@@ -2,6 +2,7 @@ const express = require('express');
 
 const productHelpers = require('../helpers/product-helpers')
 const userHelpers = require('../helpers/user-helpers')
+const couponHelpers = require('../helpers/coupon-helpers')
 require('dotenv').config()
 
 
@@ -43,12 +44,12 @@ module.exports = {
     },
     getProducts: (req, res, next) => {
         productHelpers.getAllProducts().then((array) => {
-            category=array[0]
-            products=array[1]
+            category = array[0]
+            products = array[1]
             // for(let a of products){
             //     a.categoryAs = a.categoryAs[0].category
             // }
-            res.render('admin/admin-products', { category,products})
+            res.render('admin/admin-products', { category, products })
         })
     },
     getAddProduct: (req, res, next) => {
@@ -57,22 +58,13 @@ module.exports = {
         })
     },
     postAddProduct: (req, res) => {
-        console.log(req.body.category);
-        productHelpers.addProduct(req.body, (id) => {
-            let image = req.files.image;
-            let a=0;
-            for (let i = 0; i < image.length; i++) {
-                image[i].mv('./public/images/products/' + id +'_'+a+'.jpg', (err, done) => {
-                    if (!err) {
-                        
-                    } else {
-                        console.log(err);
-                    }
-                })
-                a++;
-            }
+        let image = req.files;
+        console.log(image);
+
+        productHelpers.addProduct(req.body,image, (id) => {
+
             res.render('admin/admin-add-product')
-            
+
         })
     },
     getDeleteProductId: (req, res) => {
@@ -83,18 +75,16 @@ module.exports = {
     },
     getEditProductId: async (req, res) => {
         let array = await productHelpers.getProductDetails(req.params)
-       let category=array[0];
-       let product=array[1];
-        res.render('admin/admin-edit-product', { category,product })
+        let category = array[0];
+        let product = array[1];
+        res.render('admin/admin-edit-product', { category, product })
     },
     postEditProductId: (req, res) => {
-        _id = req.params.id
-        productHelpers.updateProduct(_id, req.body).then(() => {
+       let _id = req.params.id
+       let image = req.files[0]
+        productHelpers.updateProduct(_id, req.body,image).then(() => {
             res.redirect('/admin/products')
-            let image = req.files?.image
-            if (image) {
-                image.mv('./public/images/products/' + _id + '.jpg')
-            }
+            
         })
     },
     postAddCategory: (req, res) => {
@@ -103,10 +93,10 @@ module.exports = {
             res.redirect('/admin/products')
         })
     },
-    postEditCategory:(req,res)=>{
-        let first =req.body.category
-        let newOne=req.body.editedCat
-        productHelpers.editCategory(first,newOne).then(()=>{
+    postEditCategory: (req, res) => {
+        let first = req.body.category
+        let newOne = req.body.editedCat
+        productHelpers.editCategory(first, newOne).then(() => {
             res.redirect('/admin/products')
         })
     },
@@ -155,6 +145,22 @@ module.exports = {
         let id = req.params.id
         userHelpers.unblockUser(id).then((response) => {
             res.redirect('/admin/users')
+        })
+    },
+    getCoupons: (req, res) => {
+        couponHelpers.getAllCoupon().then((coupons) => {
+            coupons.map((coupon)=>{
+                coupon.expiry = coupon.expiry.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+            })
+            res.render('admin/admin-coupons', { coupons })
+
+        })
+    },
+    postCoupons: (req, res) => {
+        let body = req.body
+        couponHelpers.addCoupons(body).then((resp) => {
+            res.redirect('/admin/coupons')
+            console.log(resp);
         })
     }
 

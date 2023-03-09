@@ -5,15 +5,11 @@
       <div class="col-lg-7 col-xl-7">
         <div class="product_slider_img">
           <div id="vertical">
-            <div data-thumb="/images/products/{{product._id}}_0.jpg">
-              <img src="/images/products/{{product._id}}_0.jpg" />
+            {{#each product.images}}
+            <div data-thumb="/image/{{this}}">
+              <img src="/image/{{this}}" />
             </div>
-            <div data-thumb="/images/products/{{product._id}}_1.jpg">
-              <img src="/images/products/{{product._id}}_1.jpg" />
-            </div>
-            <div data-thumb="/images/products/{{product._id}}_2.jpg">
-              <img src="/images/products/{{product._id}}_2.jpg" />
-            </div>
+            {{/each}}
 
           </div>
         </div>
@@ -45,12 +41,13 @@
           <div class="card_area d-flex justify-content-between align-items-center">
 
             {{!-- <a href="/add-to-cart/{{product._id}}" class="btn_3">add to cart</a> --}}
-            <a class="add_cart w-100 ab addtocart" style="font-size: x-large;"><button onclick="addToCart('{{product._id}}')" class=""
+            <a class="add_cart w-100 ab addtocart" onclick="rem(this)" style="font-size: x-large;"><button onclick="addToCart('{{product._id}}')" class=""
                 style="background-color: #00000000;border: none;color: #007411">+to
                 cart</button>
             </a>
+            <span id="ad"></span>
             {{!-- <a href="/add-to-wishlist/{{product._id}}" class="like_us"> <i class="ti-heart"></i> </a> --}}
-            <a class="ab" style="margin-left: 12rem;font-size: x-large;">
+            <a class="ab" id="wish" style="margin-left: 12rem;font-size: x-large;" onclick="rem(this)">
               <button onclick="addToWish('{{product._id}}')" class=""
                 style="background-color: #00000000;border: none;color: #ff0000"><i class="ti-heart"></i></button>
             </a>
@@ -76,6 +73,11 @@
     ins.classList.add('dis')
   } else {
     outs.classList.add('dis')
+  }
+  function rem(t){
+    document.getElementById('wish').style.display = 'none'
+    t.style.display = 'none';
+    document.getElementById('ad').innerHTML='DONE'
   }
 
 </script>

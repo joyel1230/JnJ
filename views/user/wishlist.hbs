@@ -23,7 +23,7 @@
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <img src="/images/products/{{this.wishItems.[0]._id}}_0.jpg" style="width: 80px;height: auto;"
+                    <img src="/image/{{this.wishItems.[0].images.[0]}}" style="width: 80px;height: auto;"
                       alt="" />
                   </div>
                   <div class="media-body">
@@ -38,7 +38,7 @@
                 {{!-- <a href="/add-to-cart/{{this.wishItems.[0]._id}}"
                   style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-plus"></i></a> --}}
 
-                <button onclick="addToCart('{{this.wishItems.[0]._id}}')" class=""
+                <button onclick="addToCartW('{{this.wishItems.[0]._id}}')" class=""
                   style="background-color: #00000000;border: none;color: black;font-weight: 700;font-size:x-large;"><i
                     class="ti-plus"></i></button>
 

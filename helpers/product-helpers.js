@@ -3,15 +3,16 @@ const collections = require('../config/collections');
 const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
-    addProduct: (product, callback) => {
+    addProduct: (product,images, callback) => {
+        let imagesFiles =images.map(file=>file.filename)
         db.get().collection(collections.PRODUCT_COLLECTIONS).
             insertOne({
                 name: product.name,
                 categoryId: ObjectId(product.category),
-                price: product.price,
+                price:Number(product.price),
                 description: product.description,
-                stock: product.stock
-                
+                stock:Number(product.stock),
+                images:imagesFiles
             }
             ).then((data) => {
                 console.log(data);
@@ -64,20 +65,35 @@ module.exports = {
             // })
         })
     },
-    updateProduct: (proId, proDetails) => {
+    updateProduct: (proId, proDetails,image) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({ _id: ObjectId(proId) },
+            if(!image){
+                db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({ _id: ObjectId(proId) },
                 {
                     $set: {
                         name: proDetails.name,
-                        category: proDetails.category,
-                        price: proDetails.price,
+                        category:proDetails.category,
+                        price: Number(proDetails.price),
                         description: proDetails.description,
-                        stock: proDetails.stock
+                        stock: Number(proDetails.stock)
                     }
                 }).then(() => {
                     resolve()
                 })
+            }else{
+            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({ _id: ObjectId(proId) },
+                {
+                    $set: {
+                        name: proDetails.name,
+                        category:proDetails.category,
+                        price: Number(proDetails.price),
+                        description: proDetails.description,
+                        stock: Number(proDetails.stock),
+                        "images.0":image.filename
+                    }
+                }).then(() => {
+                    resolve()
+                })}
         })
     },
     addCategory: (cat) => {

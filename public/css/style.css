@@ -221,7 +221,7 @@ h5 {
 
 /* line 149, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_common.scss */
 img {
-  max-width: 100%;
+  max-width: 82%;
 }
 
 /* line 153, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_common.scss */
@@ -2543,7 +2543,8 @@ ul {
 .banner_part .single_banner_slider .banner_img {
   position: absolute;
   right: 0;
-  top: 30%;
+  margin-right: 2.5rem;
+  top: 12%;
 }
 
 /* line 72, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_banner.scss */

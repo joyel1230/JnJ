@@ -15,7 +15,7 @@ module.exports = {
                 images:imagesFiles
             }
             ).then((data) => {
-                console.log(data);
+                // console.log(data);
                 callback(data.insertedId)
             })
     },
@@ -59,7 +59,7 @@ module.exports = {
                 }
             ]).toArray()
             // .then((product) => {
-                console.log(product);
+                // console.log(product);
                 let array =[category,product[0]]
                 resolve(array)
             // })
@@ -113,6 +113,13 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.CATEGORY_COLLECTION).updateOne({ category: first }, { $set: { category: newOne } })
             resolve(true)
+        })
+    },
+    getAllOrders:()=>{
+        return new Promise(async(resolve, reject) => {
+            let orderArr =await db.get().collection(collections.ORDER_COLLECTION).find().toArray()
+            // console.log(orderArr);
+            resolve(orderArr)
         })
     }
 }

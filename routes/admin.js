@@ -47,6 +47,14 @@ router.get('/block-user/:id', adminCont.verifyLogin, adminCont.getBlockUserId)
 
 router.get('/unblock-user/:id', adminCont.verifyLogin, adminCont.getUnblockUserId)
 
+// orders
+
+router.get('/orders',adminCont.verifyLogin,adminCont.getAllOrders)
+
+router.get('/cancel-order/:id',adminCont.verifyLogin,adminCont.getCancelOrderId)
+
+router.get('/deliver-order/:id',adminCont.verifyLogin,adminCont.getDeliverOrderId)
+
 // coupons
 
 router.get('/coupons', adminCont.verifyLogin, adminCont.getCoupons)

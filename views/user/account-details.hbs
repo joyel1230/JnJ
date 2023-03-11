@@ -5,7 +5,8 @@
 
             <div class="col-4" style="width: 30vw;">
                 <img src='/image/{{user.image}}' onclick="clickImg()" class="rounded-circle"
-                    style="width: 50px;height: 50px;cursor: pointer;" alt="">
+                    style="width: 50px;height: 50px;cursor: pointer;border: 1px solid #000;" alt=""
+                    onerror="this.src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'">
                 {{!-- <img src="img/banner_img1.png" alt=""> --}}
                 <form class="w-100" action="/update-ac" method="post" enctype="multipart/form-data">
                     <input type="file" name="image" id="click" style="width: 0;height: 0;margin-left: -150px;"
@@ -83,6 +84,7 @@
         font-size: 1.5vw;
         font-weight: 500;
     }
+
 </style>
 <script>
     function clickImg() {

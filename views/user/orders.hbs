@@ -1,0 +1,125 @@
+<section class="confirmation_part padding_top">
+    <div class="container">
+        <div class="row" style="margin-top: 6rem;">
+            <h2>Orders</h2>
+            <div class="col-lg-12">
+
+                {{#each orders}}
+
+                <div class="order_details_iner" style="border: 1px solid #000;border-radius: 10px;">
+                    <h3><a href="/order-info?id={{this._id}}" style="color: #0056b3;">#0<span class="countC" style="color: #0056b3;"></span> order</a></h3>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Products</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="w-50" >{{this.items.[0].name}}
+                                    {{#if this.count}} <span style="color: rgb(0, 94, 11);">+ {{this.count}} more</span> {{/if}}
+                                    </th>
+                                <th>{{this.createdOn}}</th>
+                                <th class="status">{{this.status}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-danger float-right cancel " onclick="canCon()"  style="margin-top: -25px;">cancel</button>
+                </div>
+                {{!-- delete --}}
+                <div class="neumorphic-alert-box position-absolute px-5" style="left: 35%;" id="del2">
+                    <h1>Confirmation</h1>
+                    <p>Are you Cancelling?</p>
+                    <div class="neumorphic-alert-buttons">
+                        <a href="/cancel-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR()" ><button
+                                class="neumorphic-alert-delete-btn">NO</button></a>
+                    </div>
+                </div>
+                {{/each}}
+
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    let countArr = document.getElementsByClassName('countC')
+    for(let i=0;i<countArr.length;i++){
+        countArr[i].innerHTML=countArr.length-i;
+    }
+    function canCon() {
+        let pop = document.getElementById('del2');
+        pop.classList.add('open-pop');
+        return false;
+    }
+    function canConR() {
+        let pop = document.getElementById('del2');
+        pop.classList.remove('open-pop');
+        return false;
+    }
+    let status = document.getElementsByClassName('status')
+    let cancel = document.getElementsByClassName('cancel')
+        console.log(status[0].innerHTML)
+
+    for(let i=0;i<status.length;i++){
+        if(status[i].innerHTML==='processing'){
+            cancel[i].classList.add('open-pop')
+        }else{
+            cancel[i].classList.add('close')
+        }
+    }
+</script>
+<style>
+        .neumorphic-alert-box {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        box-shadow:
+            -10px -10px 20px rgba(255, 255, 255, 1),
+            10px 10px 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        display: none;
+    }
+
+    .neumorphic-alert-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .neumorphic-alert-cancel-btn {
+        background-color: #f2f2f2;
+        border: none;
+        border-radius: 10px;
+        box-shadow:
+            -5px -5px 10px rgba(255, 255, 255, 1),
+            5px 5px 10px rgba(0, 0, 0, 0.2);
+        color: #666;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+        margin-right: 10px;
+    }
+
+    .neumorphic-alert-delete-btn {
+        background-color: #f44336;
+        border: none;
+        border-radius: 10px;
+        box-shadow:
+            -5px -5px 10px rgba(255, 255, 255, 1),
+            5px 5px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .open-pop {
+        display: block;
+    }
+    .close{
+        display: none;
+    }
+</style>

@@ -59,7 +59,7 @@ module.exports = {
     },
     postAddProduct: (req, res) => {
         let image = req.files;
-        console.log(image);
+        // console.log(image);
 
         productHelpers.addProduct(req.body,image, (id) => {
 
@@ -150,7 +150,7 @@ module.exports = {
     getCoupons: (req, res) => {
         couponHelpers.getAllCoupon().then((coupons) => {
             coupons.map((coupon)=>{
-                coupon.expiry = coupon.expiry.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+                coupon.expiry = coupon.expiry.toLocaleDateString('es-ES')
             })
             res.render('admin/admin-coupons', { coupons })
 
@@ -160,7 +160,27 @@ module.exports = {
         let body = req.body
         couponHelpers.addCoupons(body).then((resp) => {
             res.redirect('/admin/coupons')
-            console.log(resp);
+            // console.log(resp);
+        })
+    },
+    getAllOrders:(req,res)=>{
+        productHelpers.getAllOrders().then((orders)=>{
+            orders.map((order)=>{
+                order.createdOn = order.createdOn.toLocaleDateString('es-ES')
+            })
+            res.render('admin/admin-orders',{orders})
+        })
+    },
+    getCancelOrderId:(req,res)=>{
+        let id = req.params.id
+        userHelpers.cancelOrder(id).then((resp)=>{
+            res.redirect('/admin/orders')
+        })
+    },
+    getDeliverOrderId:(req,res)=>{
+        let id = req.params.id
+        userHelpers.deliverOrder(id).then((resp)=>{
+            res.redirect('/admin/orders')
         })
     }
 

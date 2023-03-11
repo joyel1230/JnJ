@@ -2,10 +2,10 @@
 <section class="banner_part">
     <div class="container">
         <div class="row d-flex justify-content-between " style="padding-top: 20vh;">
-
             <div class="col-4" style="width: 30vw;">
+            <h2>{{#if index}}Edit Address{{else}}Add Address{{/if}}</h2>
                 
-                <form class="w-100" action="/address?ind={{index}}" method="post">
+                <form class="w-100" action="/address?ind={{index}}&check={{check}}" method="post">
                
                     <div class="form-group">
                         <label for="">Full name</label>
@@ -37,7 +37,7 @@
             </div>
 
 
-            <div class="banner_img col-4" style="width: 30vw;margin-top: 6.5vh;margin-right: 20vw;">
+            <div class="banner_img col-4" style="width: 30vw;margin-top: 7vh;margin-right: 20vw;">
                 
 
                     
@@ -66,8 +66,10 @@
                         <input type="text" class="form-control" id="pincode" name="pincode" value="{{add.pincode}}"
                           required >
                     </div>
+                        <label for="" style="width: 20rem;margin-bottom: 4vh;"></label>
+
                     <button type="submit" onclick="return check()" class="btn btn-block mb-2"
-                        style="background-color: black;color: white;">Submit</button>
+                        style="background-color: black;color: white;">{{#if index}}Submit & Set as default{{else}}Submit{{/if}}</button>
 
                 </form>
             </div>

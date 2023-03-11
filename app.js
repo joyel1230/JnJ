@@ -45,7 +45,8 @@ const fileStorage = multer.diskStorage({
 app.use(multer({dest: 'image',storage: fileStorage}).array('image'))
 
 
-app.use(session({ secret: process.env.SESSION_KEY, cookie: { maxAge: 6000000 } }))
+app.use(session({ secret: process.env.SESSION_KEY,resave: false,
+  saveUninitialized: false, cookie: { maxAge: 6000000 } }))
 app.use((req, res, next) => {
   res.header('Cache-Control', 'no-cache,private,no-Store,must-revalidate,max-scale=0,post-check=0,pre-check=0');
   next();
@@ -98,5 +99,5 @@ app.use(function (err, req, res, next) {
 
 // module.exports = app;
 app.listen(3000,()=>{
-  console.log('started');
+  console.log('server started');
 })

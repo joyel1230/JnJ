@@ -1,0 +1,190 @@
+<!--================Checkout Area =================-->
+<section class="checkout_area padding_top" style="margin-top: 8rem;">
+    <div class="container">
+
+        <div class="cupon_area">
+            <span style="background-color: aliceblue;color: #00a13e;" id="cmsg"></span>
+            <span style="background-color: aliceblue;color: #b90000;" id="cmsg1"></span>
+            <input type="text" class="w-25" name="code" id="code" required placeholder="Enter coupon code" />
+            <button class="tp_btn" type="button" onclick="checkCoupon()">Apply Coupon</button>
+
+        </div>
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Shipping Details</h3>
+                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="name" name="name" disabled
+                                value="{{add.name}}" />
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="tel" class="form-control w-75" id="mobile" name="mobile" disabled
+                                value="{{add.mobile}}" />
+                        </div>
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="email" class="form-control w-75" id="email" name="email" disabled
+                                value="{{docs.[0].email}}" />
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="street" name="street" disabled
+                                value="{{add.street}}" />
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="city" name="city" disabled
+                                value="{{add.city}}" />
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="state" name="state" disabled
+                                value="{{add.state}}" />
+                        </div>
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="country" name="country" disabled
+                                value="{{add.country}}" />
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control w-75" id="pincode" name="pincode" disabled
+                                value="{{add.pincode}}" />
+                        </div>
+
+
+                        <div class="col-md-12 form-group">
+                            <div class="creat_account">
+                                <a href="/add-address?check=1" class="text-dark"
+                                    style="cursor: pointer;background-color: rgb(255, 255, 255);border-radius: 10px;padding: 5px;">Ship
+                                    to a new address
+                                    <span
+                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
+                                        <a href="/addresses"
+                                    style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;">Change address
+                                    <span
+                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li>
+                                <a>Product
+                                    <span>Total</span>
+                                </a>
+                            </li>
+
+                            {{#each docs}}
+
+                            <li>
+                                <a style="">{{this.cartItems.[0].name}}
+                                    <span class="middle">x<span class="itemQty">{{this.cart.qty}}</span></span>
+                                    <span class="last">₹<span
+                                            class="itemTotal">{{this.cartItems.[0].price}}</span></span>
+                                </a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        <ul class="list list_2">
+                            <li>
+                                <a>Subtotal
+                                    <span>₹<span id="subTotal"></span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>Discount
+                                    <span>-₹<span id="discount">{{docs.[0].discount}}</span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a>Total
+                                    <span>₹<span id="total"></span></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="payment_item">
+                            <div class="">
+
+                                <label for="">Select any payment method</label>
+
+                            </div>
+
+                        </div>
+                        <div class="payment_item">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option5" onclick="cash()" name="selector" />
+                                <label for="f-option5">Cash on delivery</label>
+                                <div class="check"></div>
+                            </div>
+
+                        </div>
+                        <div class="payment_item active">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option6" onclick="pay()" name="selector" />
+                                <label for="f-option6">Paypal </label>
+                                <img src="img/product/single-product/card.jpg" alt="" />
+                                <div class="check"></div>
+                            </div>
+
+                        </div>
+                        {{!-- <div class="creat_account">
+                            <input type="checkbox" id="f-option4" name="selector" />
+                            <label for="f-option4">I’ve read and accept the </label>
+                            <a>terms & conditions*</a>
+                        </div> --}}
+                        <a class="btn_3" href="" style="border: 1px solid #000;" id="pro1" onclick="cashOrder()"><span id="proceed1">Confirm
+                                Order</span></a>
+                        <a class="btn_3" href="" style="border: 1px solid #000;" id="pro2"><span id="proceed2">Proceed
+                                to Paypal</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Checkout Area =================-->
+<script>
+    let itemQty = document.getElementsByClassName('itemQty')
+    let itemTotal = document.getElementsByClassName('itemTotal')
+    let subTotal = document.getElementById('subTotal')
+    let discount = document.getElementById('discount').innerHTML
+    let total = document.getElementById('total')
+    let sum = 0
+    for (let i = 0; i < itemQty.length; i++) {
+        let qty = Number(itemQty[i].innerHTML)
+        let price = Number(itemTotal[i].innerHTML)
+        itemTotal[i].innerHTML = qty * price;
+        sum += (qty * price)
+    }
+    subTotal.innerHTML = sum
+    total.innerHTML = sum - Number(discount)
+    let dis = Number(discount)
+    if (dis > 0) {
+        document.getElementById('cmsg').innerHTML = "&nbsp;coupon added&nbsp;"
+    }
+
+    let p1 = document.getElementById('pro1')
+    let p2 = document.getElementById('pro2')
+    p1.style.display = 'none'
+    p2.style.display = 'none'
+    function cash() {
+        p2.style.display = 'none'
+        p1.style.display = 'block'
+
+    }
+    function pay() {
+        p1.style.display = 'none'
+        p2.style.display = 'block'
+
+    }
+    function cashOrder(){
+        let discount =Number(document.getElementById('discount').innerHTML)
+        let total =Number(document.getElementById('total').innerHTML)
+        let pro1 = document.getElementById('pro1')
+        let url= `/cash-order?discount=${discount}&total=${total}`
+        pro1.setAttribute("href",encodeURI(url))
+    }
+
+</script>

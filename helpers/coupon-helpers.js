@@ -9,7 +9,7 @@ module.exports = {
                 code: body.name,
                 amount: Number(body.amount),
                 minPur: Number(body.minPur),
-                expiry: new Date(body.date).toISOString()
+                expiry: new Date(body.date)
             })
             resolve(true)
         })
@@ -18,6 +18,7 @@ module.exports = {
     getAllCoupon:()=>{
         return new Promise(async(resolve, reject) => {
             let coupon = await db.get().collection(collections.COUPON_COLLECTION).find().toArray()
+            
             resolve(coupon)
         })
     }

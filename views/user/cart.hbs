@@ -21,11 +21,10 @@
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;"
-                      alt="" />
+                    <img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" />
                   </div>
                   <div class="media-body">
-                    <p>{{this.cartItems.[0].description}}</p>
+                    <p>{{this.cartItems.[0].name}}</p>
                   </div>
                 </div>
               </td>
@@ -38,7 +37,7 @@
                   <input class="input-number" type="text" value="1" min="1" max="5">
                   <span class="input-number-increment"> <i class="ti-angle-up"></i></span> --}}
                   <i class="ti-angle-down" style="cursor: pointer;" onclick="minusQty({{@index}})"></i>
-                  <span style="margin: 0.5rem;" class="qty" name="qty">1</span>
+                  <span style="margin: 0.5rem;" class="qty" name="qty">{{this.cart.qty}}</span>
                   <i class="ti-angle-up" style="cursor: pointer;margin-left: 1px;" onclick="plusQty({{@index}})"></i>
                 </div>
               </td>
@@ -89,8 +88,10 @@
           </tbody>
         </table>
         <div class="checkout_btn_inner float-right">
-          <a class="btn_1" href="/">Continue Shopping</a>
-          <a class="btn_1 checkout_btn_1" href="/checkout">Proceed to checkout</a>
+          <a class="btn_1 mb-3" href="/">Continue Shopping</a>
+         {{#if cartArr}}
+          <a class="btn_1 checkout_btn_1" href="" onclick="pushQty()" id="proCheck">Proceed to checkout</a>
+          {{/if}}
         </div>
       </div>
     </div>
@@ -98,6 +99,20 @@
 <!--================End Cart Area =================-->
 
 <script>
+
+  const proCheck = document.getElementById('proCheck')
+
+  function pushQty() {
+    const qtyArr = document.getElementsByClassName('qty')
+    let qty=[]
+    for (let i = 0; i < qtyArr.length; i++) {
+      qty.push(Number(qtyArr[i].innerHTML))
+    }
+    let url= `/checkout?qty=${qty}`
+    proCheck.setAttribute("href",encodeURI(url))
+    return qty;
+  }
+
   function minusQty(index) {
     let qtyElems = document.getElementsByClassName('qty');
     let onePriceElems = document.getElementsByClassName('onePrice');
@@ -146,4 +161,15 @@
     sub.innerHTML = subTotal;
   }
   subTotal();
+
+  let qtyElems = document.getElementsByClassName('qty');
+    let onePriceElems = document.getElementsByClassName('onePrice');
+    let totalElems = document.getElementsByClassName('totalPrice');
+    let sum=0;
+    let subtotal = document.getElementById('subtotal')
+    for(let i=0;i<qtyElems.length;i++){
+    totalElems[i].innerHTML=Number(qtyElems[i].innerHTML)*Number(onePriceElems[i].innerHTML)
+    sum+=Number(totalElems[i].innerHTML)
+    }
+    subtotal.innerHTML=sum;
 </script>

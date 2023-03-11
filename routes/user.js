@@ -50,6 +50,21 @@ router.get('/add-to-cart/:id', userCont.getAddCart)
 
 router.get('/cart-remove/:id', userCont.verifyLogin, userCont.getCartRemove)
 
+router.get('/checkout',userCont.verifyLogin, userCont.getCheckout)
+
+router.get('/coupon-check',userCont.verifyLogin,userCont.getCouponCheck)
+
+router.get('/cash-order',userCont.verifyLogin,userCont.getCashOrder)
+
+router.get('/orders',userCont.verifyLogin,userCont.getOrders)
+
+router.get('/order-info',userCont.verifyLogin,userCont.getOrderInfo)
+
+router.get('/cancel-order/:id',userCont.verifyLogin,userCont.getCancelOrderId)
+
+
+
+
 router.get('/blog', userCont.getBlog)
 
 router.get('/single-blog', userCont.getSingleBlog)

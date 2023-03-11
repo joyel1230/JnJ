@@ -113,7 +113,7 @@ module.exports = {
         req.session.user = response.user;
 
         userHelpers.active(req.session.user?.mobile).then((response) => {
-          console.log(true);
+          // console.log(true);
         })
 
         // console.log(req.session.user);
@@ -159,7 +159,7 @@ module.exports = {
     let proId = req.params.id;
     let user = req.session.user.mobile;
     userHelpers.addWishlist(proId, user).then((resp) => {
-      console.log(true);
+      // console.log(true);
       res.redirect('/')
     })
   },
@@ -203,65 +203,153 @@ module.exports = {
       let product = arr[0]
       let category = arr[1]
       let stock = arr[2]
-      console.log(userd);
+      // console.log(userd);
       res.render('user/single-product', { userd, product, category, stock, userID })
     })
   },
   getAccount: (req, res) => {
     let userID = req.session.user;
-    userHelpers.getAccDetails(userID.mobile).then((user)=>{
-      console.log(user);
-      res.render('user/account-details', { userd, userID ,user})
+    userHelpers.getAccDetails(userID.mobile).then((user) => {
+      // console.log(user);
+      res.render('user/account-details', { userd, userID, user })
 
     })
-    
+
   },
-  postUpdateAc:(req,res)=>{
+  postUpdateAc: (req, res) => {
     let userID = req.session.user;
     let image = req.files[0]
-    console.log(image);
+    // console.log(image);
 
-    userHelpers.updateAc(req.body,userID.mobile,image).then((resp)=>{
+    userHelpers.updateAc(req.body, userID.mobile, image).then((resp) => {
       res.redirect('/account')
     })
   },
-  postChangePass:(req,res)=>{
+  postChangePass: (req, res) => {
     let userID = req.session.user;
-    let user=userID
-    userHelpers.updatePass(req.body,userID.mobile).then((status)=>{
+    let user = userID
+    userHelpers.updatePass(req.body, userID.mobile).then((status) => {
       if (status) {
-      res.render('user/account-details',{pass:true,userd,userID,user})
+        res.render('user/account-details', { pass: true, userd, userID, user })
       } else {
-      res.render('user/account-details',{passNo:true,userd,userID,user})
-        
+        res.render('user/account-details', { passNo: true, userd, userID, user })
+
       }
     })
   },
-  getAddresses:(req,res)=>{
+  getAddresses: (req, res) => {
     let userID = req.session.user;
-    userHelpers.getAllAddress(userID.mobile).then((add)=>{
-      res.render('user/addresses',{userd,userID,add})
+    userHelpers.getAllAddress(userID.mobile).then((add) => {
+      res.render('user/addresses', { userd, userID, add })
 
     })
   },
-  getAddAddresses:(req,res)=>{
+  getAddAddresses: (req, res) => {
     let userID = req.session.user;
-    res.render('user/add-address',{userd,userID})
-    
+    let check = req.query.check
+    res.render('user/add-address', { userd, userID, check })
+
   },
-  postAddress:(req,res)=>{
+  postAddress: (req, res) => {
     let userID = req.session.user;
     let ind = req.query.ind
-    userHelpers.addAddress(req.body,userID,ind).then((resp)=>{
-      res.redirect('/add-address')
+    let check = req.query.check
+
+    if (ind) {
+      userHelpers.addAddress(req.body, userID, ind).then((resp) => {
+        if (check == 1) {
+          res.redirect('/checkout')
+
+        } else {
+          res.redirect('/add-address')
+
+        }
+      })
+    } else {
+      userHelpers.addAddress(req.body, userID).then((resp) => {
+        if (check == 1) {
+          res.redirect('/cart')
+
+        } else {
+          res.redirect('/add-address')
+
+        }
+      })
+
+    }
+
+
+  },
+  getEditAddressId: (req, res) => {
+    let index = req.query.ind
+    let userID = req.session.user;
+    userHelpers.editAddress(index, userID.mobile).then((add) => {
+      res.render('user/add-address', { userd, userID, add, index })
+
     })
   },
-  getEditAddressId:(req,res)=>{
-    let index =req.query.ind
+  getCheckout: (req, res) => {
     let userID = req.session.user;
-    userHelpers.editAddress(index,userID.mobile ).then((add)=>{
-    res.render('user/add-address',{userd,userID,add,index})
+    let qty =req.query.qty
+    
+    userHelpers.getAddCheckout(userID.mobile,qty).then((array) => {
+      let add= array[0]
+      let docs= array[1]
+      
+      res.render('user/checkout', { userID, userd, add,docs})
 
+    })
+  },
+  getCouponCheck:(req,res)=>{
+    let userID = req.session.user;
+    let code =req.query.code
+    let total =req.query.total
+   userHelpers.checkCoupon(code,total,userID.mobile).then((discount)=>{
+    // console.log(discount);
+    if (discount) {
+    res.json({ status: true })
+      
+    } else {
+    res.json({ status: false })
+      
+    }
+   })
+   
+  },
+  getCashOrder:(req,res)=>{
+    let discount = req.query.discount;
+    let total = req.query.total;
+    let userID = req.session.user;
+    userHelpers.addCashOrder(discount,total,userID.mobile).then(()=>{
+      res.redirect('/orders')
+    })
+  },
+  getOrders:(req,res)=>{
+    let userID = req.session.user;
+    userHelpers.getAllOrders(userID.mobile).then((orders)=>{
+      orders.map((order)=>{
+        order.createdOn = order.createdOn.toLocaleDateString('es-ES')
+        order.count = order.products.length-1
+    })
+    res.render('user/orders',{userID,userd,orders})
+    })
+  },
+  getOrderInfo:(req,res)=>{
+    let userID = req.session.user;
+    let id = req.query.id
+    userHelpers.getOneOrder(id).then((order)=>{
+      
+      let orderNumber = id
+      let l = orderNumber.length
+      orderNumber=`${orderNumber[0]}${orderNumber[1]}${orderNumber[2]}${orderNumber[l-2]}${orderNumber[l-1]}`
+      order[0].createdOn = order[0].createdOn.toLocaleDateString('es-ES')
+      res.render('user/order-info',{userID,userd,order,orderNumber})
+    })
+  },
+  getCancelOrderId:(req,res)=>{
+    let id = req.params.id
+    userHelpers.cancelOrder(id).then((resp)=>{
+      res.redirect('/orders')
     })
   }
 }

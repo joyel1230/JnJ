@@ -1,0 +1,172 @@
+<head>
+    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+</head>
+
+
+
+
+<div class="dropdown bg-black pb-1">
+    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        ADMIN
+    </button>
+    <ul class="dropdown-menu bg-black profile">
+        <li><a class="dropdown-item" href="/admin">Home</a></li>
+        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+    </ul>
+    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+                alt=""></a></span>
+</div>
+
+{{!-- add category --}}
+
+
+
+
+
+<div class=" w-100 h-75 d-flex justify-content-center">
+
+    <div class="mt-5  w-75 h-100">
+        {{!-- <div class="search  w-100">
+            <form action="/admin/get-coupon" method="get"
+                class="w-100 d-flex justify-content-center align-items-center m-4">
+                <input type="search" class="w-25 m-1 p-1 rounded-3" name="product">
+                <button class="btn border-3 border-dark h-25" type="submit">Search</button>
+            </form>
+        </div> --}}
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">banner</th>
+                    <th scope="col">description</th>
+                    <th scope="col">Active</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {{#each banners}}
+                <tr class="text-center">
+                    <td><img src="/image/{{this.image}}" style="width: 200px;height: 100px;" alt=""></td>
+                    <td>{{this.description}}</td>
+                    {{!-- {{#if this.status}} --}}
+                    <td>
+                        {{!-- <a class="btn rounded-circle greenBanner" style="background-color: red;"
+                            onclick="selectBanner('{{this._id}}','{{@index}}')"></a> --}}
+                        {{#if status}}
+                        <label class="switch">
+                            <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')" class="checked"
+                                checked>
+                            <span class="slider round"></span>
+                        </label>
+                        {{else}}
+                        <label class="switch">
+                            <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')" class="checked">
+                            <span class="slider round"></span>
+                        </label>
+                        {{/if}}
+
+
+                    </td>
+                    {{!-- {{else}} --}}
+
+                    {{!-- {{/if}} --}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" class="d-none d-lg-block">
+            <ul class="pagination float-end">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="d-flex justify-content-end mb-5" style="margin-top: 8rem;">
+            <form action="/admin/banners" method="post" enctype="multipart/form-data">
+                <label for="" class="form-label">banner</label>
+                <input type="file" name="image" id="image" required>
+                <label for="email">description</label>
+                <input type="text" id="description" name="description" class="h-50" required>
+                <br>
+                <button type="submit" class="btn float-end mt-3 bg-black text-white">Add Banner</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+</script>
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 19px;
+        width: 19px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>

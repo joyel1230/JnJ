@@ -57,8 +57,9 @@
                                     to a new address
                                     <span
                                         style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
-                                        <a href="/addresses"
-                                    style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;">Change address
+                                <a href="/addresses"
+                                    style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;">Change
+                                    address
                                     <span
                                         style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
                             </div>
@@ -123,7 +124,16 @@
                         <div class="payment_item active">
                             <div class="radion_btn">
                                 <input type="radio" id="f-option6" onclick="pay()" name="selector" />
-                                <label for="f-option6">Paypal </label>
+                                <label for="f-option6">Razorpay</label>
+                                <img src="img/product/single-product/card.jpg" alt="" />
+                                <div class="check"></div>
+                            </div>
+
+                        </div>
+                        <div class="payment_item">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option7" onclick="paypal()" name="selector" />
+                                <label for="f-option7">Paypal</label>
                                 <img src="img/product/single-product/card.jpg" alt="" />
                                 <div class="check"></div>
                             </div>
@@ -134,9 +144,14 @@
                             <label for="f-option4">I’ve read and accept the </label>
                             <a>terms & conditions*</a>
                         </div> --}}
-                        <a class="btn_3" href="" style="border: 1px solid #000;" id="pro1" onclick="cashOrder()"><span id="proceed1">Confirm
+                        <a class="btn_3" href="" style="border: 1px solid #000;" id="pro1" onclick="cashOrder()"><span
+                                id="proceed1">Confirm
                                 Order</span></a>
-                        <a class="btn_3" href="" style="border: 1px solid #000;" id="pro2"><span id="proceed2">Proceed
+                        <a class="btn_3 qwerty" style="border: 1px solid #000;color: white;" id="pro2"
+                            onclick="payOrder()"><span id="proceed2">Proceed
+                                to Razorpay</span></a>
+                        <a class="btn_3 qwerty" style="border: 1px solid #000;color: white;" onclick="paypalOrder()" id="pro3"><span
+                                id="proceed3">Proceed
                                 to Paypal</span></a>
                     </div>
                 </div>
@@ -145,46 +160,10 @@
     </div>
 </section>
 <!--================End Checkout Area =================-->
-<script>
-    let itemQty = document.getElementsByClassName('itemQty')
-    let itemTotal = document.getElementsByClassName('itemTotal')
-    let subTotal = document.getElementById('subTotal')
-    let discount = document.getElementById('discount').innerHTML
-    let total = document.getElementById('total')
-    let sum = 0
-    for (let i = 0; i < itemQty.length; i++) {
-        let qty = Number(itemQty[i].innerHTML)
-        let price = Number(itemTotal[i].innerHTML)
-        itemTotal[i].innerHTML = qty * price;
-        sum += (qty * price)
+<style>
+    .qwerty:hover {
+        color: #000 !important;
+        cursor: pointer;
     }
-    subTotal.innerHTML = sum
-    total.innerHTML = sum - Number(discount)
-    let dis = Number(discount)
-    if (dis > 0) {
-        document.getElementById('cmsg').innerHTML = "&nbsp;coupon added&nbsp;"
-    }
-
-    let p1 = document.getElementById('pro1')
-    let p2 = document.getElementById('pro2')
-    p1.style.display = 'none'
-    p2.style.display = 'none'
-    function cash() {
-        p2.style.display = 'none'
-        p1.style.display = 'block'
-
-    }
-    function pay() {
-        p1.style.display = 'none'
-        p2.style.display = 'block'
-
-    }
-    function cashOrder(){
-        let discount =Number(document.getElementById('discount').innerHTML)
-        let total =Number(document.getElementById('total').innerHTML)
-        let pro1 = document.getElementById('pro1')
-        let url= `/cash-order?discount=${discount}&total=${total}`
-        pro1.setAttribute("href",encodeURI(url))
-    }
-
-</script>
+</style>
+<script src="/javascripts/checkout.js"></script>

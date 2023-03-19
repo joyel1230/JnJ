@@ -1,5 +1,6 @@
 <head>
     <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+    <script type="text/javascript" src="/table-to-excel-master/dist/tableToExcel.js"></script>
 </head>
 
 <div class="dropdown bg-black pb-1">
@@ -29,17 +30,21 @@
                 <button class="btn border-3 border-dark h-25" type="submit">Search</button>
             </form>
         </div> --}}
-        <table class="table">
+<button class="btn btn-success mb-2" onclick="htmlToPdf()">Export To PDF</button>
+
+<button class="btn btn-success mb-2" onclick="htmlToExcel()">Export To Excel</button>
+
+        <table class="table" id="example">
             <thead>
                 <tr class="text-center">
                    
-                    <th scope="col">User Mob.</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Total Amt.</th>
-                    {{!-- <th scope="col">Orders</th> --}}
-                    <th scope="col">Place</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Options</th>
+                    <th >User Mob.</th>
+                    <th >Date</th>
+                    <th >Total Amt.</th>
+                    {{!-- <th >Orders</th> --}}
+                    <th >Place</th>
+                    <th >Status</th>
+                    <th  id="bypassme" data-exclude="true">Change Status</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -51,19 +56,33 @@
                     <td>{{this.total}}</td>
                     {{!-- <td>₹{{this.orders}}</td> --}}
                     <td>{{this.address.street}}</td>
-                    <td>
+                    <td class="statusB" >
                         {{this.status}}
                     </td>
-                    <td>
-                        <a  onclick="deliCon({{@index}})" style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
+                    <td id="" data-exclude="true">
+                        <a  onclick="deliCon({{@index}})" class="deliverB" style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
 
                         
-                        <a  onclick="canCon({{@index}})" style="color: red;cursor: pointer;">Cancelled</a>
+                        <a  onclick="canCon({{@index}})" class="cancelB" style="color: red;cursor: pointer;">Cancelled</a>
+
+                        <a  onclick="retCon({{@index}})" class="returnB" style="color: red;cursor: pointer;">Returned</a>
 
                     </td>
                 </tr>
 
-                {{!-- delete --}}
+                {{!-- return --}}
+                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;" >
+                    <h1>Confirmation</h1>
+                    <p>Did you Recieve?</p>
+                    <div class="neumorphic-alert-buttons">
+                        <a href="/admin/return-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR2({{@index}})" ><button
+                                class="neumorphic-alert-delete-btn">NO</button></a>
+                    </div>
+                </div>
+
+
+                {{!-- deliver --}}
                 <div class="neumorphic-alert-box position-absolute px-5 del1" style="left: 35%;" >
                     <h1>Confirmation</h1>
                     <p>Are you delivered?</p>
@@ -103,8 +122,13 @@
         </nav>
     </div>
 </div>
-
 <style>
+    table {width:7cm; height:15cm; border: 1px solid;
+  page-break-after: always;
+  }
+@media print {
+  @page { size: A4 portrait; }
+  }
     .neumorphic-alert-box {
         background-color: #f2f2f2;
         border-radius: 10px;
@@ -154,30 +178,15 @@
     }
 </style>
 
-<script>
-
-    function canConR(i) {
-        i=Number(i)
-        let pop = document.getElementsByClassName('del2');
-        pop[i].classList.remove('open-pop');
-        return false;
-    }
-    function canConR1(i) {
-        i=Number(i)
-        let pop = document.getElementsByClassName('del1');
-        pop[i].classList.remove('open-pop');
-        return false;
-    }
-    function deliCon(i) {
-        i=Number(i)
-        let pop = document.getElementsByClassName('del1');
-        pop[i].classList.add('open-pop');
-        return false;
-    }
-    function canCon(i) {
-        i=Number(i)
-        let pop = document.getElementsByClassName('del2');
-        pop[i].classList.add('open-pop');
-        return false;
-    }
-</script>
+<script src="/javascripts/adminOrders.js"></script>
+{{!-- to pdf --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+{{!-- to exccel --}}
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+{{!-- <script src="/jsPDF/jspdf.js"></script>
+<script src="/jsPDF/plugins/from_html.js"></script>
+<script src="/jsPDF/plugins/split_text_to_size.js"></script>
+<script src="/jsPDF/plugins/standard_fonts_metrics.js"></script> --}}

@@ -1,4 +1,5 @@
 <!--================Single Product Area =================-->
+
 <div class="product_image_area section_padding" style="margin-top: 8rem;">
   <div class="container">
     <div class="row s_product_inner justify-content-between">
@@ -7,17 +8,18 @@
           <div id="vertical">
             {{#each product.images}}
             <div data-thumb="/image/{{this}}">
-              <img src="/image/{{this}}" />
+              <img  src="/image/{{this}}" />
             </div>
             {{/each}}
 
           </div>
         </div>
       </div>
+
       <div class="col-lg-5 col-xl-4">
         <div class="s_product_text">
           <h3>{{product.name}}</h3>
-          <h2>₹ {{product.price}}</h2>
+          <h2>{{product.price}}</h2>
           <ul class="list">
             <li>
               <a class="active" href="#">
@@ -27,7 +29,9 @@
               <a href="#"> <span>Availibility</span> :
 
                 {{!-- <span id="stk">{{product.stock}}</span> --}}
-                {{#if stock}}
+                {{#if stks}}
+                <span id="in" style="color: rgb(255, 251, 0);">few left</span>
+                {{else if stock}}
                 <span id="in" style="color: greenyellow;">In Stock</span>
                 {{else}}
                 <span id="out" style="color: red;">Out of stock</span>
@@ -57,12 +61,21 @@
     </div>
   </div>
 </div>
+
+
 <!--================End Single Product Area =================-->
 <style>
   .dis {
     display: none;
   }
+  .big_img{
+    width: 350px;
+    height: 400px;
+    float: left;
+    margin-top: 20px;
+  }
 </style>
+
 <script>
   let stk = document.getElementById('stk')
   let ins = document.getElementById('in')
@@ -79,5 +92,6 @@
     t.style.display = 'none';
     document.getElementById('ad').innerHTML='DONE'
   }
+
 
 </script>

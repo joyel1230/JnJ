@@ -3,13 +3,13 @@ var count = 1;
 function isValid() {
     let mobile = document.getElementById('mobile').value;
     console.log(mobile);
-    let OTP = document.getElementById('OTP').value.trim();
+    // let OTP = document.getElementById('OTP').value.trim();
     let pass = document.getElementById('pass').value;
     let rePass = document.getElementById('rePass').value;
-    let OTPn = process.env.TWILIO_MY_OTP;
+    // let OTPn = process.env.TWILIO_MY_OTP;
     if (mobile.length === 10 && /^\d+$/.test(mobile)) {
         document.getElementById('sameMob').innerHTML = ''
-        if (OTP === OTPn) {
+        if (true) {
             document.getElementById('sameOTP').innerHTML = ''
             if (pass.length >= 4) {
                 document.getElementById('samePass').innerHTML = ''

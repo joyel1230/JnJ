@@ -1,14 +1,18 @@
 require('dotenv').config()
 
+const { response } = require('express');
+const { COUPON_COLLECTION } = require('../config/collections');
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
+const paypalHelpers = require('../helpers/paypal-helpers')
+
 let count = 1;
 let boo;
 const userd = true;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const myNumber = process.env.TWILIO_MY_NUMBER;
-const myOTP = process.env.TWILIO_MY_OTP;
+// const myOTP = process.env.TWILIO_MY_OTP;
 const client = require('twilio')(accountSid, authToken);
 
 
@@ -21,10 +25,14 @@ module.exports = {
     }
   },
   getHome: (req, res, next) => {
+    // console.log(req);
     let userID = req.session.user;
     return new Promise((resolve, reject) => {
       productHelpers.getAllProducts().then((array) => {
         let products = array[1]
+        let banner = array[2]
+
+        banner = banner?.image
         if (userID) {
           if (count === 1) {
             var pop = true
@@ -36,8 +44,16 @@ module.exports = {
         if (userID?.blocked) {
           res.redirect('/logout');
         } else {
-
-          res.render('user/index', { userd, userID, pop, boo, products });
+          // console.log(products);
+          products.map((product) => {
+            product.price = product.price.toLocaleString('en-IN', {
+              style: 'currency',
+              currency: 'INR',
+              currencyDisplay: 'symbol',
+              minimumFractionDigits: 2
+            })
+          })
+          res.render('user/index', { userd, userID, pop, boo, products, banner });
           boo = false;
         }
 
@@ -71,11 +87,19 @@ module.exports = {
           let mob = '+91'
           mob += newMobile;
 
+          client.verify.v2.services('VA25a92551fa5e3c0f98c42a1d8d1878e1')
+                .verifications
+                .create({to: mob , channel: 'sms'})
+                .then(verification => console.log(verification.status));
+
+
+          // let myOTP = Math.floor(Math.random() * 9000) + 1000;
+          // req.session.OTP = myOTP
           // client.messages
           //   .create({
-          //     body: myOTP,
+          //     body: 'OTP: ' + myOTP + ' MOB: ' + mob,
           //     from: myNumber,
-          //     to: mob
+          //     to: '+919633667502'
           //   })
           //   .then(message => console.log(message.sid));
 
@@ -90,18 +114,53 @@ module.exports = {
     if (req.session.user) {
       res.redirect('/')
     } else {
+      let mob = '+91'
+      mob += newMobile;
+
+
+      client.verify.v2.services('VA25a92551fa5e3c0f98c42a1d8d1878e1')
+                .verifications
+                .create({to: mob , channel: 'sms'})
+                .then(verification => console.log(verification.status));
+      // let myOTP = Math.floor(Math.random() * 9000) + 1000;
+      // req.session.OTP = myOTP
+      // client.messages
+      //   .create({
+      //     body: 'OTP: ' + myOTP + ' MOB: ' + mob,
+      //     from: myNumber,
+      //     to: '+919633667502'
+      //   })
+      //   .then(message => console.log(message.sid));
       res.render('user/forgot', { newMobile });
     }
   },
   postPassword: (req, res) => {
-    var mobile = req.body.mobile;
-    if (req.session.login) {
-      res.redirect('/');
-    } else {
-      userHelpers.doSignup(req.body).then((response) => {
-        res.render('user/login', { mobile, pop: true })
-      })
+    var mobileNew = '+91'
+    var newMobile = req.body.mobile;
+    var mobile = newMobile;
+    mobileNew += newMobile;
+    const OTP = req.body.OTP
+
+    // if (req.session.OTP == req.body.OTP) {
+    //   otp = true;
+    // }
+
+    client.verify.v2.services('VA25a92551fa5e3c0f98c42a1d8d1878e1')
+      .verificationChecks
+      .create({to: mobileNew , code: OTP})
+      .then((verification_check)=>{
+        console.log(verification_check.status);
+          if (verification_check.status === 'approved') {
+        // console.log(verification_check.status+'yes');
+        userHelpers.doSignup(req.body).then((response) => {
+            res.render('user/login', { mobile , pop: true })
+          })
+          } else {
+        // console.log(verification_check.status+'no');
+            res.render('user/forgot', { newMobile, pop: true });
+          }
     }
+    );
   },
   postLoginId: (req, res) => {
     let id = req.params.id;
@@ -180,6 +239,7 @@ module.exports = {
         res.json({ status: true })
       } else {
         // res.redirect('/cart')
+        res.json({ status: true })
       }
     })
   },
@@ -203,8 +263,20 @@ module.exports = {
       let product = arr[0]
       let category = arr[1]
       let stock = arr[2]
+      let stk = Number(stock)
+      if (stk < 10 && stk != 0) {
+        var stks = true
+      } else {
+        var stks = false
+      }
       // console.log(userd);
-      res.render('user/single-product', { userd, product, category, stock, userID })
+      product.price = product.price.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        currencyDisplay: 'symbol',
+        minimumFractionDigits: 2
+      })
+      res.render('user/single-product', { userd, product, category, stock, userID, stks })
     })
   },
   getAccount: (req, res) => {
@@ -290,66 +362,141 @@ module.exports = {
   },
   getCheckout: (req, res) => {
     let userID = req.session.user;
-    let qty =req.query.qty
-    
-    userHelpers.getAddCheckout(userID.mobile,qty).then((array) => {
-      let add= array[0]
-      let docs= array[1]
-      
-      res.render('user/checkout', { userID, userd, add,docs})
+    let qty = req.query.qty
+    let size = req.query.size
+
+    userHelpers.getAddCheckout(userID.mobile, qty,size).then((array) => {
+      let add = array[0]
+      let docs = array[1]
+
+      res.render('user/checkout', { userID, userd, add, docs })
 
     })
   },
-  getCouponCheck:(req,res)=>{
+  getCouponCheck: (req, res) => {
     let userID = req.session.user;
-    let code =req.query.code
-    let total =req.query.total
-   userHelpers.checkCoupon(code,total,userID.mobile).then((discount)=>{
-    // console.log(discount);
-    if (discount) {
-    res.json({ status: true })
-      
-    } else {
-    res.json({ status: false })
-      
-    }
-   })
-   
+    let code = req.query.code
+    let total = req.query.total
+    userHelpers.checkCoupon(code, total, userID.mobile).then((discount) => {
+      // console.log(discount);
+      if (discount) {
+        res.json({ status: true })
+
+      } else {
+        res.json({ status: false })
+
+      }
+    })
+
   },
-  getCashOrder:(req,res)=>{
+  getCashOrder: (req, res) => {
     let discount = req.query.discount;
     let total = req.query.total;
     let userID = req.session.user;
-    userHelpers.addCashOrder(discount,total,userID.mobile).then(()=>{
+    userHelpers.addCashOrder(discount, total, userID.mobile).then(() => {
       res.redirect('/orders')
+    }).catch((response)=>{
+      res.redirect('/add-address')
     })
   },
-  getOrders:(req,res)=>{
+  getPayOrder: (req, res) => {
+    let discount = req.query.discount;
+    let total = req.query.total;
     let userID = req.session.user;
-    userHelpers.getAllOrders(userID.mobile).then((orders)=>{
-      orders.map((order)=>{
-        order.createdOn = order.createdOn.toLocaleDateString('es-ES')
-        order.count = order.products.length-1
-    })
-    res.render('user/orders',{userID,userd,orders})
+    userHelpers.addPayOrder(discount, total, userID.mobile).then((orderId) => {
+      userHelpers.generateRazorPay(orderId, total).then((order) => {
+        res.json({order:order,status:false})
+
+      })
+    }).catch((response)=>{
+      res.json({status:true})
     })
   },
-  getOrderInfo:(req,res)=>{
+  getOrders: (req, res) => {
+    let userID = req.session.user;
+    let paid = req.query.paid;
+    let id = req.query.id;
+    paypalHelpers.paidPaypalOrder(paid,id).then(()=>{
+      userHelpers.getAllOrders(userID.mobile).then((orders) => {
+        orders.map((order) => {
+          order.createdOn = order.createdOn.toLocaleDateString('es-ES')
+          order.count = order.products.length - 1
+        })
+        res.render('user/orders', { userID, userd, orders })
+      })
+    })
+  },
+  getOrderInfo: (req, res) => {
     let userID = req.session.user;
     let id = req.query.id
-    userHelpers.getOneOrder(id).then((order)=>{
-      
+    userHelpers.getOneOrder(id).then((order) => {
+
       let orderNumber = id
       let l = orderNumber.length
-      orderNumber=`${orderNumber[0]}${orderNumber[1]}${orderNumber[2]}${orderNumber[l-2]}${orderNumber[l-1]}`
+      orderNumber = `${orderNumber[0]}${orderNumber[1]}${orderNumber[2]}${orderNumber[l - 2]}${orderNumber[l - 1]}`
       order[0].createdOn = order[0].createdOn.toLocaleDateString('es-ES')
-      res.render('user/order-info',{userID,userd,order,orderNumber})
+      res.render('user/order-info', { userID, userd, order, orderNumber })
     })
   },
-  getCancelOrderId:(req,res)=>{
+  getCancelOrderId: (req, res) => {
     let id = req.params.id
-    userHelpers.cancelOrder(id).then((resp)=>{
+    userHelpers.cancelOrder(id).then((resp) => {
       res.redirect('/orders')
+    })
+  },
+  postVerifyPayment: (req, res) => {
+    userHelpers.verifyPayment(req.body).then(() => {
+      userHelpers.changePayStatus(req.body['order[receipt]']).then(() => {
+        res.json({ status: true })
+      })
+    }).catch((err) => {
+      console.log(err)
+      res.json({ status: false })
+    })
+
+  },
+  getReturnOrderId: (req, res) => {
+    let id = req.params.id
+    userHelpers.returnOrder(id).then(() => {
+      res.redirect('/orders')
+    })
+  },
+  getAllProducts: (req, res) => {
+    let userID = req.session.user;
+    productHelpers.getAllProducts().then((array) => {
+      let products = array[1]
+      products.map((product) => {
+        product.price = product.price.toLocaleString('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          currencyDisplay: 'symbol',
+          minimumFractionDigits: 2
+        })
+      })
+      res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  getHer: (req, res) => {
+    let userID = req.session.user;
+    productHelpers.getHerProducts().then((products) => {
+      res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  getHim: (req, res) => {
+    let userID = req.session.user;
+    productHelpers.getHimProducts().then((products) => {
+      res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  getPaypalOrder:(req,res)=>{
+    let discount = req.query.discount;
+    let total = req.query.total;
+    let userID = req.session.user;
+    console.log(discount,total);
+    paypalHelpers.addPaypalOrder(discount, total, userID.mobile).then((id)=>{
+      paypalHelpers.payWithPaypal(id,res)
+    }).catch((response)=>{
+      res.redirect('/add-address')
     })
   }
 }

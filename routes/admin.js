@@ -55,11 +55,20 @@ router.get('/cancel-order/:id',adminCont.verifyLogin,adminCont.getCancelOrderId)
 
 router.get('/deliver-order/:id',adminCont.verifyLogin,adminCont.getDeliverOrderId)
 
+router.get('/return-order/:id',adminCont.verifyLogin, adminCont.getReturnOrderId)
+
 // coupons
 
 router.get('/coupons', adminCont.verifyLogin, adminCont.getCoupons)
 
 router.post('/coupons',adminCont.verifyLogin, adminCont.postCoupons)
+
+router.get('/banners',adminCont.verifyLogin,adminCont.getBanners)
+
+router.post('/banners',adminCont.verifyLogin,adminCont.postBanners)
+
+router.get('/select-banner',adminCont.verifyLogin, adminCont.getSelectBannerId)
+
 
 
 module.exports = router;

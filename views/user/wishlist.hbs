@@ -18,13 +18,14 @@
           <tbody>
             {{#if wishArr}}
             {{#each wishArr}}
-
+            {{!-- {{#if this.wishItems.[0].deleted}}
+            {{else}} --}}
             <tr class="text-center">
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <img src="/image/{{this.wishItems.[0].images.[0]}}" style="width: 80px;height: auto;"
-                      alt="" />
+                    <a href="/single-product?id={{this.wishItems.[0]._id}}"><img src="/image/{{this.wishItems.[0].images.[0]}}" style="width: 80px;height: auto;"
+                      alt="" /></a>
                   </div>
                   <div class="media-body">
                     <p>{{this.wishItems.[0].description}}</p>
@@ -39,17 +40,17 @@
                   style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-plus"></i></a> --}}
 
                 <button onclick="addToCartW('{{this.wishItems.[0]._id}}')" class=""
-                  style="background-color: #00000000;border: none;color: black;font-weight: 700;font-size:x-large;"><i
-                    class="ti-plus"></i></button>
+                  style="background-color: #00000000;border: none;color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
 
 
               </td>
               <td class="">
                 <a href="/wishlist-remove/{{this.wishItems.[0]._id}}"
-                  style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-minus"></i></a>
+                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash" aria-hidden="true"></i></a>
               </td>
             </tr>
-
+            {{!-- {{/if}} --}}
             {{/each}}
             {{else}}
             <h1>YOUR WISHLIST IS EMPTY</h1>

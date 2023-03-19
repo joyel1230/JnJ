@@ -3,6 +3,7 @@ const express = require('express');
 const productHelpers = require('../helpers/product-helpers')
 const userHelpers = require('../helpers/user-helpers')
 const couponHelpers = require('../helpers/coupon-helpers')
+const reportHelpers = require('../helpers/report-helpers')
 require('dotenv').config()
 
 
@@ -17,7 +18,15 @@ module.exports = {
     },
     getHome: (req, res, next) => {
         if (req.session.admin) {
-            res.render('admin/admin-home')
+            reportHelpers.getTotalSales().then((sale)=>{
+                sale = sale.toLocaleString('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    currencyDisplay: 'symbol',
+                    minimumFractionDigits: 0
+                  })
+            res.render('admin/admin-home',{sale})
+            })
         } else {
             res.redirect('/admin/login');
         }
@@ -61,7 +70,7 @@ module.exports = {
         let image = req.files;
         // console.log(image);
 
-        productHelpers.addProduct(req.body,image, (id) => {
+        productHelpers.addProduct(req.body, image, (id) => {
 
             res.render('admin/admin-add-product')
 
@@ -80,11 +89,11 @@ module.exports = {
         res.render('admin/admin-edit-product', { category, product })
     },
     postEditProductId: (req, res) => {
-       let _id = req.params.id
-       let image = req.files[0]
-        productHelpers.updateProduct(_id, req.body,image).then(() => {
+        let _id = req.params.id
+        let image = req.files[0]
+        productHelpers.updateProduct(_id, req.body, image).then(() => {
             res.redirect('/admin/products')
-            
+
         })
     },
     postAddCategory: (req, res) => {
@@ -149,7 +158,7 @@ module.exports = {
     },
     getCoupons: (req, res) => {
         couponHelpers.getAllCoupon().then((coupons) => {
-            coupons.map((coupon)=>{
+            coupons.map((coupon) => {
                 coupon.expiry = coupon.expiry.toLocaleDateString('es-ES')
             })
             res.render('admin/admin-coupons', { coupons })
@@ -163,23 +172,51 @@ module.exports = {
             // console.log(resp);
         })
     },
-    getAllOrders:(req,res)=>{
-        productHelpers.getAllOrders().then((orders)=>{
-            orders.map((order)=>{
+    getAllOrders: (req, res) => {
+        productHelpers.getAllOrders().then((orders) => {
+            orders.map((order) => {
                 order.createdOn = order.createdOn.toLocaleDateString('es-ES')
             })
-            res.render('admin/admin-orders',{orders})
+            res.render('admin/admin-orders', { orders })
         })
     },
-    getCancelOrderId:(req,res)=>{
+    getCancelOrderId: (req, res) => {
         let id = req.params.id
-        userHelpers.cancelOrder(id).then((resp)=>{
+        userHelpers.cancelOrder(id).then((resp) => {
             res.redirect('/admin/orders')
         })
     },
-    getDeliverOrderId:(req,res)=>{
+    getDeliverOrderId: (req, res) => {
         let id = req.params.id
-        userHelpers.deliverOrder(id).then((resp)=>{
+        userHelpers.deliverOrder(id).then((resp) => {
+            res.redirect('/admin/orders')
+        })
+    },
+    getBanners: (req, res) => {
+        userHelpers.getAllBanners().then((banners) => {
+            res.render('admin/admin-banners', { banners })
+        })
+    },
+    postBanners: (req, res) => {
+        // console.log(req);
+        let image = req.files[0]
+        let description = req.body.description
+        userHelpers.addBanners(image, description).then((resp) => {
+            res.redirect('/admin/banners')
+        })
+
+    },
+    getSelectBannerId: (req, res) => {
+        let id = req.query.id
+        // console.log(id);
+        userHelpers.selectBanner(id).then((banner) => {
+            // res.redirect('/admin/banners')
+            res.json({ status: true })
+        })
+    },
+    getReturnOrderId: (req, res) => {
+        let id = req.params.id
+        userHelpers.returnedOrder(id).then(() => {
             res.redirect('/admin/orders')
         })
     }

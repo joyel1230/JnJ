@@ -54,3 +54,18 @@ function checkCoupon(){
         }
     })
 }
+function selectBanner(id,index){
+    let check = document.getElementsByClassName('checked')
+    for (let i = 0; i < check.length; i++) {
+        check[i].checked = false
+        
+    }
+    check[index].checked = true
+    $.ajax({
+        url: `/admin/select-banner?id=${id}`,
+        method: 'get',
+        success:(resp)=>{
+
+        }        
+    })
+  }

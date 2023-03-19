@@ -46,7 +46,7 @@ router.get('/wishlist-remove/:id', userCont.verifyLogin, userCont.getWishlistRem
 
 router.get('/cart', userCont.verifyLogin, userCont.getCart)
 
-router.get('/add-to-cart/:id', userCont.getAddCart)
+router.get('/add-to-cart/:id',userCont.verifyLogin, userCont.getAddCart)
 
 router.get('/cart-remove/:id', userCont.verifyLogin, userCont.getCartRemove)
 
@@ -56,11 +56,22 @@ router.get('/coupon-check',userCont.verifyLogin,userCont.getCouponCheck)
 
 router.get('/cash-order',userCont.verifyLogin,userCont.getCashOrder)
 
+router.get('/pay-order',userCont.verifyLogin, userCont.getPayOrder)
+
+router.get('/paypal-order',userCont.verifyLogin, userCont.getPaypalOrder)
+
+router.post('/verify-payment',userCont.verifyLogin,userCont.postVerifyPayment)
+
+
+
+
 router.get('/orders',userCont.verifyLogin,userCont.getOrders)
 
 router.get('/order-info',userCont.verifyLogin,userCont.getOrderInfo)
 
 router.get('/cancel-order/:id',userCont.verifyLogin,userCont.getCancelOrderId)
+
+router.get('/return-order/:id', userCont.verifyLogin, userCont.getReturnOrderId)
 
 
 
@@ -70,6 +81,12 @@ router.get('/blog', userCont.getBlog)
 router.get('/single-blog', userCont.getSingleBlog)
 
 router.get('/single-product', userCont.getSingleProductId)
+
+router.get('/all-products',userCont.getAllProducts)
+
+router.get('/her',userCont.getHer)
+
+router.get('/him',userCont.getHim)
 
 router.get('/contact', userCont.getContact)
 

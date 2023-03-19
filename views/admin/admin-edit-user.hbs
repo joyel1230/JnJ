@@ -22,11 +22,11 @@
 
 <section>
     <div class="m-5 pt-0 mt-0">
-        <h2 class="fw-bold">EDIT PRODUCT</h2>
+        <h2 class="fw-bold">EDIT USER</h2>
         <form class="row g-3" action="/admin/edit-user/{{product._id}}" method="post" enctype="multipart/form-data">
             <div class="col-md-6">
                 <label for="" class="form-label">Name</label>
-                <input type="text" name="name" class="form-control" value="{{product.name}}" required>
+                <input type="text" name="name" class="form-control" value="{{product.username}}" required>
                 <label for="" class="form-label">Mobile</label>
                 <input type="text" name="mobile" class="form-control" disabled value="{{product.mobile}}" required>
 

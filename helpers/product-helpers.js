@@ -21,6 +21,15 @@ module.exports = {
     },
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.BANNER_COLLECTION).updateOne({status:false},
+                {$set:{status:'true'}}
+                )
+            await db.get().collection(collections.BANNER_COLLECTION).updateOne({status:true},
+            {$set:{status:false}}
+            )
+            await db.get().collection(collections.BANNER_COLLECTION).updateOne({status:'true'},
+                {$set:{status:true}}
+                )
             let category = await db.get().collection(collections.CATEGORY_COLLECTION).find().toArray()
             let products = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
                 {
@@ -32,7 +41,9 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            let array = [category, products]
+            let banner = await db.get().collection(collections.BANNER_COLLECTION).findOne({status:true})
+            
+            let array = [category, products, banner]
             resolve(array)
         })
     },
@@ -117,9 +128,73 @@ module.exports = {
     },
     getAllOrders:()=>{
         return new Promise(async(resolve, reject) => {
-            let orderArr =await db.get().collection(collections.ORDER_COLLECTION).find().toArray()
+            let orderArr =await db.get().collection(collections.ORDER_COLLECTION).find().sort({ createdOn: -1 }).toArray()
             // console.log(orderArr);
             resolve(orderArr)
+        })
+    },
+    getHerProducts:()=>{
+        return new Promise(async(resolve, reject) => {
+            let herProducts = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
+                {
+                    $lookup: {
+                        from: collections.CATEGORY_COLLECTION,
+                        localField: "categoryId",
+                        foreignField: "_id",
+                        as: "categoryAs"
+                    }
+                },
+                {
+                    $unwind: "$categoryAs"
+                },
+                {
+                    $match:{
+                        "categoryAs.category": "Girls_Shirts"
+                    }
+                }
+            ]).toArray()
+            herProducts.map((product)=>{
+                product.price = product.price.toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                  currencyDisplay: 'symbol',
+                  minimumFractionDigits: 2
+                })
+            })
+            // console.log(herProducts);
+            resolve(herProducts)
+        })
+    },
+    getHimProducts:()=>{
+        return new Promise(async(resolve, reject) => {
+            let himProducts = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
+                {
+                    $lookup: {
+                        from: collections.CATEGORY_COLLECTION,
+                        localField: "categoryId",
+                        foreignField: "_id",
+                        as: "categoryAs"
+                    }
+                },
+                {
+                    $unwind: "$categoryAs"
+                },
+                {
+                    $match:{
+                        "categoryAs.category": "Boys_Shirts"
+                    }
+                }
+            ]).toArray()
+            // console.log(herProducts);
+            himProducts.map((product)=>{
+                product.price = product.price.toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                  currencyDisplay: 'symbol',
+                  minimumFractionDigits: 2
+                })
+            })
+            resolve(himProducts)
         })
     }
 }

@@ -9,6 +9,7 @@
             <tr class="text-center">
               <th scope="col">Product</th>
               <th scope="col">Price</th>
+              <th scope="col">Size</th>
               <th scope="col">Quantity</th>
               <th scope="col">Total</th>
               <th scope="col">Remove</th>
@@ -17,11 +18,13 @@
           <tbody>
             {{#if cartArr}}
             {{#each cartArr}}
+            {{!-- {{#if this.cartItems.[0].deleted}}
+            {{else}} --}}
             <tr class="text-center">
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" />
+                    <a href="/single-product?id={{this.cartItems.[0]._id}}"><img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" /></a>
                   </div>
                   <div class="media-body">
                     <p>{{this.cartItems.[0].name}}</p>
@@ -30,6 +33,16 @@
               </td>
               <td>
                 <h5>₹ <span class="onePrice">{{this.cartItems.[0].price}}</span></h5>
+              </td>
+              <td>
+                <div class="product_count" style="user-select: none;">
+                  {{!-- <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
+                  <input class="input-number" type="text" value="1" min="1" max="5">
+                  <span class="input-number-increment"> <i class="ti-angle-up"></i></span> --}}
+                  {{!-- <i class="ti-angle-down" style="cursor: pointer;" onclick="changeSize({{@index}})"></i> --}}
+                  <span style="margin: 0.5rem;" class="size" name="size">{{#if this.cart.size}}{{this.cart.size}}{{else}}sm{{/if}}</span>
+                  <i class="ti-angle-right" style="cursor: pointer;margin-left: 1px;" onclick="changeSize({{@index}})"></i>
+                </div>
               </td>
               <td>
                 <div class="product_count" style="user-select: none;">
@@ -46,9 +59,10 @@
               </td>
               <td class="">
                 <a href="/cart-remove/{{this.cartItems.[0]._id}}"
-                  style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-minus"></i></a>
+                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash" aria-hidden="true"></i></a>
               </td>
             </tr>
+            {{!-- {{/if}} --}}
             {{/each}}
             {{else}}
             <h1>YOUR CART IS EMPTY</h1>
@@ -62,6 +76,7 @@
               <td>
                 <h5>₹ <span id="subtotal"></span></h5>
               </td>
+              <td></td>
               <td></td>
 
             </tr>
@@ -104,11 +119,16 @@
 
   function pushQty() {
     const qtyArr = document.getElementsByClassName('qty')
+    const sizeArr = document.getElementsByClassName('size')
     let qty=[]
+    let size=[]
     for (let i = 0; i < qtyArr.length; i++) {
       qty.push(Number(qtyArr[i].innerHTML))
     }
-    let url= `/checkout?qty=${qty}`
+    for (let i = 0; i < sizeArr.length; i++) {
+      size.push(sizeArr[i].innerHTML.trim())
+    }
+    let url= `/checkout?qty=${qty}&size=${size}`
     proCheck.setAttribute("href",encodeURI(url))
     return qty;
   }
@@ -172,4 +192,15 @@
     sum+=Number(totalElems[i].innerHTML)
     }
     subtotal.innerHTML=sum;
+
+
+    function changeSize(index){
+      let size = document.getElementsByClassName('size')
+      size1 =size[index].innerHTML.trim()
+      if(size1=='sm'){
+        size[index].innerHTML='md'
+      }else{
+        size[index].innerHTML='sm'
+      }
+    }
 </script>

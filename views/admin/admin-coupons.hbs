@@ -45,7 +45,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Min.Purchase</th>
                     <th scope="col">Expiry</th>
-                    <th scope="col">Active</th>
+                    {{!-- <th scope="col">Active</th> --}}
 
                 </tr>
             </thead>
@@ -58,7 +58,10 @@
                     </td>
                     <td>{{this.minPur}}</td>
                     <td>{{this.expiry}}</td>
-                    <td><a class="btn btn-success rounded-circle"></a></td>
+                    {{!-- <td><label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label></td> --}}
                 </tr>
                 {{/each}}
             </tbody>
@@ -78,25 +81,85 @@
             </ul>
         </nav>
         <div class="d-flex justify-content-end mb-5" style="margin-top: 8rem;">
-        <form action="/admin/coupons" method="post">
-            <label for="" class="form-label me-3">Code-</label>
-            <input type="text" name="name" id="name" class="rounded-3 h-25 w-25" required>
-            <label for="email">Amt.</label>
-            <input type="text" id="amt" name="amount" class="rounded-3 h-25 w-25" required>
-            <br>
-            <div class="my-4"></div>
-            <label for="password">Min. Pur.</label>
-            <input type="text" id="minPur" name="minPur" class="rounded-3 h-25 w-25" required>
-            <label for="confirm-password">Exp.</label>
-            <input type="date" id="date" name="date" class="rounded-3 h-25" required>
-            
-            <button type="submit"  class="btn float-end mt-3 bg-black text-white">Submit</button>
-        </form>
-</div>
+            <form action="/admin/coupons" method="post">
+                <label for="" class="form-label me-3">Code-</label>
+                <input type="text" name="name" id="name" class="rounded-3 h-25 w-25 " required>
+                <label for="email">Amt.</label>
+                <input type="text" id="amt" name="amount" class="rounded-3 h-25 w-25 " required>
+                <br>
+                <div class="my-4"></div>
+                <label for="password">Min. Pur.</label>
+                <input type="text" id="minPur" name="minPur" class="rounded-3 h-25 w-25 " required>
+                <label for="confirm-password">Exp.</label>
+                <input type="date" id="date" name="date" class="rounded-3 h-25 " required>
 
+                <button type="submit" class="btn float-end mt-3 bg-black text-white">Add Coupon</button>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
-  
+
 </script>
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>

@@ -76,6 +76,15 @@
               <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/orders">orders</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/wishlist">wishlist</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/cart">shopping cart</a>
+              </li>
               {{!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="" id="navbarDropdown_1" role="button"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,19 +96,19 @@
 
                 </div>
               </li> --}}
-              <li class="nav-item dropdown">
+              {{!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="" id="navbarDropdown_3" role="button"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   pages
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                  {{!-- <a class="dropdown-item" href="/login"> login</a> --}}
+                  <a class="dropdown-item" href="/login"> login</a>
                   <a class="dropdown-item" href="/orders">orders</a>
                   <a class="dropdown-item" href="/wishlist">wishlist</a>
                   <a class="dropdown-item" href="/cart">shopping cart</a>
-                  {{!-- <a class="dropdown-item" href="">tracking</a> --}}
+                  <a class="dropdown-item" href="">tracking</a>
                 </div>
-              </li>
+              </li> --}}
               {{!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="" id="navbarDropdown_2" role="button" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
@@ -118,7 +127,7 @@
           </div>
           <div class="hearer_icon d-flex">
             {{#if userID}}
-            <span style="font-weight: 700;" class="d-none d-md-block">Welcome {{userID.mobile}}&nbsp;</span>
+            <span style="font-weight: 700;" class="d-none d-md-block">Welcome{{#if userID.username}} {{userID.username}} {{else}} {{userID.mobile}} {{/if}}&nbsp;</span>
             <li class="dropdown"> 
               <a class="" href="" id="navbarDropdown_2" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">

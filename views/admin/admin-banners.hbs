@@ -50,7 +50,7 @@
             <tbody class="table-group-divider">
                 {{#each banners}}
                 <tr class="text-center">
-                    <td><img src="/image/{{this.image}}" style="width: 200px;height: 100px;" alt=""></td>
+                    <td><img src="/image/{{this.image}}" style="width: 150px;height: 75px;" alt=""></td>
                     <td>{{this.description}}</td>
                     {{!-- {{#if this.status}} --}}
                     <td>
@@ -110,6 +110,9 @@
 
 </script>
 <style>
+       table {width:7cm; height:7cm; border: 1px solid;
+  page-break-after: always;
+  }
     .switch {
         position: relative;
         display: inline-block;

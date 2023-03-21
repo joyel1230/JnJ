@@ -60,12 +60,28 @@
                         {{this.status}}
                     </td>
                     <td id="" data-exclude="true">
-                        <a  onclick="deliCon({{@index}})" class="deliverB" style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
+                        {{!-- <select class="form-select" name="category" aria-label="Default select example" required>
+                    <option ></option>
+                    <option onclick="deliCon({{@index}})" class="deliverB">Delivered</option>
+                    <option onclick="canCon({{@index}})" class="cancelB">Cancelled</option>
+                    <option onclick="retCon({{@index}})" class="returnB">Returned</option>
+                </select> --}}
+
+                 <button class="btn dropdown-toggle mainB text-black" type="button" data-bs-toggle="dropdown"
+ >
+        Change
+    </button>
+    <ul class="dropdown-menu profile" >
+        <li onclick="deliCon({{@index}})" class="deliverB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Delivered</a></li>
+        <li onclick="canCon({{@index}})" class="cancelB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Cancelled</a></li>
+        <li onclick="retCon({{@index}})" class="returnB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Returned</a></li>
+    </ul>
+                        {{!-- <a  onclick="deliCon({{@index}})" class="deliverB" style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
 
                         
                         <a  onclick="canCon({{@index}})" class="cancelB" style="color: red;cursor: pointer;">Cancelled</a>
 
-                        <a  onclick="retCon({{@index}})" class="returnB" style="color: red;cursor: pointer;">Returned</a>
+                        <a  onclick="retCon({{@index}})" class="returnB" style="color: red;cursor: pointer;">Returned</a> --}}
 
                     </td>
                 </tr>
@@ -123,7 +139,7 @@
     </div>
 </div>
 <style>
-    table {width:7cm; height:15cm; border: 1px solid;
+    table {width:7cm; height:7cm; border: 1px solid;
   page-break-after: always;
   }
 @media print {

@@ -2,6 +2,7 @@ let statusB = document.getElementsByClassName('statusB')
 let deliverB = document.getElementsByClassName('deliverB')
 let cancelB = document.getElementsByClassName('cancelB')
 let returnB = document.getElementsByClassName('returnB')
+let mainB = document.getElementsByClassName('mainB')
 
 for(let i=0;i<statusB.length;i++){
     if(statusB[i].innerHTML.trim()==='payment pending' || statusB[i].innerHTML.trim()==='Cancelled' 
@@ -9,11 +10,14 @@ for(let i=0;i<statusB.length;i++){
      || statusB[i].innerHTML.trim()==='Return processing'){
         deliverB[i].style.display = 'none'
         cancelB[i].style.display = 'none'
+        mainB[i].style.display = 'none'
     }
 }
  for(let i=0;i<statusB.length;i++){
     if(statusB[i].innerHTML.trim()!=='Return processing'){
         returnB[i].style.display = 'none'
+    }else{
+        mainB[i].style.display = 'inline'
     }
 }
 

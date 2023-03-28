@@ -127,8 +127,8 @@
           </div>
           <div class="hearer_icon d-flex">
             {{#if userID}}
-            <span style="font-weight: 700;" class="d-none d-md-block">Welcome{{#if userID.username}} {{userID.username}} {{else}} {{userID.mobile}} {{/if}}&nbsp;</span>
-            <li class="dropdown"> 
+            <span style="font-weight: 700;color: black!important;" class="d-none d-md-block">Welcome{{#if userID.username}} {{userID.username}} {{else}} {{userID.mobile}} {{/if}}&nbsp;</span>
+            <div class="dropdown"> 
               <a class="" href="" id="navbarDropdown_2" role="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                 <i class="ti-user"></i>
@@ -139,18 +139,19 @@
                 <a class="dropdown-item" href="/addresses">Addresses</a>
                 <a class="dropdown-item text-danger" href="/logout">Logout</a>
               </div>
-            </li>
+            </div>
             {{else}}
-            <a href="/login"><i class="ti-user"></i></a>
+            <a href="/login" style="width: 0;"><i class="ti-user"></i></a>
             {{/if}}
 
 
-            <a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a>
-            <a href="/wishlist"><i class="ti-heart"></i></a>
+            <a id="search_1" href="javascript:void(0)" onclick="removeSearch()" style="width: 0;margin-left: 2.5rem;"><i class="ti-search"></i></a>
+            <a href="/wishlist" style="width: 0;margin-left: 2.5rem;"><i class="ti-heart"></i></a>
+            
             <div class="dropdown cart">
               <a class="dropdown-toggle" href="" id="navbarDropdown3" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <a href="/cart"><i class="fas fa-cart-plus"></i></a>
+                <a href="/cart" style="width: 0;margin-left: 2.5rem;margin-right: 2rem;"><i class="fas fa-cart-plus" id="cartId"><span class="notification"></span></i></a>
               </a>
               {{!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <div class="single_product">
@@ -159,7 +160,8 @@
               </div> --}}
 
             </div>
-
+            {{!-- <span id="cartnumber" hidden>{{userID.cart.length}}</span>
+            <span id="cartnumber1" hidden></span> --}}
             {{!-- <div class="dropdown cart">
               <a class="dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -187,10 +189,10 @@
       </div>
     </div>
   </div>
-  <div class="search_input" id="search_input_box">
+  <div class="search_input" id="search_input_box" style="background-color: white;">
     <div class="container ">
-      <form class="d-flex justify-content-between search-inner" action="/all-products">
-        <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+      <form class="d-flex justify-content-between search-inner" action="/search" method="post">
+        <input type="text" class="form-control" name="search" id="search_input" placeholder="Search Here">
         <button type="submit" class="btn"></button>
         <span class="ti-close" id="close_search" title="Close Search"></span>
       </form>
@@ -198,3 +200,38 @@
   </div>
 </header>
 <!-- Header part end-->
+<style>
+  .zind{
+    display: none;
+  }
+  .notification {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  
+}
+
+</style>
+<script>
+  let not = document.querySelector('.notification').innerHTML
+
+
+  if(not == ''){
+    document.querySelector('.notification').style.display ='none'
+  }
+  document.getElementById('search_input_box').classList.add('zind')
+ function removeSearch(){
+    document.getElementById('search_input_box').classList.remove('zind')
+ }
+
+</script>

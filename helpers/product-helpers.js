@@ -83,7 +83,7 @@ module.exports = {
                 {
                     $set: {
                         name: proDetails.name,
-                        category:proDetails.category,
+                        categoryId:ObjectId(proDetails.category),
                         price: Number(proDetails.price),
                         description: proDetails.description,
                         stock: Number(proDetails.stock)
@@ -133,6 +133,21 @@ module.exports = {
             resolve(orderArr)
         })
     },
+    getOneOrderId: (id) => {
+        return new Promise(async(resolve, reject) => {
+            let orderArr = await db.get().collection(collections.ORDER_COLLECTION).
+                aggregate([{ $match: { _id: ObjectId(id) } },
+                { $unwind: '$products' },
+                {
+                    $lookup: {
+                        from: collections.PRODUCT_COLLECTIONS,
+                        localField: "products.proId",
+                        foreignField: "_id", as: "items"
+                    }
+                }]).toArray()
+            resolve(orderArr)
+        })
+    },
     getHerProducts:()=>{
         return new Promise(async(resolve, reject) => {
             let herProducts = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
@@ -149,7 +164,7 @@ module.exports = {
                 },
                 {
                     $match:{
-                        "categoryAs.category": "Girls_Shirts"
+                        "categoryAs.category": /^girl/i
                     }
                 }
             ]).toArray()
@@ -181,7 +196,7 @@ module.exports = {
                 },
                 {
                     $match:{
-                        "categoryAs.category": "Boys_Shirts"
+                        "categoryAs.category": /^boy/i
                     }
                 }
             ]).toArray()
@@ -195,6 +210,44 @@ module.exports = {
                 })
             })
             resolve(himProducts)
+        })
+    },
+    getLtoHProducts:()=>{
+        return new Promise(async(resolve, reject) => {
+            let products = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
+                {
+                    $sort: {price:1}
+                }
+            ]).toArray()
+            products.map((product)=>{
+                product.price = product.price.toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                  currencyDisplay: 'symbol',
+                  minimumFractionDigits: 2
+                })
+            })
+            console.log(products);
+            resolve(products)
+        })
+    },
+    getHtoLProducts:()=>{
+        return new Promise(async(resolve, reject) => {
+            let products = await db.get().collection(collections.PRODUCT_COLLECTIONS).aggregate([
+                {
+                    $sort: {price:-1}
+                }
+            ]).toArray()
+            products.map((product)=>{
+                product.price = product.price.toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                  currencyDisplay: 'symbol',
+                  minimumFractionDigits: 2
+                })
+            })
+            console.log(products);
+            resolve(products)
         })
     }
 }

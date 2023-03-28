@@ -18,18 +18,24 @@ module.exports = {
     },
     getHome: (req, res, next) => {
         if (req.session.admin) {
-            reportHelpers.getTotalSales().then((sale)=>{
-                sale = sale.toLocaleString('en-IN', {
-                    style: 'currency',
-                    currency: 'INR',
-                    currencyDisplay: 'symbol',
-                    minimumFractionDigits: 0
-                  })
-            res.render('admin/admin-home',{sale})
+            reportHelpers.getTotalSales().then(async(objR)=>{
+                objR.todaySale = await currency(objR.todaySale)
+                objR.margin = await currency(objR.margin)
+
+            res.render('admin/admin-home',{objR})
             })
         } else {
             res.redirect('/admin/login');
         }
+        function currency(cur){
+            cur = (cur).toLocaleString('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            currencyDisplay: 'symbol',
+            minimumFractionDigits: 0
+          })
+          return cur;
+      }
     },
     getLogin: (req, res) => {
         if (req.session.admin) {
@@ -135,7 +141,20 @@ module.exports = {
         })
     },
     getGetUser: (req, res) => {
-        userHelpers.getUsers(req.query.user).then((users) => {
+        let search=1;
+        userHelpers.getUsers(req.query.query1,search).then((users) => {
+            res.render('admin/admin-users', { users })
+        })
+    },
+    postSearchMobile:(req,res) =>{
+        let search=2;
+        userHelpers.getUsers(req.query.query2,search).then((users) => {
+            res.render('admin/admin-users', { users })
+        })
+    },
+    postSearchEmail:(req,res) =>{
+        let search=3;
+        userHelpers.getUsers(req.query.query3,search).then((users) => {
             res.render('admin/admin-users', { users })
         })
     },
@@ -180,6 +199,16 @@ module.exports = {
             res.render('admin/admin-orders', { orders })
         })
     },
+    getOneOrder: (req,res) => {
+        let id = req.query.id
+        productHelpers.getOneOrderId(id).then((order)=>{
+            let orderNumber = id
+            let l = orderNumber.length
+            orderNumber = `${orderNumber[0]}${orderNumber[1]}${orderNumber[2]}${orderNumber[l - 2]}${orderNumber[l - 1]}`
+            order[0].createdOn = order[0].createdOn.toLocaleDateString('es-ES')
+            res.render('admin/admin-order-info', {order, orderNumber})
+        })
+    },
     getCancelOrderId: (req, res) => {
         let id = req.params.id
         userHelpers.cancelOrder(id).then((resp) => {
@@ -218,6 +247,14 @@ module.exports = {
         let id = req.params.id
         userHelpers.returnedOrder(id).then(() => {
             res.redirect('/admin/orders')
+        })
+    },
+    getSearchOrderDate:(req,res)=>{
+        userHelpers.getOrderDate(req.query.date).then((orders)=>{
+            orders.map((order) => {
+                order.createdOn = order.createdOn.toLocaleDateString('es-ES')
+            })
+            res.render('admin/admin-orders',{orders})
         })
     }
 

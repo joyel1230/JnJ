@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const adminCont = require('../controllers/adminController')
+const adminCont = require('../controllers/adminController');
+const { route } = require('./user');
 
 
 router.get('/', adminCont.getHome);
@@ -39,7 +40,13 @@ router.post('/edit-user/:id', adminCont.verifyLogin, adminCont.postEditUserId)
 
 // router.get('/delete-user/:id', adminCont.verifyLogin, adminCont.getDeleteUserId)
 
-router.get('/get-user', adminCont.verifyLogin, adminCont.getGetUser)
+router.get('/search-user', adminCont.verifyLogin, adminCont.getGetUser)
+
+router.get('/search-mobile', adminCont.verifyLogin, adminCont.postSearchMobile)
+
+router.get('/search-email', adminCont.verifyLogin, adminCont.postSearchEmail)
+
+router.get('/search-order-date',adminCont.verifyLogin, adminCont.getSearchOrderDate)
 
 router.get('/get-product', adminCont.verifyLogin, adminCont.getGetProduct)
 
@@ -50,6 +57,8 @@ router.get('/unblock-user/:id', adminCont.verifyLogin, adminCont.getUnblockUserI
 // orders
 
 router.get('/orders',adminCont.verifyLogin,adminCont.getAllOrders)
+
+router.get('/order-info', adminCont.verifyLogin, adminCont.getOneOrder)
 
 router.get('/cancel-order/:id',adminCont.verifyLogin,adminCont.getCancelOrderId)
 

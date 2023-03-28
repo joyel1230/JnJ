@@ -1,50 +1,136 @@
 <!-- banner part start-->
 <section class="banner_part">
     <div class="container">
-        <div class="row d-flex justify-content-between " style="padding-top: 20vh;">
-            <h2>Addresses</h2>
-            <h4>To set default address click EDIT</h4>
-            <div class="col-12" style="width: 40vw;">
+        <div class="row" style="padding-top: 20vh;">
+            <h2 class="w-100">Addresses</h2>
+            {{!-- <div class="col-12" style="width: 40vw;"> --}}
 
-                {{#each add}}
+                {{!-- {{#each add}}
 
 
                 <div class="col-12 " id="address" style="background-color: white;width: 40vw;height: 15vh;padding: 1rem;
                 padding-top: 0.1rem;border: 1px solid #000;">
-                    {{this.name}}, {{this.street}}, {{this.city}}, {{this.state}}, {{this.country}}. 
+                    {{this.name}}, {{this.street}}, {{this.city}}, {{this.state}}, {{this.country}}.
                     pincode: {{this.pincode}} <br>
                     mobile: {{this.mobile}}
                 </div>
                 <a href="/edit-address?ind={{@index}}" class="btn btn-success mb-3">EDIT</a>
 
-                {{/each}}
-
-
-            </div>
-
-
-            <div class="banner_img col-4" style="width: 30vw;margin-top: 10vh;margin-right: 20vw;">
-                <a href="/add-address">
-                    <div class="form-group"
-                        style="background-color: rgba(0, 0, 0, 0.208);width: 30vw;height: 10vh;padding: 0.5rem;display: flex;justify-content: center;align-items: center;border: 2px solid #ffffff;">
-                        <h1>+</h1>
-
-                        <p class="text-white">ADD ADDRESSES</p>
-
+                {{/each}} --}}
+                {{#each add}}
+                <div class="card m-4" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">mobile: {{this.mobile}}</h6>
+                        <p class="card-text">{{this.street}}, {{this.city}}, {{this.state}}, {{this.country}}.<br>
+                            pincode: {{this.pincode}}
+                        </p>
+                        <a href="/edit-address?ind={{@index}}" class="card-link">EDIT</a>
+                        <a onclick="canConR({{@index}})" style="cursor: pointer;"  class="card-link text-danger float-right">DELETE</a>
+                        {{!-- <a href="#" class="card-link">Another link</a> --}}
                     </div>
-                </a>
-            </div>
+                </div>
+                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;z-index: 3;top: 40%;" id="">
+                    <h1>Confirmation</h1>
+                    <p>Do you want to delete?</p>
+                    <div class="neumorphic-alert-buttons">
+                        <a href="/delete-address/{{@index}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR1({{@index}})" ><button
+                                class="neumorphic-alert-delete-btn">NO</button></a>
+                    </div>
+                </div>
+                {{/each}}
+                
+                <a href="/add-address" class="card-link" style="font-size: larger;"><div class="card m-4" style="width: 18rem;">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="border: 2px dashed rgb(0, 0, 0);">
+                        {{!-- <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="card-link">Card link</a> --}}
+                        <i style="font-weight: 900;padding:50px 0;color: #000;" class="ti-plus  fa-lg"></i>
+                    </div>
+                </div></a>
+
+
+                {{!--
+            </div> --}}
+
+
+            {{!-- <div class="banner_img col-4" style="width: 30vw;margin-top: 10vh;margin-right: 20vw;"> --}}
+                {{!-- <a href="/add-address"> --}}
+
+                    {{!-- </a> --}}
+                {{!-- </div> --}}
         </div>
     </div>
 </section>
 <!-- banner part start-->
-
+<script>
+    let box = document.getElementsByClassName('del3')
+  
+    function canConR1(ind){
+        ind = Number(ind)
+        box[ind].classList.remove('open-pop')
+    }
+    function canConR(ind){
+        ind = Number(ind)
+        box[ind].classList.add('open-pop')
+    }
+</script>
 <style>
     label {
         font-size: 1.5vw;
         font-weight: 500;
     }
- 
-   
+        .neumorphic-alert-box {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        box-shadow:
+            -10px -10px 20px rgba(255, 255, 255, 0),
+            10px 10px 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+       display: none;
+    }
 
+    .neumorphic-alert-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .neumorphic-alert-cancel-btn {
+        background-color: #f2f2f2;
+        border: none;
+        border-radius: 10px;
+        box-shadow:
+            -5px -5px 10px rgba(255, 255, 255, 1),
+            5px 5px 10px rgba(0, 0, 0, 0.2);
+        color: #666;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+        margin-right: 10px;
+    }
+
+    .neumorphic-alert-delete-btn {
+        background-color: #f44336;
+        border: none;
+        border-radius: 10px;
+        box-shadow:
+            -5px -5px 10px rgba(255, 255, 255, 1),
+            5px 5px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .open-pop {
+        display: block;
+    }
+    .close{
+        display: none;
+    }
 </style>

@@ -1,21 +1,34 @@
+
+
 $(function() {
+let cod = +document.getElementById('cod').innerHTML
+let raz = +document.getElementById('raz').innerHTML
+let pay = +document.getElementById('pay').innerHTML
+let today = +document.getElementById('today').innerHTML
+let saleArr = (document.getElementById('saleArr').innerHTML).split(',')
+console.log(saleArr);
+for (let i = 0; i < saleArr.length; i++) {
+  saleArr[i] = Number(saleArr[i])
+}
+
+console.log(cod+'sdsa');
   /* ChartJS
    * -------
    * Data and config for chartjs
    */
   'use strict';
   var data = {
-    labels: ["2013", "2014", "2014", "2015", "2016", "2017"],
+    labels: [`${today-5}`, `${today-4}`, `${today-3}`, `${today-2}`, `${today-1}`, `${today}`],
     datasets: [{
-      label: '# of Votes',
-      data: [1, 9, 2, 10, 4, 13],
+      label: '# total',
+      data: [`${saleArr[5]}`, `${saleArr[4]}`, `${saleArr[3]}`, `${saleArr[2]}`, `${saleArr[1]}`, `${saleArr[0]}`],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
       ],
       borderColor: [
         'rgba(255,99,132,1)',
@@ -80,7 +93,7 @@ $(function() {
   };
   var doughnutPieData = {
     datasets: [{
-      data: [30, 40, 30],
+      data: [cod, raz, pay],
       backgroundColor: [
         'rgba(255, 99, 132, 0.5)',
         'rgba(54, 162, 235, 0.5)',
@@ -101,9 +114,9 @@ $(function() {
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
-      'Pink',
-      'Blue',
-      'Yellow',
+      'COD',
+      'RAZORPAY',
+      'PAYPAL',
     ]
   };
   var doughnutPieOptions = {

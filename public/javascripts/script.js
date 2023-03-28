@@ -1,23 +1,42 @@
 function addToCart(proId){
-    
+    document.querySelector('.notification').style.display ='flex'
+   let not = +document.querySelector('.notification').innerHTML
+   if (not == '') {
+    document.querySelector('.notification').innerHTML = 1
+   }else{
+   document.querySelector('.notification').innerHTML = not+1
+   }
     $.ajax({
         url:'/add-to-cart/'+proId,
         method: 'get',
         success:(response)=>{
-            // console.log(response+'hi');
+
+            if (response.user) {
+                document.querySelector('.notification').innerHTML = response.cart ?? ''
+            } else {
+                window.location.href = '/login';
+            }
         }
     })
 
 }
 
 function addToCartW(proId){
-    
+    document.querySelector('.notification').style.display ='flex'
+    let not = +document.querySelector('.notification').innerHTML
+   if (not == '') {
+    document.querySelector('.notification').innerHTML = 1
+   }else{
+   document.querySelector('.notification').innerHTML = not+1
+   }
     $.ajax({
         url:'/add-to-cart/'+proId,
         method: 'get',
         success:(res)=>{
             // console.log(response+'hi');
             window.location.href = '/wishlist';
+            document.querySelector('.notification').innerHTML = res.cart ?? ''
+
         }
     })
 

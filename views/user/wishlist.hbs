@@ -24,8 +24,8 @@
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <a href="/single-product?id={{this.wishItems.[0]._id}}"><img src="/image/{{this.wishItems.[0].images.[0]}}" style="width: 80px;height: auto;"
-                      alt="" /></a>
+                    <a href="/single-product?id={{this.wishItems.[0]._id}}"><img
+                        src="/image/{{this.wishItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" /></a>
                   </div>
                   <div class="media-body">
                     <p>{{this.wishItems.[0].description}}</p>
@@ -39,15 +39,21 @@
                 {{!-- <a href="/add-to-cart/{{this.wishItems.[0]._id}}"
                   style="color: black;font-weight: 700;font-size:x-large;"><i class="ti-plus"></i></a> --}}
 
-                <button onclick="addToCartW('{{this.wishItems.[0]._id}}')" class=""
-                  style="background-color: #00000000;border: none;color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    </button>
 
+                {{#if this.wishItems.[0].stock}}
+                <button onclick="addToCartW('{{this.wishItems.[0]._id}}')" class=""
+                  style="background-color: #00000000;border: none;color: black;font-weight: 700;font-size:x-large;"><i
+                    class="fa fa-plus-circle" aria-hidden="true"></i>
+                </button>
+                {{else}}
+                <a class="ab"><span class="text-danger m-2">Out of Stock</span></a>
+                {{/if}}
 
               </td>
               <td class="">
                 <a href="/wishlist-remove/{{this.wishItems.[0]._id}}"
-                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash"
+                    aria-hidden="true"></i></a>
               </td>
             </tr>
             {{!-- {{/if}} --}}

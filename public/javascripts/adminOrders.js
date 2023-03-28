@@ -143,7 +143,7 @@ function htmlToPdf(){
         theme: 'grid',
         columnStyles: {
             0: {
-                cellWidth: 90,
+                cellWidth: 30,
             },
             1: {
                 cellWidth: 90,
@@ -152,9 +152,12 @@ function htmlToPdf(){
                 cellWidth: 90,
             },
             3: {
-                cellWidth: 90,
+                cellWidth: 50,
             },
             4: {
+                cellWidth: 90,
+            },
+            5: {
                 cellWidth: 90,
             }
         },

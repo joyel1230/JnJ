@@ -35,6 +35,8 @@ router.post('/address',userCont.verifyLogin, userCont.postAddress)
 
 router.get('/edit-address',userCont.verifyLogin, userCont.getEditAddressId)
 
+router.get('/delete-address/:ind',userCont.verifyLogin, userCont.getDeleteAddressId)
+
 
 
 
@@ -84,9 +86,17 @@ router.get('/single-product', userCont.getSingleProductId)
 
 router.get('/all-products',userCont.getAllProducts)
 
+
+
 router.get('/her',userCont.getHer)
 
 router.get('/him',userCont.getHim)
+
+router.get('/low-to-high',userCont.getlowtohigh)
+
+router.get('/high-to-low',userCont.gethightolow)
+
+router.post('/search', userCont.postSearch)
 
 router.get('/contact', userCont.getContact)
 

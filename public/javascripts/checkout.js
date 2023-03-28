@@ -43,15 +43,17 @@ let itemQty = document.getElementsByClassName('itemQty')
         let discount = Number(document.getElementById('discount').innerHTML)
         let total = Number(document.getElementById('total').innerHTML)
         let pro1 = document.getElementById('pro1')
-        let url = `/cash-order?discount=${discount}&total=${total}`
+        let addNO = Number(document.getElementById('addNo').innerHTML)
+        let url = `/cash-order?discount=${discount}&total=${total}&addr=${addNO}`
         pro1.setAttribute("href", encodeURI(url))
     }
     function payOrder() {
         let discount = Number(document.getElementById('discount').innerHTML)
         let total = Number(document.getElementById('total').innerHTML)
+        let addNO = Number(document.getElementById('addNo').innerHTML)
         $.ajax({
 
-            url: `/pay-order?discount=${discount}&total=${total}`,
+            url: `/pay-order?discount=${discount}&total=${total}&addr=${addNO}`,
             method: 'get',
             success: (response) => {
                 if (response.status) {
@@ -119,7 +121,25 @@ let itemQty = document.getElementsByClassName('itemQty')
         let discount = Number(document.getElementById('discount').innerHTML)
         let total = Number(document.getElementById('total').innerHTML)
         let pro3 = document.getElementById('pro3')
+        let addNO = Number(document.getElementById('addNo').innerHTML)
 
-        let url = `/paypal-order?discount=${discount}&total=${total}`
+        let url = `/paypal-order?discount=${discount}&total=${total}&addr=${addNO}`
         pro3.setAttribute("href", encodeURI(url))
+    }
+
+    let rad = document.getElementsByClassName('radio')
+    rad[0].checked = true
+
+    function changeAdd(ind,name1,mobile1,street1,city1,pincode1){
+        document.getElementById('addNo').innerHTML=ind
+        let name = document.getElementById('name')
+        let mobile = document.getElementById('mobile')
+        let street = document.getElementById('street')
+        let city = document.getElementById('city')
+        let pincode = document.getElementById('pincode')
+        name.value = name1
+        mobile.value = mobile1
+        street.value = street1
+        city.value = city1
+        pincode.value = pincode1
     }

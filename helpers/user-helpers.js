@@ -27,8 +27,8 @@ module.exports = {
                 resolve(user)
             } else {
                 let data = await db.get().collection(collections.USER_COLLECTIONS).insertOne({
-                    mobile:userData.mobile,
-                    password:userData.password
+                    mobile: userData.mobile,
+                    password: userData.password
                 })
                 resolve(data)
             }
@@ -97,21 +97,41 @@ module.exports = {
                 })
         })
     },
-    getUsers: (user) => {
+    getUsers: (user, search) => {
         return new Promise(async (resolve, reject) => {
             // console.log(user);
             //    let users= await db.get().collection(collections.USER_COLLECTIONS).find({$text:{$search: user}}).toArray()
             //    let users= await db.get().collection(collections.USER_COLLECTIONS).find({name:{$regex:`^${user}`}}).toArray()
-
+            let users;
             let regex = new RegExp(user, "i");
-            let users = await db.get().collection(collections.USER_COLLECTIONS).find({
-                $or: [
-                    { name: { $regex: regex } },
-                    { email: { $regex: regex } },
-                    { address: { $regex: regex } },
-                    { mobile: { $regex: regex } }
-                ]
-            }).toArray();
+
+            if (search == 1) {
+                users = await db.get().collection(collections.USER_COLLECTIONS).find({
+                    $or: [
+                        { username: { $regex: regex } }
+                    ]
+                }).toArray();
+
+            } else if (search == 2) {
+                users = await db.get().collection(collections.USER_COLLECTIONS).find({
+                    $or: [
+                        { mobile: { $regex: regex } }
+                    ]
+                }).toArray();
+            } else {
+                users = await db.get().collection(collections.USER_COLLECTIONS).find({
+                    $or: [
+                        { email: { $regex: regex } }
+                    ]
+                }).toArray();
+            }
+            // let users = await db.get().collection(collections.USER_COLLECTIONS).find({
+
+            //         username: 'joyel'
+
+            // }).toArray();
+
+            console.log(users);
 
 
             // console.log(users);
@@ -197,11 +217,18 @@ module.exports = {
             }
             let wish = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: userMob })
             wish = wish?.wishlist
+
+            let cart = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: userMob })
+            let cartN = cart.cart.length
+            let obj = {}
+            obj.cart = cartN
+            obj.wish = null
             if (wish) {
-                resolve(wish[0])
+                obj.wish = wish[0]
+                resolve(obj)
 
             } else {
-                resolve(null)
+                resolve(obj)
             }
 
             // db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:userMob},{$unset:{wishlist:""}})
@@ -223,7 +250,7 @@ module.exports = {
                     cart.push(cartArr[i])
                 } else {
                     db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: userMob }, { $pull: { cart: { proId: ObjectId(cartArr[i].cartItems[0]._id) } } })
-                   
+
                 }
             }
 
@@ -344,8 +371,31 @@ module.exports = {
             resolve(add.address[index])
         })
     },
-    getAddCheckout: (mob, qty,size) => {
-        
+    deleteAddress: (ind, mobile) => {
+        return new Promise(async (resolve, reject) => {
+
+            await db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                { mobile: mobile },
+                {
+                    $unset: {
+                        ['address.' + ind]: 1
+                    }
+                })
+            await db.get().collection(collections.USER_COLLECTIONS).updateOne(
+                { mobile: mobile },
+                {
+                    $pull: {
+                        address: {
+                            $eq: null
+                        }
+                    }
+                }
+            )
+            resolve(true)
+        })
+    },
+    getAddCheckout: (mob, qty, size) => {
+
         let qtyArr = []
         qtyArr.push(...qty.split(','))
         qty = qtyArr;
@@ -357,19 +407,22 @@ module.exports = {
             let add = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
 
             for (let i = 0; i < qty.length; i++) {
-                updateQty(mob, qty[i],size[i], i)
+                updateQty(mob, qty[i], size[i], i)
             }
-            async function updateQty(mob, qty,size, i) {
+            async function updateQty(mob, qty, size, i) {
                 qty = Number(qty)
                 await db.get().collection(collections.USER_COLLECTIONS).updateOne(
                     { mobile: mob },
                     { $set: { [`cart.${i}.qty`]: qty, [`cart.${i}.size`]: size } })
             }
+            setTimeout(() => {
+
+            }, 2000)
             let cartArr = await db.get().collection(collections.USER_COLLECTIONS).aggregate
                 ([{ $match: { mobile: mob } }, { $unwind: "$cart" },
                 { $lookup: { from: collections.PRODUCT_COLLECTIONS, localField: "cart.proId", foreignField: "_id", as: "cartItems" } }]).toArray()
             if (add.address) {
-                add = add.address.slice(-1)[0]
+                add = add.address
             }
             let array = [add, cartArr]
             db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: mob }, {
@@ -402,48 +455,69 @@ module.exports = {
             resolve(false)
         })
     },
-    addCashOrder: (discount, total, mob) => {
+    addCashOrder: (discount, total, mob, addr) => {
         return new Promise(async (resolve, reject) => {
             let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
+            console.log(user.cart);
+            console.log(user.cart[0].proId);
             if (!user.address) {
                 reject(true)
-            }else{
-                if (user.address.length==0) {
+            } else {
+                if (user.address.length == 0) {
                     reject(true)
-                }else{
+                } else {
                     db.get().collection(collections.ORDER_COLLECTION).insertOne({
                         userMobile: mob,
                         products: user.cart,
-                        address: user.address[user.address.length - 1],
+                        address: user.address[addr],
                         payMethod: 'COD',
                         discount: Number(discount),
                         total: Number(total),
                         createdOn: new Date(),
                         status: 'processing'
-                    }).then((r) => {
+                    }).then(async (r) => {
+                        let cart = user.cart;
+                        for (let i = 0; i < cart.length; i++) {
+                            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({
+                                _id: cart[i].proId
+                            }, {
+                                $inc: {
+                                    stock: -(cart[i].qty)
+                                }
+                            }
+                            )
+                        }
+                        db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: mob }, {
+                            $unset: {
+                                cart: ''
+                            }
+                        })
+                        
+                        // console.log(user.cart);
+
                         resolve(true)
-        
+
                     })
                 }
             }
-            
+
         })
     },
-    addPayOrder: (discount, total, mob) => {
+    addPayOrder: (discount, total, mob, addr) => {
         return new Promise(async (resolve, reject) => {
             let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
-            console.log(user);
-           
+            // console.log(user);
+
             if (!user.address) {
                 reject(true)
-            }else{
-                if (user.address.length==0) {
+            } else {
+                if (user.address.length == 0) {
                     reject(true)
-                }else{
+                } else {
                     db.get().collection(collections.ORDER_COLLECTION).insertOne({
                         userMobile: mob,
                         products: user.cart,
-                        address: user.address[user.address.length - 1],
+                        address: user.address[addr],
                         payMethod: 'Razorpay',
                         discount: Number(discount),
                         total: Number(total),
@@ -454,8 +528,8 @@ module.exports = {
                     })
                 }
             }
-            
-            
+
+
         })
     },
     generateRazorPay: (orderId, total) => {
@@ -469,7 +543,7 @@ module.exports = {
                     key2: "value2"
                 }
             }, function (err, order) {
-                console.log("new order: ", order);
+                // console.log("new order: ", order);
                 // console.log(err);
                 resolve(order)
             })
@@ -550,42 +624,59 @@ module.exports = {
         })
     },
     changePayStatus: (id) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collections.ORDER_COLLECTION).updateOne({ _id: ObjectId(id) },
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.ORDER_COLLECTION).updateOne({ _id: ObjectId(id) },
                 { $set: { status: 'processing' } }
-            ).then(() => {
-                resolve()
+            )
+            let order = await db.get().collection(collections.ORDER_COLLECTION).findOne({ _id: ObjectId(id) })
+            let cart = order.products
+            for (let i = 0; i < cart.length; i++) {
+                db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({
+                    _id: cart[i].proId
+                }, {
+                    $inc: {
+                        stock: -(cart[i].qty)
+                    }
+                }
+                )
+            }
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: order.userMobile }, {
+                $unset: {
+                    cart: ''
+                }
             })
+            
+            resolve()
         })
     },
-    addBanners:(image,description)=>{
+    addBanners: (image, description) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.BANNER_COLLECTION).insertOne({
-                image:image.filename,
-                description:description
+                image: image.filename,
+                description: description
             })
             resolve(true)
         })
-        
+
     },
-    getAllBanners:()=>{
-        return new Promise(async(resolve, reject) => {
-          let banners =  await db.get().collection(collections.BANNER_COLLECTION).find().toArray()
-          resolve(banners)
+    getAllBanners: () => {
+        return new Promise(async (resolve, reject) => {
+            let banners = await db.get().collection(collections.BANNER_COLLECTION).find().toArray()
+            resolve(banners)
         })
     },
-    selectBanner:(id)=>{
-        return new Promise(async(resolve, reject) => {
-            await db.get().collection(collections.BANNER_COLLECTION).updateOne({status:true},
-                {$set:{status:false}}
-                )
-            await db.get().collection(collections.BANNER_COLLECTION).updateOne({_id:ObjectId(id)},
-            {$set:{status:true}}
+    selectBanner: (id) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.BANNER_COLLECTION).updateOne({ status: true },
+                { $set: { status: false } }
+            )
+            await db.get().collection(collections.BANNER_COLLECTION).updateOne({ _id: ObjectId(id) },
+                { $set: { status: true } }
             )
             resolve(true)
         })
     },
-    returnOrder:(id)=>{
+    returnOrder: (id) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.ORDER_COLLECTION).updateOne(
                 { _id: ObjectId(id) },
@@ -594,13 +685,34 @@ module.exports = {
             resolve(true)
         })
     },
-    returnedOrder:(id)=>{
+    returnedOrder: (id) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.ORDER_COLLECTION).updateOne(
                 { _id: ObjectId(id) },
                 { $set: { status: 'Returned', closedOn: new Date() } }
             )
             resolve(true)
+        })
+    },
+    getOrderDate: (date1) => {
+        return new Promise(async (resolve, reject) => {
+
+            const isTdate = new Date(date1).toISOString();
+            const date = new Date(isTdate);
+            date.setUTCDate(date.getUTCDate() + 1);
+            date.setUTCHours(0, 0, 0, 0);
+            const newDate = date.toISOString();
+
+            console.log(isTdate);
+            console.log(newDate);
+            let orderArr = await db.get().collection(collections.ORDER_COLLECTION).find({
+                createdOn: {
+                    $gte: new Date(isTdate),
+                    $lt: new Date(newDate)
+                }
+            }).toArray()
+            console.log(orderArr);
+            resolve(orderArr)
         })
     }
 }

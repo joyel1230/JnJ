@@ -30,107 +30,128 @@
                 <button class="btn border-3 border-dark h-25" type="submit">Search</button>
             </form>
         </div> --}}
-<button class="btn btn-success mb-2" onclick="htmlToPdf()">Export To PDF</button>
+        <div class="d-flex justify-content-end mb-3 w-100" style="height: 2.5rem;">
+            <form action="/admin/search-order-date" method="get" class="d-flex">
+                <input type="date" name="date" class="form-control me-2" placeholder="Search by date">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        <button class="btn btn-success mb-2" onclick="htmlToPdf()">Export To PDF</button>
 
-<button class="btn btn-success mb-2" onclick="htmlToExcel()">Export To Excel</button>
+        <button class="btn btn-success mb-2" onclick="htmlToExcel()">Export To Excel</button>
 
         <table class="table" id="example">
             <thead>
                 <tr class="text-center">
-                   
-                    <th >User Mob.</th>
-                    <th >Date</th>
-                    <th >Total Amt.</th>
-                    {{!-- <th >Orders</th> --}}
-                    <th >Place</th>
-                    <th >Status</th>
-                    <th  id="bypassme" data-exclude="true">Change Status</th>
+                    <th>No.</th>
+                    <th>User Mob.</th>
+                    <th>Date</th>
+                    <th>Total Amt.</th>
+                    {{!-- <th>Orders</th> --}}
+                    <th>Place</th>
+                    <th>Status</th>
+                    <th id="bypassme" data-exclude="true">Change Status</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 {{#each orders}}
-                <tr class="text-center">
-                    
-                    <td>{{this.userMobile}}</td>
+
+
+                <tr class="text-center orderRow">
+                    <td class="slno"></td>
+
+                    <td><a href="/admin/order-info?id={{this._id}}"
+                            style="text-decoration: none;">{{this.userMobile}}</a></td>
                     <td>{{this.createdOn}}</td>
                     <td>{{this.total}}</td>
                     {{!-- <td>₹{{this.orders}}</td> --}}
                     <td>{{this.address.street}}</td>
-                    <td class="statusB" >
+                    <td class="statusB">
                         {{this.status}}
                     </td>
                     <td id="" data-exclude="true">
                         {{!-- <select class="form-select" name="category" aria-label="Default select example" required>
-                    <option ></option>
-                    <option onclick="deliCon({{@index}})" class="deliverB">Delivered</option>
-                    <option onclick="canCon({{@index}})" class="cancelB">Cancelled</option>
-                    <option onclick="retCon({{@index}})" class="returnB">Returned</option>
-                </select> --}}
+                            <option></option>
+                            <option onclick="deliCon({{@index}})" class="deliverB">Delivered</option>
+                            <option onclick="canCon({{@index}})" class="cancelB">Cancelled</option>
+                            <option onclick="retCon({{@index}})" class="returnB">Returned</option>
+                        </select> --}}
 
-                 <button class="btn dropdown-toggle mainB text-black" type="button" data-bs-toggle="dropdown"
- >
-        Change
-    </button>
-    <ul class="dropdown-menu profile" >
-        <li onclick="deliCon({{@index}})" class="deliverB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Delivered</a></li>
-        <li onclick="canCon({{@index}})" class="cancelB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Cancelled</a></li>
-        <li onclick="retCon({{@index}})" class="returnB" style="cursor: pointer;"><a class="dropdown-item text-black"  >Returned</a></li>
-    </ul>
-                        {{!-- <a  onclick="deliCon({{@index}})" class="deliverB" style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
+                        <button class="btn dropdown-toggle mainB text-black" type="button" data-bs-toggle="dropdown">
+                            Change
+                        </button>
+                        <ul class="dropdown-menu profile">
+                            <li onclick="deliCon({{@index}})" class="deliverB" style="cursor: pointer;"><a
+                                    class="dropdown-item text-black">Delivered</a></li>
+                            <li onclick="canCon({{@index}})" class="cancelB" style="cursor: pointer;"><a
+                                    class="dropdown-item text-black">Cancelled</a></li>
+                            <li onclick="retCon({{@index}})" class="returnB" style="cursor: pointer;"><a
+                                    class="dropdown-item text-black">Returned</a></li>
+                        </ul>
+                        {{!-- <a onclick="deliCon({{@index}})" class="deliverB"
+                            style="color: green;margin-right: 1.5rem;cursor: pointer;">Delivered</a>
 
-                        
-                        <a  onclick="canCon({{@index}})" class="cancelB" style="color: red;cursor: pointer;">Cancelled</a>
 
-                        <a  onclick="retCon({{@index}})" class="returnB" style="color: red;cursor: pointer;">Returned</a> --}}
+                        <a onclick="canCon({{@index}})" class="cancelB"
+                            style="color: red;cursor: pointer;">Cancelled</a>
+
+                        <a onclick="retCon({{@index}})" class="returnB" style="color: red;cursor: pointer;">Returned</a>
+                        --}}
 
                     </td>
+
+
                 </tr>
 
+
                 {{!-- return --}}
-                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;" >
+                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;">
                     <h1>Confirmation</h1>
                     <p>Did you Recieve?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/admin/return-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR2({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/admin/return-order/{{this._id}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR2({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
 
 
                 {{!-- deliver --}}
-                <div class="neumorphic-alert-box position-absolute px-5 del1" style="left: 35%;" >
+                <div class="neumorphic-alert-box position-absolute px-5 del1" style="left: 35%;">
                     <h1>Confirmation</h1>
                     <p>Are you delivered?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/admin/deliver-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR1({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/admin/deliver-order/{{this._id}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR1({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
 
                 {{!-- delete --}}
-                <div class="neumorphic-alert-box position-absolute px-5 del2" style="left: 35%;" >
+                <div class="neumorphic-alert-box position-absolute px-5 del2" style="left: 35%;">
                     <h1>Confirmation</h1>
                     <p>Are you Cancelling?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/admin/cancel-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/admin/cancel-order/{{this._id}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
                 {{/each}}
             </tbody>
         </table>
+        <span style="user-select: none;">page <span id="curP">1</span> of <span id="totalP">4</span></span>
         <nav aria-label="Page navigation example" class="d-none d-lg-block">
             <ul class="pagination float-end">
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a class="page-link" id="backP" style="cursor: pointer;user-select: none;" onclick="backpage()"
+                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                    <a class="page-link" id="frontP" style="cursor: pointer;user-select: none;" onclick="frontpage()"
+                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -139,12 +160,19 @@
     </div>
 </div>
 <style>
-    table {width:7cm; height:7cm; border: 1px solid;
-  page-break-after: always;
-  }
-@media print {
-  @page { size: A4 portrait; }
-  }
+    table {
+        width: 7cm;
+        height: 7cm;
+        border: 1px solid;
+        page-break-after: always;
+    }
+
+    @media print {
+        @page {
+            size: A4 portrait;
+        }
+    }
+
     .neumorphic-alert-box {
         background-color: #f2f2f2;
         border-radius: 10px;
@@ -154,6 +182,7 @@
         padding: 20px;
         text-align: center;
         display: none;
+        position: absolute;
     }
 
     .neumorphic-alert-buttons {
@@ -189,20 +218,80 @@
         padding: 10px 20px;
     }
 
+    .close-row {
+        display: none;
+    }
+
     .open-pop {
         display: block;
     }
 </style>
+
+<script>
+    let slno = document.getElementsByClassName('slno')
+    for (let i = 0; i < slno.length; i++) {
+        slno[i].innerHTML = i + 1;
+    }
+    /* pagination */
+    let num = 4
+    let p = 1;
+    document.getElementById('curP').innerHTML = p;
+    p = 2
+    document.getElementById('totalP').innerHTML = Math.ceil((slno.length) / num)
+    let n = num;
+    let m;
+    let order = document.getElementsByClassName('orderRow')
+    for (let i = 0; i < order.length; i++) {
+        if (i >= num) {
+            order[i].classList.add('close-row')
+        }
+    }
+    function frontpage() {
+        if (n + 1 < order.length + 1) {
+            for (let i = 0; i < order.length; i++) {
+                if (i >= n && i < n + num) {
+                    order[i].classList.remove('close-row')
+                } else {
+                    order[i].classList.add('close-row')
+                }
+            }
+            document.getElementById('curP').innerHTML = p;
+            p++;
+            m = n
+            n = num + n;
+        } else {
+            document.getElementById('backP').setAttribute = 'disabled'
+        }
+    }
+    function backpage() {
+        if (n - 1 > -1) {
+            for (let i = 0; i < order.length; i++) {
+                order[i].classList.add('close-row')
+                if (i < n && i >= n - num) {
+                    order[i].classList.remove('close-row')
+                }
+            }
+            p--;
+            document.getElementById('curP').innerHTML = p;
+            m = n
+            n = n - num;
+        } else {
+            document.getElementById('backP').setAttribute = 'disabled'
+        }
+    }
+
+</script>
 
 <script src="/javascripts/adminOrders.js"></script>
 {{!-- to pdf --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 {{!-- to exccel --}}
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-        crossorigin="anonymous"></script>
-{{!-- <script src="/jsPDF/jspdf.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+    crossorigin="anonymous"></script>
+{{!--
+<script src="/jsPDF/jspdf.js"></script>
 <script src="/jsPDF/plugins/from_html.js"></script>
 <script src="/jsPDF/plugins/split_text_to_size.js"></script>
 <script src="/jsPDF/plugins/standard_fonts_metrics.js"></script> --}}

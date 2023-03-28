@@ -31,10 +31,10 @@
                 {{!-- <input type="text" name="category" class="form-control" value="{{product.category}}" required>
                 --}}
                 <select class="form-select" name="category" aria-label="Default select example" required>
-                    <option selected value={{product.categoryAs.[0].category}}>{{product.categoryAs.[0].category}}
+                    <option selected value="{{product.categoryAs.[0]._id}}">{{product.categoryAs.[0].category}}
                     </option>
                     {{#each category}}
-                    <option value={{this.category}}>{{this.category}}</option>
+                    <option  value={{this._id}}>{{this.category}}</option>
                     {{/each}}
 
                 </select>

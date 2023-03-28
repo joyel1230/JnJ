@@ -1,14 +1,32 @@
-<div >
-<div class="dropdown" style="margin-top: 2.5rem;position: fixed;z-index: 4;">
-  <button class="btn btn-secondary dropdown-toggle" style="background-color: #ffffff82;color: #000000;font-weight: 500;font-size:large" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Filter
-  </button>
-  <div class="dropdown-menu"  style="background-color: #ffffff82;"  aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large" href="/all-products">All</a>
-    <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large" href="/her">For Her</a>
-    <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large" href="/him">For Him</a>
-  </div>
-</div>
+<div class="">
+    <div class="dropdown" style="margin-top: 2.5rem;position: fixed;z-index: 2;background-color: #ffffff00;">
+        <button class="btn btn-secondary dropdown-toggle"
+            style="background-color: #ffffff82;color: #000000;font-weight: 500;font-size:large" type="button"
+            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter
+        </button>
+        <div class="dropdown-menu" style="background-color: #ffffff82;" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large"
+                href="/all-products">All</a>
+            <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large"
+                href="/her">For Her</a>
+            <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large"
+                href="/him">For Him</a>
+        </div>
+    </div>
+    <div class="dropdown" style="margin-top: 2.5rem;position: fixed;z-index: 2;margin-left: 7rem;">
+        <button class="btn btn-secondary dropdown-toggle"
+            style="background-color: #ffffff82;color: #000000;font-weight: 500;font-size:large" type="button"
+            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort
+        </button>
+        <div class="dropdown-menu" style="background-color: #ffffff82;" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large"
+                href="/low-to-high">Price Low to High</a>
+            <a class="dropdown-item" style="background-color: #add8e600;color: #000000;font-weight: 500;font-size:large"
+                href="/high-to-low">Price High to Low</a>
+        </div>
+    </div>
 </div>
 <!-- product_list start-->
 <section class="product_list section_padding" style="margin-top: 3rem;">
@@ -20,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-12">
                 <div class="product_list_slider owl-carousel">
 
@@ -68,22 +86,88 @@
 
                 </div>
             </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product_list_slider owl-carousel mt-4">
+
+                    <div class="single_product_list_slider">
+                        <div class="row" style="display: block!important;">
+                            {{#each products}}
+                            {{#if this.deleted}}
+                            {{else}}
+                            <div class="col-lg-3 col-sm-6" style="float: left;">
+                                <div class="single_product_item">
+
+                                    <div class="single_product_text">
+                                        <a href="/single-product?id={{this._id}}"><img src="/image/{{this.images.[0]}}"
+                                                style="max-width: 250px;border-radius: 20px;height: 230px;" alt=""></a>
+
+                                        <h4 class="px-3">{{this.name}}</h4>
+                                        <h3 style="float: left;" class="px-3">{{this.price}}</h3>
+                                        {{!-- <a href="/add-to-wishlist/{{this._id}}" class="ab"><i
+                                                class="ti-heart"></i></a> --}}
+                                        <a class="ab" style="margin-left: 12rem;" onclick="addtowish(this)">
+                                            <button onclick="addToWish('{{this._id}}')" class=""
+                                                style="background-color: #00000000;border: none;color: #fff"><i
+                                                    class="ti-heart hrtno" style="color: rgb(0, 0, 0);"></i> <i
+                                                    class="ti-heart hrt dis"
+                                                    style="color: rgb(255, 0, 0);"></i></button>
+                                        </a>
+                                        {{!-- <a href="/add-to-cart/{{this._id}}" class="add_cart w-75 ab">+ add to
+                                            cart</a> --}}
+
+                                        {{#if this.stock}}
+                                        <a class="add_cart w-75 ab addtocart" onclick="addedto(this)"><button
+                                                onclick="addToCart('{{this._id}}')" class="addto px-3"
+                                                style="background-color: #00000000;border: none;color: #000000;">+ add
+                                                to
+                                                cart</button>
+                                                <button
+                                                class="added px-3" 
+                                                style="background-color: #00000000;border: none;color: #000000;"></button>
+                                            {{!-- <span class="added px-3"></span> --}}
+                                        </a>
+                                        {{else}}
+                                        <a class="ab"><span class="text-danger m-2">Out of Stock</span></a>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+                            {{/each}}
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
     </div>
 
 </section>
 
 <style>
-    .dis{
+    .dis {
         display: none;
     }
 </style>
 <script>
-    
-  
-     function addedto(element) {
+     let addTo = document.getElementsByClassName('added')
+    for(let i=0;i<addTo.length;i++){
+        addTo[i].style.display = 'none'
+    }
+
+    function addedto(element) {
         element.querySelector('.addto').style.display = 'none';
-        element.querySelector('.added').textContent = 'added';
+        element.querySelector('.added').style.display = 'block'
+        element.querySelector('.added').textContent = '+ add to cart';
+        setTimeout(()=>{
+            element.querySelector('.added').disabled = true
+            element.querySelector('.added').textContent = 'added';
+        },500)
         // Call the addToCart function with the appropriate argument
 
     }
@@ -91,5 +175,5 @@
         thi.querySelector('.hrtno').style.display = 'none'
         thi.querySelector('.hrt').classList.remove('dis')
     }
- 
+
 </script>

@@ -1,5 +1,5 @@
 <!--================Cart Area =================-->
-<section class="cart_area padding_top" style="margin-top: 8rem;">
+<section class="cart_area padding_top" style="margin-top: 8rem;user-select: none;">
   <div class="container">
     <div class="cart_inner">
       <h4 style="font-weight: 700;margin-left: 0.7rem;">CART</h4>
@@ -27,6 +27,7 @@
                     <a href="/single-product?id={{this.cartItems.[0]._id}}"><img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" /></a>
                   </div>
                   <div class="media-body">
+                    
                     <p>{{this.cartItems.[0].name}}</p>
                   </div>
                 </div>
@@ -45,12 +46,14 @@
                 </div>
               </td>
               <td>
+                  <span class="text-danger nomore  position-absolute" style="margin-top: -1rem;"></span>
                 <div class="product_count" style="user-select: none;">
                   {{!-- <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
                   <input class="input-number" type="text" value="1" min="1" max="5">
                   <span class="input-number-increment"> <i class="ti-angle-up"></i></span> --}}
                   <i class="ti-angle-down" style="cursor: pointer;" onclick="minusQty({{@index}})"></i>
                   <span style="margin: 0.5rem;" class="qty" name="qty">{{this.cart.qty}}</span>
+                  <span class="stkQty" hidden>{{this.cartItems.[0].stock}}</span>
                   <i class="ti-angle-up" style="cursor: pointer;margin-left: 1px;" onclick="plusQty({{@index}})"></i>
                 </div>
               </td>
@@ -83,15 +86,16 @@
             <tr class="shipping_area">
               <td></td>
               <td></td>
+              <td></td>
               <td>
-                <h5>Shipping</h5>
+                <h5></h5>
               </td>
               <td>
                 <div class="shipping_box">
                   <ul class="list">
 
                     <li class="active">
-                      <a href="#">Free Shipping</a>
+                      <a >Free Shipping</a>
                     </li>
 
                   </ul>
@@ -106,6 +110,7 @@
           <a class="btn_1 mb-3" href="/">Continue Shopping</a>
          {{#if cartArr}}
           <a class="btn_1 checkout_btn_1" href="" onclick="pushQty()" id="proCheck">Proceed to checkout</a>
+          <a class="btn_1 checkout_btn_1"  href="/cart" id="proCheck1"></a>
           {{/if}}
         </div>
       </div>
@@ -114,6 +119,23 @@
 <!--================End Cart Area =================-->
 
 <script>
+  $(function(){
+    let qtyElems = document.getElementsByClassName('qty');
+    let stkElems = document.getElementsByClassName('stkQty');
+    let count = true;
+    for(let i=0;i<qtyElems.length;i++){
+      let stk = +stkElems[i].innerHTML
+      if(stk<=0){
+        qtyElems[i].innerHTML = 0 ;
+        document.getElementById('proCheck').style.display = 'none'
+        document.getElementById('proCheck1').innerHTML = 'Remove zero quantity items'
+        count = false;
+      }
+    }
+    if(count){
+      document.getElementById('proCheck1').style.display = 'none'
+    }
+  })
 
   const proCheck = document.getElementById('proCheck')
 
@@ -135,10 +157,15 @@
 
   function minusQty(index) {
     let qtyElems = document.getElementsByClassName('qty');
+    let stkElems = document.getElementsByClassName('stkQty');
+    let nomoreElems = document.getElementsByClassName('nomore');
+
     let onePriceElems = document.getElementsByClassName('onePrice');
     let totalElems = document.getElementsByClassName('totalPrice');
 
     let qty = Number(qtyElems[index].innerHTML);
+    let stk = Number(stkElems[index].innerHTML);
+    nomoreElems[index].innerHTML =''
     let onePrice = Number(onePriceElems[index].innerHTML);
     if (qty > 1) {
       qtyElems[index].innerHTML = qty - 1;
@@ -154,10 +181,24 @@
 
   function plusQty(index) {
     let qtyElems = document.getElementsByClassName('qty');
+    let stkElems = document.getElementsByClassName('stkQty');
+    let nomoreElems = document.getElementsByClassName('nomore');
+
     let onePriceElems = document.getElementsByClassName('onePrice');
     let totalElems = document.getElementsByClassName('totalPrice');
 
     let qty = Number(qtyElems[index].innerHTML);
+    let stk = Number(stkElems[index].innerHTML);
+    if(qty>=stk){
+      if(stk<=0){
+        qtyElems[index].innerHTML = 0
+      nomoreElems[index].innerHTML = 'no stock'
+      return;
+      }
+      nomoreElems[index].innerHTML = 'no more'
+      return;
+    }
+    nomoreElems[index].innerHTML =''
     let onePrice = Number(onePriceElems[index].innerHTML);
     if (qty < 5) {
       qtyElems[index].innerHTML = qty + 1;

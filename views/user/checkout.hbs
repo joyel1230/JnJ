@@ -1,5 +1,5 @@
 <!--================Checkout Area =================-->
-<section class="checkout_area padding_top" style="margin-top: 8rem;">
+<section class="checkout_area padding_top" style="margin-top: 4rem;">
     <div class="container">
 
         <div class="cupon_area">
@@ -13,41 +13,50 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h3>Shipping Details</h3>
+                    <span id="addNo" hidden></span>
+                    {{#each add}}
+                    <div class="form-check mb-2" >
+                        <input class="form-check-input radio" onclick="changeAdd('{{@index}}', '{{this.name}}', '{{this.mobile}}', '{{this.street}}', '{{this.city}}', '{{this.pincode}}')" style="cursor: pointer;" type="radio" name="flexRadioDefault">
+                        <label class="form-check-label" for="flexRadioDefault1">    
+                            {{this.name}}, {{this.street}}, {{this.city}}, {{this.pincode}}
+                        </label>
+                    </div>
+                    {{/each}}
                     <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="name" name="name" disabled
-                                value="{{add.name}}" />
+                                value="{{add.[0].name}}" />
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="tel" class="form-control w-75" id="mobile" name="mobile" disabled
-                                value="{{add.mobile}}" />
+                                value="{{add.[0].mobile}}" />
                         </div>
 
-                        <div class="col-md-12 form-group p_star">
+                        {{!-- <div class="col-md-12 form-group p_star">
                             <input type="email" class="form-control w-75" id="email" name="email" disabled
                                 value="{{docs.[0].email}}" />
-                        </div>
+                        </div> --}}
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="street" name="street" disabled
-                                value="{{add.street}}" />
+                                value="{{add.[0].street}}" />
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="city" name="city" disabled
-                                value="{{add.city}}" />
+                                value="{{add.[0].city}}" />
                         </div>
-                        <div class="col-md-12 form-group p_star">
+                        {{!-- <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="state" name="state" disabled
-                                value="{{add.state}}" />
+                                value="{{add.[0].state}}" />
                         </div>
 
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="country" name="country" disabled
-                                value="{{add.country}}" />
-                        </div>
+                                value="{{add.[0].country}}" />
+                        </div> --}}
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="pincode" name="pincode" disabled
-                                value="{{add.pincode}}" />
-                        </div>
+                                value="{{add.[0].pincode}}" />
+                        </div> 
 
 
                         <div class="col-md-12 form-group">
@@ -57,11 +66,11 @@
                                     to a new address
                                     <span
                                         style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
-                                <a href="/addresses"
+                                {{!-- <a href="/addresses"
                                     style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;">Change
                                     address
                                     <span
-                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
+                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a> --}}
                             </div>
 
                         </div>
@@ -150,8 +159,8 @@
                         <a class="btn_3 qwerty" style="border: 1px solid #000;color: white;" id="pro2"
                             onclick="payOrder()"><span id="proceed2">Proceed
                                 to Razorpay</span></a>
-                        <a class="btn_3 qwerty" style="border: 1px solid #000;color: white;" onclick="paypalOrder()" id="pro3"><span
-                                id="proceed3">Proceed
+                        <a class="btn_3 qwerty" style="border: 1px solid #000;color: white;" onclick="paypalOrder()"
+                            id="pro3"><span id="proceed3">Proceed
                                 to Paypal</span></a>
                     </div>
                 </div>

@@ -21,5 +21,41 @@ module.exports = {
             
             resolve(coupon)
         })
+    },
+    getProductsQty:(date)=>{
+        return new Promise(async(resolve, reject) => {
+            date = +date;
+            let totalQty = 0 ;
+            let sumProduct = [] ;
+            let orderArr =await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+            {$match:{
+                $expr:{
+                    $eq: [{ $dayOfMonth: "$createdOn" }, date]
+                }
+            }}
+            ]).toArray()
+            for (let i = 0; i < orderArr.length; i++) {
+                
+                for (let j = 0; j < (orderArr[i].products).length; j++) {
+                    sumProduct.push(orderArr[i].products[j].proId.toString().slice(0, 24))
+                    totalQty += orderArr[i].products[j].qty
+                }
+            }
+            const uniqueArr = [...new Set(sumProduct)];
+            let totalProduct = uniqueArr.length
+            resolve([totalProduct,totalQty])
+        })
+        
+    },
+    getSearch:(search)=>{
+        return new Promise(async(resolve, reject) => {
+            let regex = new RegExp(search, "i");
+            let product = await db.get().collection(collections.PRODUCT_COLLECTIONS).find({
+                $or: [
+                    { name: { $regex: regex } }
+                ]
+            }).toArray();
+            resolve(product)
+        })
     }
 }

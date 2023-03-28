@@ -5,6 +5,8 @@ const { COUPON_COLLECTION } = require('../config/collections');
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/user-helpers');
 const paypalHelpers = require('../helpers/paypal-helpers')
+const reportHelpers = require('../helpers/report-helpers')
+const couponHelpers = require('../helpers/coupon-helpers')
 
 let count = 1;
 let boo;
@@ -25,9 +27,12 @@ module.exports = {
     }
   },
   getHome: (req, res, next) => {
+    reportHelpers.removePendings()
+    reportHelpers.searches()
     // console.log(req);
     let userID = req.session.user;
     return new Promise((resolve, reject) => {
+      
       productHelpers.getAllProducts().then((array) => {
         let products = array[1]
         let banner = array[2]
@@ -86,11 +91,16 @@ module.exports = {
         } else {
           let mob = '+91'
           mob += newMobile;
-
+         
           client.verify.v2.services('VA25a92551fa5e3c0f98c42a1d8d1878e1')
                 .verifications
                 .create({to: mob , channel: 'sms'})
-                .then(verification => console.log(verification.status));
+                .then(verification => {console.log(verification.status)
+                  res.render('user/forgot', { newMobile });
+                })
+                .catch((err)=>{
+                  res.render('user/mobile', { block: true })
+                })
 
 
           // let myOTP = Math.floor(Math.random() * 9000) + 1000;
@@ -104,7 +114,7 @@ module.exports = {
           //   .then(message => console.log(message.sid));
 
 
-          res.render('user/forgot', { newMobile });
+          
         }
       })
     }
@@ -166,11 +176,13 @@ module.exports = {
     let id = req.params.id;
     let mobile = id;
     let pass = req.body.password;
+    let cart = req.session.cart
     userHelpers.doLogin(id, pass).then((response) => {
       if (response.status) {
         req.session.login = true;
         req.session.user = response.user;
-
+        req.session.cart = cart;
+        console.log(req.session.cart);
         userHelpers.active(req.session.user?.mobile).then((response) => {
           // console.log(true);
         })
@@ -190,7 +202,8 @@ module.exports = {
       // console.log(true);
     })
 
-    req.session.destroy();
+    req.session.login=false;
+    req.session.user=false;
     boo = true;
     res.redirect('/');
   },
@@ -232,14 +245,16 @@ module.exports = {
   },
   getAddCart: (req, res) => {
     let proId = req.params.id
+    
     let userMob = req.session.user.mobile
-    userHelpers.addCart(userMob, proId).then((wish) => {
-      if (wish) {
+    userHelpers.addCart(userMob, proId).then((obj) => {
+      obj.user = req.session.login
+      if (obj.wish) {
         // res.redirect('/wishlist')
-        res.json({ status: true })
+        res.json({ status: true, cart: obj.cart, user: obj.user })
       } else {
         // res.redirect('/cart')
-        res.json({ status: true })
+        res.json({ status: true, cart: obj.cart, user: obj.user })
       }
     })
   },
@@ -333,7 +348,7 @@ module.exports = {
           res.redirect('/checkout')
 
         } else {
-          res.redirect('/add-address')
+          res.redirect('/addresses')
 
         }
       })
@@ -343,7 +358,7 @@ module.exports = {
           res.redirect('/cart')
 
         } else {
-          res.redirect('/add-address')
+          res.redirect('/addresses')
 
         }
       })
@@ -359,6 +374,14 @@ module.exports = {
       res.render('user/add-address', { userd, userID, add, index })
 
     })
+  },
+  getDeleteAddressId: (req,res) => {
+    let ind = req.params.ind
+    let userID = req.session.user;
+    userHelpers.deleteAddress(ind, userID.mobile).then(()=>{
+      res.redirect('/addresses')
+    })
+
   },
   getCheckout: (req, res) => {
     let userID = req.session.user;
@@ -392,8 +415,9 @@ module.exports = {
   getCashOrder: (req, res) => {
     let discount = req.query.discount;
     let total = req.query.total;
+    let addr = req.query.addr;
     let userID = req.session.user;
-    userHelpers.addCashOrder(discount, total, userID.mobile).then(() => {
+    userHelpers.addCashOrder(discount, total, userID.mobile, addr).then(() => {
       res.redirect('/orders')
     }).catch((response)=>{
       res.redirect('/add-address')
@@ -402,8 +426,9 @@ module.exports = {
   getPayOrder: (req, res) => {
     let discount = req.query.discount;
     let total = req.query.total;
+    let addr = req.query.addr;
     let userID = req.session.user;
-    userHelpers.addPayOrder(discount, total, userID.mobile).then((orderId) => {
+    userHelpers.addPayOrder(discount, total, userID.mobile, addr).then((orderId) => {
       userHelpers.generateRazorPay(orderId, total).then((order) => {
         res.json({order:order,status:false})
 
@@ -491,12 +516,32 @@ module.exports = {
   getPaypalOrder:(req,res)=>{
     let discount = req.query.discount;
     let total = req.query.total;
+    let addr = req.query.addr;
     let userID = req.session.user;
     console.log(discount,total);
-    paypalHelpers.addPaypalOrder(discount, total, userID.mobile).then((id)=>{
-      paypalHelpers.payWithPaypal(id,res)
+    paypalHelpers.addPaypalOrder(discount, total, userID.mobile, addr).then((id)=>{
+      paypalHelpers.payWithPaypal(id,res,total)
     }).catch((response)=>{
       res.redirect('/add-address')
+    })
+  },
+  getlowtohigh:(req,res)=>{
+    let userID = req.session.user;
+    productHelpers.getLtoHProducts().then((products) => {
+      res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  gethightolow:(req,res)=>{
+    let userID = req.session.user;
+    productHelpers.getHtoLProducts().then((products) => {
+      res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  postSearch: (req,res)=>{
+    let search = req.body.search;
+    let userID = req.session.user;
+    couponHelpers.getSearch(search).then((products)=>{
+      res.render('user/all-products', { products, userd, userID })
     })
   }
 }

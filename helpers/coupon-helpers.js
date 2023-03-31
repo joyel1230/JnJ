@@ -57,5 +57,26 @@ module.exports = {
             }).toArray();
             resolve(product)
         })
+    },
+    postReview:(body)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.RATING_COLLECTION).updateOne({
+                user:body.user,
+                proId:body.proId
+            },
+            {$set:{
+                user:body.user,
+                proId:body.proId,
+                rating:Number(body.ratingCount),
+                name:body.name,
+                review:body.message
+            }},
+            {
+                upsert:true
+            }
+            )
+            resolve(true)
+        })
+        
     }
 }

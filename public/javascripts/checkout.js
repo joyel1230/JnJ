@@ -143,3 +143,8 @@ let itemQty = document.getElementsByClassName('itemQty')
         city.value = city1
         pincode.value = pincode1
     }
+
+    function couponInsert(code) {
+        console.log(code);
+        document.getElementById('code').value = code
+    }

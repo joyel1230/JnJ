@@ -265,10 +265,14 @@ module.exports = {
     },
     getSingleProduct: (proId) => {
         return new Promise(async (resolve, reject) => {
-            let product = await db.get().collection(collections.PRODUCT_COLLECTIONS).findOne({ _id: ObjectId(proId) })
+            let product = await db.get().collection(collections.PRODUCT_COLLECTIONS).findOne({ slug: proId })
             let category = await db.get().collection(collections.CATEGORY_COLLECTION).findOne({ _id: ObjectId(product.categoryId) })
+            let prod = product._id
+            prod = prod.toString()
+            let review = await db.get().collection(collections.RATING_COLLECTION).find({proId:prod}).toArray()
+            console.log(prod);
             let stock = Number(product.stock)
-            let arr = [product, category, stock]
+            let arr = [product, category, stock,review]
             resolve(arr)
         })
     },
@@ -405,6 +409,13 @@ module.exports = {
         // console.log(qty);
         return new Promise(async (resolve, reject) => {
             let add = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
+            let coupon = await db.get().collection(collections.COUPON_COLLECTION).aggregate([
+                {
+                    $match:{
+                           expiry:{$gte:new Date()}
+                    }
+                }
+            ]).toArray()
 
             for (let i = 0; i < qty.length; i++) {
                 updateQty(mob, qty[i], size[i], i)
@@ -425,6 +436,7 @@ module.exports = {
                 add = add.address
             }
             let array = [add, cartArr]
+            array.push(coupon)
             db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: mob }, {
                 $set: {
                     discount: Number(0)
@@ -433,15 +445,24 @@ module.exports = {
             resolve(array)
         })
     },
-    checkCoupon: (code, total, mob) => {
+    checkCoupon: (code1, total, mob) => {
         return new Promise(async (resolve, reject) => {
-            let coupon = await db.get().collection(collections.COUPON_COLLECTION).findOne({ code: code })
+            
+            // let coupon = await db.get().collection(collections.COUPON_COLLECTION).findOne({ code: code })
+            let coupon = await db.get().collection(collections.COUPON_COLLECTION).aggregate([
+                {
+                    $match:{
+                           code:code1,expiry:{$gte:new Date()}
+                    }
+                }
+            ]).toArray()
+    
             if (coupon) {
-                if (total >= coupon.minPur) {
+                if (total >= coupon[0].minPur) {
                     await db.get().collection(collections.USER_COLLECTIONS).updateOne(
                         { mobile: mob }, {
                         $set: {
-                            discount: Number(coupon.amount)
+                            discount: Number(coupon[0].amount)
                         }
                     }
                     )
@@ -590,7 +611,19 @@ module.exports = {
         })
     },
     cancelOrder: (id) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
+            let order = await db.get().collection(collections.ORDER_COLLECTION).findOne({_id: ObjectId(id)})
+            let cart = order.products;
+                        for (let i = 0; i < cart.length; i++) {
+                            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({
+                                _id: cart[i].proId
+                            }, {
+                                $inc: {
+                                    stock: cart[i].qty
+                                }
+                            }
+                            )
+                        }
             db.get().collection(collections.ORDER_COLLECTION).updateOne(
                 { _id: ObjectId(id) },
                 { $set: { status: 'Cancelled', closedOn: new Date() } }
@@ -686,7 +719,19 @@ module.exports = {
         })
     },
     returnedOrder: (id) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
+            let order = await db.get().collection(collections.ORDER_COLLECTION).findOne({_id: ObjectId(id)})
+            let cart = order.products;
+                        for (let i = 0; i < cart.length; i++) {
+                            db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({
+                                _id: cart[i].proId
+                            }, {
+                                $inc: {
+                                    stock: cart[i].qty
+                                }
+                            }
+                            )
+                        }
             db.get().collection(collections.ORDER_COLLECTION).updateOne(
                 { _id: ObjectId(id) },
                 { $set: { status: 'Returned', closedOn: new Date() } }
@@ -696,8 +741,9 @@ module.exports = {
     },
     getOrderDate: (date1) => {
         return new Promise(async (resolve, reject) => {
-
+            console.log(date1);
             const isTdate = new Date(date1).toISOString();
+            console.log(isTdate);
             const date = new Date(isTdate);
             date.setUTCDate(date.getUTCDate() + 1);
             date.setUTCHours(0, 0, 0, 0);
@@ -711,7 +757,7 @@ module.exports = {
                     $lt: new Date(newDate)
                 }
             }).toArray()
-            console.log(orderArr);
+            // console.log(orderArr);
             resolve(orderArr)
         })
     }

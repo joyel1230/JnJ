@@ -82,7 +82,11 @@ router.get('/blog', userCont.getBlog)
 
 router.get('/single-blog', userCont.getSingleBlog)
 
-router.get('/single-product', userCont.getSingleProductId)
+router.get('/single-product/:slug', userCont.getSingleProductId)
+
+router.post('/single-product/:slug', userCont.getSingleProductId)
+
+router.post('/add-review', userCont.postAddReview)
 
 router.get('/all-products',userCont.getAllProducts)
 

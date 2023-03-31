@@ -5,6 +5,9 @@
         <div class="col-lg-12">
           <div class="confirmation_tittle">
             <span>Thank you.</span>
+            {{#if del}}
+            <h4>click product image to rate</p>
+            {{/if}}
           </div>
         </div>
         <div class="col-lg-6 col-lx-4">
@@ -54,35 +57,56 @@
             <table class="table table-borderless">
               <thead>
                 <tr style="text-align: center;">
+                  <th scope="col"></th>
                   <th scope="col" colspan="2">Product</th>
                   <th scope="col">Size</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Total</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
 
                 {{#each order}}
-                <tr style="text-align: center;">
+                <tr class="text-center">
+                  {{#if this.stat}}
+                  <form action="/single-product/{{this.items.[0].slug}}" method="post">
+                  <input type="text" name="stat" id="" value="rate" hidden>
+                  <th class="p-0"><button type="submit" style="border: 0;background: none;"><img src="/image/{{this.items.[0].images.[0]}}" style="min-width: 50px;height: auto;max-width: 50px;" alt="" /></a></th>
+                  </form>
+                  {{else}}
+                  <th class="p-0"><img src="/image/{{this.items.[0].images.[0]}}" style="min-width: 50px;height: auto;max-width: 50px;" alt="" /></th>
+                  {{/if}}
                     <span style="display: none;" class="onePrice">{{this.items.[0].price}}</span>
-                  <th colspan="2"><span>{{this.items.[0].name}}</span></th>
+                  <th colspan="2" ><span>{{this.items.[0].name}}</span></th>
                   <th><span class="">{{#if this.products.size}}{{this.products.size}} {{else}}sm{{/if}} </span></th>
                   <th><span class="qty">{{this.products.qty}}</span></th>
                   <th>₹<span class="oneTotal"></span>.00</th>
                 </tr>
+                 <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                 </tr>           
                 {{/each}}
-                            
                 <tr style="text-align: center;">
+                  <th></th>
+                  <th></th>
                   <th colspan="3">Subtotal</th>
                   <th>₹<span id="subtotal"></span>.00</th>
                 </tr>
                 <tr style="text-align: center;">
+                  <th></th>
+                  <th></th>
                   <th colspan="3">discount</th>
                   <th>-₹<span id="discount">{{order.[0].discount}}</span>.00</th>
                 </tr>
               </tbody>
               <tfoot>
                 <tr style="text-align: center;">
+                  <th></th>
+                  <th></th>
                   <th scope="col" colspan="3">Total</th>
                   <th scope="col">₹<span id="total">{{order.[0].total}}</span>.00</th>
                 </tr>

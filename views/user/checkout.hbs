@@ -1,14 +1,21 @@
 <!--================Checkout Area =================-->
 <section class="checkout_area padding_top" style="margin-top: 4rem;">
     <div class="container">
+        <div style="margin-left: 1.9rem;">
+            {{#each coupon}}
+            <a onclick="couponInsert('{{this.code}}')"><input type="text" disabled value="{{this.code}}-above ₹{{this.minPur}}"  class="text-dark mb-2 mr-2" style="cursor: pointer;border: solid 1px #40b310;background-color: white;"></a>
+            {{/each}}
+        <a href="/all-products"><input type="text" disabled value="SHOP MORE"  class="text-dark mb-2 mr-2" style="cursor: pointer;border: solid 1px #40b310;background-color: white;width: auto;"></a>
 
+        </div>
         <div class="cupon_area">
-            <span style="background-color: aliceblue;color: #00a13e;" id="cmsg"></span>
+            <span style="background-color: aliceblue;color: #00a13e;margin-left: 1.9rem;" id="cmsg"></span>
             <span style="background-color: aliceblue;color: #b90000;" id="cmsg1"></span>
             <input type="text" class="w-25" name="code" id="code" required placeholder="Enter coupon code" />
             <button class="tp_btn" type="button" onclick="checkCoupon()">Apply Coupon</button>
 
         </div>
+
         <div class="billing_details">
             <div class="row">
                 <div class="col-lg-8">

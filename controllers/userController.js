@@ -8,6 +8,7 @@ const paypalHelpers = require('../helpers/paypal-helpers')
 const reportHelpers = require('../helpers/report-helpers')
 const couponHelpers = require('../helpers/coupon-helpers')
 
+
 let count = 1;
 let boo;
 const userd = true;
@@ -182,7 +183,7 @@ module.exports = {
         req.session.login = true;
         req.session.user = response.user;
         req.session.cart = cart;
-        console.log(req.session.cart);
+        // console.log(req.session.cart);
         userHelpers.active(req.session.user?.mobile).then((response) => {
           // console.log(true);
         })
@@ -245,7 +246,8 @@ module.exports = {
   },
   getAddCart: (req, res) => {
     let proId = req.params.id
-    
+    // console.log(req.originalUrl);
+    // console.log(slug);
     let userMob = req.session.user.mobile
     userHelpers.addCart(userMob, proId).then((obj) => {
       obj.user = req.session.login
@@ -272,12 +274,23 @@ module.exports = {
     res.render('user/single-blog', { userd })
   },
   getSingleProductId: (req, res) => {
-    let proId = req.query.id
+    // const slug = (req.originalUrl).split('/').pop();
+    let proId = req.params.slug
     let userID = req.session.user;
+    console.log(req.body.stat);
+    if (req.body.stat === 'rate' && userID) {
+      userID.rate = true
+    }
+    if (req.body.stat ===undefined && userID) {
+      userID.rate = false
+    }
     userHelpers.getSingleProduct(proId).then((arr) => {
       let product = arr[0]
       let category = arr[1]
       let stock = arr[2]
+      let review = arr[3]
+      let total = review.reduce((accumulator, currentValue) => accumulator + (currentValue.rating), 0);
+      let avg = Math.ceil(total/review.length)
       let stk = Number(stock)
       if (stk < 10 && stk != 0) {
         var stks = true
@@ -291,7 +304,7 @@ module.exports = {
         currencyDisplay: 'symbol',
         minimumFractionDigits: 2
       })
-      res.render('user/single-product', { userd, product, category, stock, userID, stks })
+      res.render('user/single-product', { userd, product, category, stock, userID, stks ,review,avg})
     })
   },
   getAccount: (req, res) => {
@@ -391,8 +404,10 @@ module.exports = {
     userHelpers.getAddCheckout(userID.mobile, qty,size).then((array) => {
       let add = array[0]
       let docs = array[1]
+      let coupon = array[2]
+      
 
-      res.render('user/checkout', { userID, userd, add, docs })
+      res.render('user/checkout', { userID, userd, add, docs ,coupon})
 
     })
   },
@@ -460,7 +475,15 @@ module.exports = {
       let l = orderNumber.length
       orderNumber = `${orderNumber[0]}${orderNumber[1]}${orderNumber[2]}${orderNumber[l - 2]}${orderNumber[l - 1]}`
       order[0].createdOn = order[0].createdOn.toLocaleDateString('es-ES')
-      res.render('user/order-info', { userID, userd, order, orderNumber })
+      let status = order[0].status
+      let del = false;
+      if (status=='Delivered') {
+        del=true;
+        order.map((ord)=>{
+          ord.stat = true;
+        })
+      }
+      res.render('user/order-info', { userID, userd, order, orderNumber,del })
     })
   },
   getCancelOrderId: (req, res) => {
@@ -542,6 +565,12 @@ module.exports = {
     let userID = req.session.user;
     couponHelpers.getSearch(search).then((products)=>{
       res.render('user/all-products', { products, userd, userID })
+    })
+  },
+  postAddReview: (req,res) =>{
+    couponHelpers.postReview(req.body).then(()=>{
+      let slug = req.body.slug
+    res.redirect(`/single-product/${slug}`)
     })
   }
 }

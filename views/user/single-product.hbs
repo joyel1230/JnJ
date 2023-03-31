@@ -1,82 +1,259 @@
 <!--================Single Product Area =================-->
 
-<div class="product_image_area section_padding" style="margin-top: 8rem;">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<section class="product_description_area">
   <div class="container">
-    <div class="row s_product_inner justify-content-between">
-      <div class="col-lg-7 col-xl-7">
-        <div class="product_slider_img">
-          <div id="vertical">
-            {{#each product.images}}
-            <div data-thumb="/image/{{this}}">
-              <img  src="/image/{{this}}" />
-            </div>
-            {{/each}}
+    <div class="tab-content" id="myTabContent">
 
+      <div class="product_image_area section_padding" style="margin-top: 2rem;">
+        <div class="container">
+          <div class="row s_product_inner justify-content-between">
+            <div class="col-lg-7 col-xl-7">
+              <div class="product_slider_img">
+                <div id="vertical">
+                  {{#each product.images}}
+                  <div data-thumb="/image/{{this}}">
+                    <img src="/image/{{this}}" />
+                  </div>
+                  {{/each}}
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-xl-4">
+              <div class="s_product_text">
+                <h3>{{product.name}}</h3>
+                <h2>{{product.price}}</h2>
+                <ul class="list">
+                  <li>
+                    <a class="active" >
+                      <span>Category</span> : {{category.category}}</a>
+                  </li>
+                  <li>
+                    <a > <span>Availibility</span> :
+
+                      {{!-- <span id="stk">{{product.stock}}</span> --}}
+                      {{#if stks}}
+                      <span id="in" style="color: rgb(255, 251, 0);">few left</span>
+                      {{else if stock}}
+                      <span id="in" style="color: greenyellow;">In Stock</span>
+                      {{else}}
+                      <span id="out" style="color: red;">Out of stock</span>
+                      {{/if}}
+                    </a>
+                  </li>
+                </ul>
+                <p>
+                  {{product.description}}
+                </p>
+                <div class="card_area d-flex justify-content-between align-items-center">
+
+                  {{!-- <a href="/add-to-cart/{{product._id}}" class="btn_3">add to cart</a> --}}
+                  <a class="add_cart w-100 ab addtocart" onclick="rem(this)" style="font-size: x-large;"><button
+                      onclick="addToCart('{{product._id}}')" class=""
+                      style="background-color: #00000000;border: none;color: #007411">+to
+                      cart</button>
+                  </a>
+                  <span id="ad"></span>
+                  {{!-- <a href="/add-to-wishlist/{{product._id}}" class="like_us"> <i class="ti-heart"></i> </a> --}}
+                  <a class="ab" id="wish" style="margin-left: 12rem;font-size: x-large;" onclick="rem(this)">
+                    <button onclick="addToWish('{{product._id}}')" class=""
+                      style="background-color: #00000000;border: none;color: #ff0000"><i class="ti-heart"></i></button>
+                  </a>
+                </div>
+                <input type="text" value="{{avg}}" hidden id="avgStar">
+                <div class="rating mt-3" id="mainStar">
+                  
+                  
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="col-lg-5 col-xl-4">
-        <div class="s_product_text">
-          <h3>{{product.name}}</h3>
-          <h2>{{product.price}}</h2>
-          <ul class="list">
-            <li>
-              <a class="active" href="#">
-                <span>Category</span> : {{category.category}}</a>
-            </li>
-            <li>
-              <a href="#"> <span>Availibility</span> :
-
-                {{!-- <span id="stk">{{product.stock}}</span> --}}
-                {{#if stks}}
-                <span id="in" style="color: rgb(255, 251, 0);">few left</span>
-                {{else if stock}}
-                <span id="in" style="color: greenyellow;">In Stock</span>
-                {{else}}
-                <span id="out" style="color: red;">Out of stock</span>
-                {{/if}}
-              </a>
-            </li>
-          </ul>
-          <p>
-            {{product.description}}
-          </p>
-          <div class="card_area d-flex justify-content-between align-items-center">
-
-            {{!-- <a href="/add-to-cart/{{product._id}}" class="btn_3">add to cart</a> --}}
-            <a class="add_cart w-100 ab addtocart" onclick="rem(this)" style="font-size: x-large;"><button onclick="addToCart('{{product._id}}')" class=""
-                style="background-color: #00000000;border: none;color: #007411">+to
-                cart</button>
-            </a>
-            <span id="ad"></span>
-            {{!-- <a href="/add-to-wishlist/{{product._id}}" class="like_us"> <i class="ti-heart"></i> </a> --}}
-            <a class="ab" id="wish" style="margin-left: 12rem;font-size: x-large;" onclick="rem(this)">
-              <button onclick="addToWish('{{product._id}}')" class=""
-                style="background-color: #00000000;border: none;color: #ff0000"><i class="ti-heart"></i></button>
-            </a>
+      <div class="tab-pane fade show active " id="review" role="tabpanel" aria-labelledby="review-tab ">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="review_list mt-5 scrollable">
+              <h3 style="text-decoration: underline;">Reviews</h3>
+              {{#each review}}
+              <div class="review_item">
+                <h4>{{this.name}}</h4>
+                <input type="text" class="starCount" value="{{this.rating}}" hidden>
+                <div class="media threeReviews">
+                  <div class="media-body starTag"> 
+                    
+                  </div>
+                </div>
+                <p>
+                  {{this.review}}
+                </p>
+              </div>
+              <hr>
+              {{/each}}
+            </div>
           </div>
+          {{#if userID.rate}}
+          <div class="col-lg-6 mt-5">
+            <div class="review_box">
+              <h4>Add a Review</h4>
+              <p>Your Rating:</p>
+              <ul class="list">
+                <li onclick="makeRating(1)">
+                  <a class="ratingStar">
+                    <i class="fa fa-star"></i>
+                  </a>
+                </li>
+                <li onclick="makeRating(2)">
+                  <a class="ratingStar">
+                    <i class="fa fa-star-o"></i>
+                  </a>
+                </li>
+                <li onclick="makeRating(3)">
+                  <a class="ratingStar">
+                    <i class="fa fa-star-o"></i>
+                  </a>
+                </li>
+                <li onclick="makeRating(4)">
+                  <a class="ratingStar">
+                    <i class="fa fa-star-o"></i>
+                  </a>
+                </li>
+                <li onclick="makeRating(5)">
+                  <a class="ratingStar">
+                    <i class="fa fa-star-o"></i>
+                  </a>
+                </li>
+              </ul>
+
+              <form class="row contact_form" action="/add-review" method="post" novalidate="novalidate">
+                <input type="text" name="ratingCount" id="ratingCount" value="1" hidden>
+                <input type="text" name="proId" value="{{product._id}}"  hidden>
+                <input type="text" name="user" value="{{userID.mobile}}"  hidden>
+                <input type="text" name="slug" value="{{product.slug}}"  hidden>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    {{#if userID.username}}
+                    <input type="text" class="form-control" name="name" value="{{userID.username}}" hidden placeholder="Your Full name" required />
+                    {{else}}
+                    <input type="text" class="form-control" name="name" value="guest user" hidden placeholder="Your Full name" required />
+                    {{/if}}
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea class="form-control" name="message" rows="1" placeholder="Review" required></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12 text-right">
+                  <button type="submit" value="submit" class="btn_3">
+                    Submit Now
+                  </button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          {{/if}}
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
 
 
 <!--================End Single Product Area =================-->
 <style>
+  .star {
+    font-size: 2em;
+    color: #1e5c8f;
+
+  }
+
+  .list li {
+    cursor: pointer;
+  }
+
   .dis {
     display: none;
   }
-  .big_img{
+
+  .big_img {
     width: 350px;
     height: 400px;
     float: left;
     margin-top: 20px;
   }
+  .scrollable {
+    height: 200px; /* set the height of the div */
+    overflow: auto; /* enable scrolling */
+    
+  }
+
+
+/* for webkit-based browsers */
+.scrollable::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+  
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: #fff; /* color of the track */
+  border-radius: 30px;
+
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #000000; /* color of the thumb */
+  border-radius: 30px;
+}
+
+
 </style>
 
 <script>
+  $(function(){
+    let starCout = document.getElementsByClassName('starCount')
+    let starTag = document.getElementsByClassName('starTag')
+    for(let i=0;i<starCout.length;i++){
+      let star = Number(starCout[i].value)
+      if(star==5){
+        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>'
+      }else if(star==4){
+        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i>'
+      }else if(star==3){
+        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      }else if(star==2){
+        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      }else{
+        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      }
+    }
+
+
+    let avgStar = +document.getElementById('avgStar').value
+    let mainStar = document.getElementById('mainStar')
+
+    if(avgStar==5){
+        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>'
+      }else if(avgStar==4){
+        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span>'
+      }else if(avgStar==3){
+        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+      }else if(avgStar==2){
+        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+      }else{
+        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+      }
+  })
+
+
   let stk = document.getElementById('stk')
   let ins = document.getElementById('in')
   let outs = document.getElementById('out')
@@ -87,11 +264,23 @@
   } else {
     outs.classList.add('dis')
   }
-  function rem(t){
+  function rem(t) {
     document.getElementById('wish').style.display = 'none'
     t.style.display = 'none';
-    document.getElementById('ad').innerHTML='DONE'
+    document.getElementById('ad').innerHTML = 'DONE'
   }
 
+  function makeRating(ind) {
+    let starRating = document.getElementsByClassName('ratingStar')
+    ind = Number(ind)
+    document.getElementById('ratingCount').value = ind
+    console.log(ind)
+    for (let i = 0; i < starRating.length; i++) {
+      starRating[i].innerHTML = '<i class="fa fa-star-o"></i>'
+    }
+    for (let i = 0; i < ind; i++) {
+      starRating[i].innerHTML = '<i class="fa fa-star"></i>'
+    }
+  }
 
 </script>

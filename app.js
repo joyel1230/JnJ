@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 // const axios = require('axios');
 const multer = require('multer')
+const url = require('url')
+const slugify = require('slugify')
 
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
@@ -15,6 +17,11 @@ const db = require('./config/connection')
 const session = require('express-session')
 require('dotenv').config()
 
+console.log(slugify('jnj',{
+  replacement:'.',
+  lower: true
+}));
+console.log('http://localhost:3000');
 
 
 // view engine setup

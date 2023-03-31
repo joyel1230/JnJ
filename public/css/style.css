@@ -4066,7 +4066,7 @@ ul {
 
 /* line 761, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .product_description_area {
-  padding-bottom: 120px;
+  padding-bottom: 60px;
   margin-top: 60px;
 }
 
@@ -4186,7 +4186,7 @@ ul {
 
 /* line 862, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .product_description_area .tab-content .total_rate .rating_list .list li a i {
-  color: #fbd600;
+  color: #1e5c8f;
 }
 
 /* line 870, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
@@ -4224,7 +4224,7 @@ ul {
 
 /* line 915, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_item {
-  margin-bottom: 35px;
+  margin-bottom: 0px;
 }
 
 /* line 918, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
@@ -4234,7 +4234,7 @@ ul {
 
 /* line 922, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_item p {
-  color: #797979;
+  color: #000000;
 }
 
 /* line 926, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
@@ -4264,7 +4264,7 @@ ul {
 
 /* line 945, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_item .media .media-body i {
-  color: #fbd600;
+  color: #1e5c8f;
 }
 
 /* line 949, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
@@ -4298,7 +4298,7 @@ ul {
 
 /* line 977, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_item p {
-  padding-top: 10px;
+  padding-top: 0px;
   margin-bottom: 0px;
 }
 
@@ -4337,7 +4337,7 @@ ul {
 /* line 1009, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */
 .review_box .list li a {
   display: inline-block;
-  color: #fbd600;
+  color: #1e5c8f;
 }
 
 /* line 1016, ../../01 cl html template/03_jun 2019/188_Aranoz shop_html/sass/_product.scss */

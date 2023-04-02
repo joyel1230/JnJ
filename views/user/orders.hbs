@@ -1,13 +1,24 @@
 <section class="confirmation_part padding_top">
     <div class="container">
         <div class="row" style="margin-top: 6rem;">
-            <h2>Orders</h2>
+            <div class="d-flex justify-content-between w-100">
+                <div>
+                    <h2>Orders</h2>
+                </div>
+                <div class="wallet-balance-box text-right">
+                    <h2>Wallet Balance</h2>
+                    <p style="font-weight: 700;color: #339335;">₹ {{userID.wallet}}.00</p>
+                </div>
+            </div>
+
+
             <div class="col-lg-12">
 
                 {{#each orders}}
 
                 <div class="order_details_iner" style="border: 1px solid #000;border-radius: 10px;">
-                    <h3><a href="/order-info?id={{this._id}}" style="color: #0056b3;">#0<span class="countC" style="color: #0056b3;"></span> order</a></h3>
+                    <h3><a href="/order-info?id={{this._id}}" style="color: #0056b3;">#0<span class="countC"
+                                style="color: #0056b3;"></span> order</a></h3>
                     <table class="table table-borderless">
                         <thead>
                             <tr>
@@ -19,35 +30,40 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th class="w-25" >{{this.items.[0].name}}
-                                    {{#if this.count}} <span style="color: rgb(0, 94, 11);">+ {{this.count}} more</span> {{/if}}
-                                    </th>
+                                <th class="w-25">{{this.items.[0].name}}
+                                    {{#if this.count}} <span style="color: rgb(0, 94, 11);">+ {{this.count}} more</span>
+                                    {{/if}}
+                                </th>
                                 <th class="w-25">{{this.createdOn}}</th>
-                                <th class="w-25 d-none d-sm-block" >{{this.payMethod}}</th>
+                                <th class="w-25 d-none d-sm-block">{{this.payMethod}}</th>
                                 <th class="status">{{this.status}}</th>
                             </tr>
                         </tbody>
                     </table>
-                    <button class="btn btn-danger float-right cancel " onclick="canCon({{@index}})"  style="margin-top: -40px;">cancel</button>
-                    <button class="btn btn-warning float-right return px-3 " onclick="canCon1({{@index}})"  style="margin-top: -40px;">return</button>
+                    <button class="btn btn-danger float-right cancel " onclick="canCon({{@index}})"
+                        style="margin-top: -40px;">cancel</button>
+                    <button class="btn btn-warning float-right return px-3 " onclick="canCon1({{@index}})"
+                        style="margin-top: -40px;">return</button>
                 </div>
                 {{!-- delete --}}
-                <div class="neumorphic-alert-box position-absolute px-5 del2" style="left: 35%;z-index: 3;margin-top: -190px;" id="">
+                <div class="neumorphic-alert-box position-absolute px-5 del2"
+                    style="left: 35%;z-index: 3;margin-top: -190px;" id="">
                     <h1>Confirmation</h1>
                     <p>Are you Cancelling?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/cancel-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/cancel-order/{{this._id}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
-                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;z-index: 3;margin-top: -190px;" id="">
+                <div class="neumorphic-alert-box position-absolute px-5 del3"
+                    style="left: 35%;z-index: 3;margin-top: -190px;" id="">
                     <h1>Confirmation</h1>
                     <p>Are you Returning?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/return-order/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR1({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/return-order/{{this._id}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR1({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
                 {{/each}}
@@ -58,66 +74,66 @@
 </section>
 <script>
     let countArr = document.getElementsByClassName('countC')
-    for(let i=0;i<countArr.length;i++){
-        countArr[i].innerHTML=countArr.length-i;
+    for (let i = 0; i < countArr.length; i++) {
+        countArr[i].innerHTML = countArr.length - i;
     }
     function canCon(i) {
-     
-         i=Number(i)
+
+        i = Number(i)
         let pop = document.getElementsByClassName('del2');
-        for(let i=0;i<pop.length;i++){
-        pop[i].classList.remove('open-pop');
-    
+        for (let i = 0; i < pop.length; i++) {
+            pop[i].classList.remove('open-pop');
+
         }
         pop[i].classList.add('open-pop');
         return false;
     }
     function canCon1(i) {
-     
-         i=Number(i)
+
+        i = Number(i)
         let pop = document.getElementsByClassName('del3');
-        for(let i=0;i<pop.length;i++){
-        pop[i].classList.remove('open-pop');
-    
+        for (let i = 0; i < pop.length; i++) {
+            pop[i].classList.remove('open-pop');
+
         }
         pop[i].classList.add('open-pop');
         return false;
     }
     function canConR(i) {
-        i=Number(i)
+        i = Number(i)
         let pop = document.getElementsByClassName('del2');
         pop[i].classList.remove('open-pop');
         return false;
     }
     function canConR1(i) {
-        i=Number(i)
+        i = Number(i)
         let pop = document.getElementsByClassName('del3');
         pop[i].classList.remove('open-pop');
         return false;
     }
-    
+
     let status = document.getElementsByClassName('status')
     let cancel = document.getElementsByClassName('cancel')
     let returned = document.getElementsByClassName('return')
-        console.log(status[0].innerHTML)
+    console.log(status[0].innerHTML)
 
-    for(let i=0;i<status.length;i++){
-        if(status[i].innerHTML==='processing'){
+    for (let i = 0; i < status.length; i++) {
+        if (status[i].innerHTML === 'processing') {
             cancel[i].classList.add('open-pop')
-        }else{
+        } else {
             cancel[i].classList.add('close')
         }
     }
-    for(let i=0;i<status.length;i++){
-        if(status[i].innerHTML==='Delivered'){
+    for (let i = 0; i < status.length; i++) {
+        if (status[i].innerHTML === 'Delivered') {
             returned[i].classList.add('open-pop')
-        }else{
+        } else {
             returned[i].classList.add('close')
         }
     }
 </script>
 <style>
-        .neumorphic-alert-box {
+    .neumorphic-alert-box {
         background-color: #f2f2f2;
         border-radius: 10px;
         box-shadow:
@@ -164,7 +180,8 @@
     .open-pop {
         display: block;
     }
-    .close{
+
+    .close {
         display: none;
     }
 </style>

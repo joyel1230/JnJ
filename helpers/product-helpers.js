@@ -1,10 +1,26 @@
 const db = require('../config/connection');
 const collections = require('../config/collections');
 const ObjectId = require('mongodb').ObjectId;
-
+const slugify = require('slugify');
 module.exports = {
-    addProduct: (product,images, callback) => {
+    addProduct:async (product,images, callback) => {
         let imagesFiles =images.map(file=>file.filename)
+        
+       async function slugged(string){
+            const randomNumber = Math.floor(Math.random() * 9000) + 1000;
+            let sluged = await slugify(`${string} ${randomNumber}`,{
+                replacement:'-',
+                lower: true
+              })
+              let data = await db.get().collection(collections.PRODUCT_COLLECTIONS).findOne({slug:sluged})
+              if (data) {
+                slugged(string)
+              }else{
+                return sluged;
+              }
+        }
+        let slugName =await slugged(product.name)
+        
         db.get().collection(collections.PRODUCT_COLLECTIONS).
             insertOne({
                 name: product.name,
@@ -12,7 +28,8 @@ module.exports = {
                 price:Number(product.price),
                 description: product.description,
                 stock:Number(product.stock),
-                images:imagesFiles
+                images:imagesFiles,
+                slug: slugName
             }
             ).then((data) => {
                 // console.log(data);

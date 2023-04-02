@@ -15,6 +15,7 @@ const app = express();
 const fileUpload = require('express-fileupload')
 const db = require('./config/connection')
 const session = require('express-session')
+
 require('dotenv').config()
 
 console.log(slugify('jnj',{
@@ -45,11 +46,25 @@ const fileStorage = multer.diskStorage({
     const timestamp = Date.now();
     const newFilename = `${timestamp}_${path.basename(file.originalname, ext)}.jpg`;
     cb(null, newFilename);
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+      cb(new Error('Only jpeg and png files are allowed'));
+      return;
+    } else {
+      cb(null, true);
+      return
+    }
   }
 });
 
+app.use(multer({
+  dest: 'image',
+  storage: fileStorage,
+  limits: { fileSize: 1024 * 1024 } // 1MB
+}).array('image'));
 
-app.use(multer({dest: 'image',storage: fileStorage}).array('image'))
+
 
 
 app.use(session({ secret: process.env.SESSION_KEY,resave: false,

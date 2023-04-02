@@ -7,7 +7,7 @@ const userHelpers = require('../helpers/user-helpers');
 const paypalHelpers = require('../helpers/paypal-helpers')
 const reportHelpers = require('../helpers/report-helpers')
 const couponHelpers = require('../helpers/coupon-helpers')
-
+const multer = require('multer')
 
 let count = 1;
 let boo;
@@ -28,7 +28,6 @@ module.exports = {
     }
   },
   getHome: (req, res, next) => {
-    reportHelpers.removePendings()
     reportHelpers.searches()
     // console.log(req);
     let userID = req.session.user;
@@ -182,7 +181,7 @@ module.exports = {
       if (response.status) {
         req.session.login = true;
         req.session.user = response.user;
-        req.session.cart = cart;
+        req.session.user.cartNum = response.cartNum;
         // console.log(req.session.cart);
         userHelpers.active(req.session.user?.mobile).then((response) => {
           // console.log(true);
@@ -249,8 +248,10 @@ module.exports = {
     // console.log(req.originalUrl);
     // console.log(slug);
     let userMob = req.session.user.mobile
+
     userHelpers.addCart(userMob, proId).then((obj) => {
       obj.user = req.session.login
+      req.session.user.cartNum = obj.cart
       if (obj.wish) {
         // res.redirect('/wishlist')
         res.json({ status: true, cart: obj.cart, user: obj.user })
@@ -263,6 +264,7 @@ module.exports = {
   getCartRemove: (req, res) => {
     let proId = req.params.id
     let user = req.session.user.mobile;
+    req.session.user.cartNum = Number(req.session.user.cartNum)-1
     userHelpers.removeCart(proId, user).then(() => {
       res.redirect('/cart')
     })
@@ -318,12 +320,18 @@ module.exports = {
   },
   postUpdateAc: (req, res) => {
     let userID = req.session.user;
+    let user= userID
     let image = req.files[0]
-    // console.log(image);
+    const regex = /\.jpg$/;
 
-    userHelpers.updateAc(req.body, userID.mobile, image).then((resp) => {
-      res.redirect('/account')
-    })
+      req.session.user.username = req.body.name
+      userHelpers.updateAc(req.body, userID.mobile, image).then((resp) => {
+        res.redirect('/account')
+      })
+   
+     
+     
+    
   },
   postChangePass: (req, res) => {
     let userID = req.session.user;
@@ -431,6 +439,7 @@ module.exports = {
     let discount = req.query.discount;
     let total = req.query.total;
     let addr = req.query.addr;
+    req.session.user.cartNum = 0
     let userID = req.session.user;
     userHelpers.addCashOrder(discount, total, userID.mobile, addr).then(() => {
       res.redirect('/orders')
@@ -453,11 +462,14 @@ module.exports = {
     })
   },
   getOrders: (req, res) => {
+    
     let userID = req.session.user;
     let paid = req.query.paid;
     let id = req.query.id;
     paypalHelpers.paidPaypalOrder(paid,id).then(()=>{
+      
       userHelpers.getAllOrders(userID.mobile).then((orders) => {
+        
         orders.map((order) => {
           order.createdOn = order.createdOn.toLocaleDateString('es-ES')
           order.count = order.products.length - 1
@@ -489,12 +501,14 @@ module.exports = {
   getCancelOrderId: (req, res) => {
     let id = req.params.id
     userHelpers.cancelOrder(id).then((resp) => {
+      req.session.user.wallet = Number(resp)+Number(req.session.user.wallet)
       res.redirect('/orders')
     })
   },
   postVerifyPayment: (req, res) => {
     userHelpers.verifyPayment(req.body).then(() => {
       userHelpers.changePayStatus(req.body['order[receipt]']).then(() => {
+        req.session.user.cartNum = 0
         res.json({ status: true })
       })
     }).catch((err) => {

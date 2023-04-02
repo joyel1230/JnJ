@@ -78,7 +78,7 @@ module.exports = {
 
         productHelpers.addProduct(req.body, image, (id) => {
 
-            res.render('admin/admin-add-product')
+            res.redirect('/admin/products')
 
         })
     },
@@ -246,6 +246,7 @@ module.exports = {
     getReturnOrderId: (req, res) => {
         let id = req.params.id
         userHelpers.returnedOrder(id).then(() => {
+            
             res.redirect('/admin/orders')
         })
     },

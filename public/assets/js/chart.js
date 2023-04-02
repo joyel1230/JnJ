@@ -5,20 +5,28 @@ let cod = +document.getElementById('cod').innerHTML
 let raz = +document.getElementById('raz').innerHTML
 let pay = +document.getElementById('pay').innerHTML
 let today = +document.getElementById('today').innerHTML
+let sixDates = (document.getElementById('todayBack').innerHTML).split(',')
 let saleArr = (document.getElementById('saleArr').innerHTML).split(',')
-console.log(saleArr);
+let category = (document.getElementById('catgoryid').innerText).split(',')
+let categorysale = (document.getElementById('catgorysale').innerText).split(',')
+for (let i = 0; i < sixDates.length; i++) {
+  sixDates[i] = Number(sixDates[i])
+}
+for (let i = 0; i < categorysale.length; i++) {
+  categorysale[i] = Number(categorysale[i])
+}
 for (let i = 0; i < saleArr.length; i++) {
   saleArr[i] = Number(saleArr[i])
 }
 
-console.log(cod+'sdsa');
+console.log(categorysale);
   /* ChartJS
    * -------
    * Data and config for chartjs
    */
   'use strict';
   var data = {
-    labels: [`${today-5}`, `${today-4}`, `${today-3}`, `${today-2}`, `${today-1}`, `${today}`],
+    labels: sixDates,
     datasets: [{
       label: '# total',
       data: [`${saleArr[5]}`, `${saleArr[4]}`, `${saleArr[3]}`, `${saleArr[2]}`, `${saleArr[1]}`, `${saleArr[0]}`],
@@ -91,7 +99,7 @@ console.log(cod+'sdsa');
     }
 
   };
-  var doughnutPieData = {
+  var PieData = {
     datasets: [{
       data: [cod, raz, pay],
       backgroundColor: [
@@ -119,7 +127,45 @@ console.log(cod+'sdsa');
       'PAYPAL',
     ]
   };
+  var doughnutData = {
+    datasets: [{
+      data: categorysale,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: category
+  };
   var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+  var PieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+  var doughnutOptions = {
     responsive: true,
     animation: {
       animateScale: true,
@@ -322,8 +368,8 @@ console.log(cod+'sdsa');
     var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
     var doughnutChart = new Chart(doughnutChartCanvas, {
       type: 'doughnut',
-      data: doughnutPieData,
-      options: doughnutPieOptions
+      data: doughnutData,
+      options: doughnutOptions
     });
   }
 
@@ -331,8 +377,8 @@ console.log(cod+'sdsa');
     var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
     var pieChart = new Chart(pieChartCanvas, {
       type: 'pie',
-      data: doughnutPieData,
-      options: doughnutPieOptions
+      data: PieData,
+      options: PieOptions
     });
   }
 

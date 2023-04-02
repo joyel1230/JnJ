@@ -1,6 +1,7 @@
 const { ObjectId } = require("mongodb");
 const db = require('../config/connection');
 const collections = require('../config/collections');
+const reportHelpers = require('../helpers/report-helpers')
 const oneUSD = 73.098
 
 
@@ -104,6 +105,8 @@ module.exports = {
             resolve(true)
           })
           
+      }else{
+        reportHelpers.removePendings()
       }
       
       resolve(true)

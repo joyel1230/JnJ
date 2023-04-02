@@ -7,6 +7,7 @@ require('dotenv').config()
 const Razorpay = require('razorpay')
 var { validatePaymentVerification } = require('../node_modules/razorpay/dist/utils/razorpay-utils');
 const userHelpers = require('../helpers/user-helpers');
+const reportHelpers = require('../helpers/report-helpers');
 
 
 
@@ -39,12 +40,16 @@ module.exports = {
             let loginStatus = false
             let response = {}
             let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
+            let cart = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
+            let cartN = cart.cart?.length
+            
             if (user) {
                 bcrypt.compare(pass, user.password).then((status) => {
                     if (status) {
                         console.log('login success');
                         response.user = user
                         response.status = true
+                        response.cartNum = cartN
                         resolve(response)
                     } else {
                         console.log('login failed');
@@ -628,7 +633,12 @@ module.exports = {
                 { _id: ObjectId(id) },
                 { $set: { status: 'Cancelled', closedOn: new Date() } }
             )
-            resolve(true)
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:order.userMobile},{
+                $inc:{
+                    wallet: order.total
+                }
+            })
+            resolve(order.total)
         })
     },
     deliverOrder: (id) => {
@@ -678,6 +688,8 @@ module.exports = {
                     cart: ''
                 }
             })
+            reportHelpers.removePendings()
+            
             
             resolve()
         })
@@ -715,6 +727,7 @@ module.exports = {
                 { _id: ObjectId(id) },
                 { $set: { status: 'Return processing', closedOn: new Date() } }
             )
+            
             resolve(true)
         })
     },
@@ -736,7 +749,12 @@ module.exports = {
                 { _id: ObjectId(id) },
                 { $set: { status: 'Returned', closedOn: new Date() } }
             )
-            resolve(true)
+            db.get().collection(collections.USER_COLLECTIONS).updateOne({mobile:order.userMobile},{
+                $inc:{
+                    wallet: order.total
+                }
+            })
+            resolve(order.total)
         })
     },
     getOrderDate: (date1) => {

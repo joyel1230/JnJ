@@ -178,13 +178,27 @@
           </div>
         </div>
       </div>
+      <div class="d-flex justify-content-center">
+              
+              <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Category Sale chart</h4>
+                    <canvas id="doughnutChart" style="height: 250px;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
 
     </div>
     <span id="cod" hidden>{{objR.cod}}</span>
     <span id="raz" hidden>{{objR.raz}}</span>
     <span id="pay" hidden>{{objR.pay}}</span>
     <span id="today" hidden>{{objR.today}}</span>
+    <span id="todayBack" hidden>{{objR.sixDates}}</span>
     <span id="saleArr" hidden>{{objR.saleArr}}</span>
+    <span id="catgoryid" hidden>{{objR.category}}</span>
+    <span id="catgorysale" hidden>{{objR.categorySale}}</span>
 
     <footer class="footer">
       <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -202,3 +216,4 @@
   <script src="../../assets/js/hoverable-collapse.js"></script>
   <script src="../../assets/js/misc.js"></script>
   <script src="../../assets/js/chart.js"></script>
+  

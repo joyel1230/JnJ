@@ -8,12 +8,39 @@ module.exports = {
     getTotalSales: () => {
         return new Promise(async (resolve, reject) => {
             let objR = {};
-            let saleArray =[]
+            let saleArray = []
+            let category = []
+            let categorySale = []
+            let sixDate = []
             let date = new Date()
             let dateOnly = new Date().toISOString().slice(0, 10)
-            let date2digit = new Date().toISOString().slice(8,10)
+            let date2digit = new Date().toISOString().slice(8, 10)
 
             let yesterday = new Date(date.getTime() - (24 * 60 * 60 * 1000));
+            let yesterday1 = new Date(yesterday.getTime() - (24 * 60 * 60 * 1000));
+            let yesterday2 = new Date(yesterday1.getTime() - (24 * 60 * 60 * 1000));
+            let yesterday3 = new Date(yesterday2.getTime() - (24 * 60 * 60 * 1000));
+            let yesterday4 = new Date(yesterday3.getTime() - (24 * 60 * 60 * 1000));
+            
+
+            let yes = yesterday.toISOString().slice(8, 10)
+            let yes1 = yesterday1.toISOString().slice(8, 10)
+            let yes2 = yesterday2.toISOString().slice(8, 10)
+            let yes3 = yesterday3.toISOString().slice(8, 10)
+            let yes4 = yesterday4.toISOString().slice(8, 10)
+            sixDate.push(Number(yes4))
+            sixDate.push(Number(yes3))
+            sixDate.push(Number(yes2))
+            sixDate.push(Number(yes1))
+            sixDate.push(Number(yes))
+            sixDate.push(Number(date2digit))
+            objR.sixDates =sixDate
+
+
+
+
+
+
 
             let dateOnlyYest = yesterday.toISOString().slice(0, 10);
 
@@ -32,7 +59,7 @@ module.exports = {
             saleArray.push(yesterSale4)
 
             objR.saleArr = saleArray;
-            objR.today = +date2digit
+            objR.today = +date2digit;
 
             objR.percDiff = (((objR.todaySale - yesterSale) / yesterSale) * 100).toFixed(2)
             objR.margin = Math.floor((objR.todaySale / 100) * 25);
@@ -46,17 +73,30 @@ module.exports = {
             objR.yesterSearch = await findSearchNum(dateOnlyYest)
             objR.percDiffSearch = (((objR.todaySearch - objR.yesterSearch) / objR.yesterSearch) * 100).toFixed(2)
 
+            let catSale = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+            { $lookup: { from: "product", localField: "products.proId", foreignField: "_id", as: "productInfo" } }, 
+            { $unwind: "$productInfo" }, 
+            { $lookup: { from: "category", localField: "productInfo.categoryId", foreignField: "_id", as: "categoryInfo" } }, 
+            { $unwind: "$categoryInfo" }, 
+            { $group: { _id: "$categoryInfo.category", total: { $sum: 
+            { $multiply: [{ $cond: { if: { $isArray: "$products.qty" }, then: { $arrayElemAt: ["$products.qty", 0] }, else: "$products.qty" } }, "$productInfo.price"] } } } }]).toArray()
+            for (let i = 0; i < catSale.length; i++) {
+                category.push(catSale[i]._id)
+                categorySale.push(catSale[i].total)
+            }
+            objR.category = category
+            objR.categorySale = categorySale
             let payM = await findPayNum()
             // console.log(payM);
-            objR.cod =Math.floor(payM.cod*100);
-            objR.raz =Math.floor(payM.raz*100);
-            objR.pay =Math.floor(payM.pay*100);
+            objR.cod = Math.floor(payM.cod * 100);
+            objR.raz = Math.floor(payM.raz * 100);
+            objR.pay = Math.floor(payM.pay * 100);
 
             // console.log(objR.todaySale);
 
-            couponHelpers.getProductsQty(date2digit).then((arr)=>{
-                objR.productSum=arr[0]
-                objR.qtySum=arr[1]
+            couponHelpers.getProductsQty(date2digit).then((arr) => {
+                objR.productSum = arr[0]
+                objR.qtySum = arr[1]
                 resolve(objR)
             })
         })
@@ -71,7 +111,7 @@ module.exports = {
                 },
                 status: {
                     $nin: ["Cancelled", "Returned"]
-                  }
+                }
             }).toArray()
 
             const sum = await totalArr.reduce(
@@ -102,10 +142,10 @@ module.exports = {
             cod = await db.get().collection(collections.ORDER_COLLECTION).find({ payMethod: 'COD' }).toArray()
             raz = await db.get().collection(collections.ORDER_COLLECTION).find({ payMethod: 'Razorpay' }).toArray()
             pay = await db.get().collection(collections.ORDER_COLLECTION).find({ payMethod: 'Paypal' }).toArray()
-            let sum = cod.length+raz.length+pay.length;
-            objP.cod = (cod.length)/sum;
-            objP.raz = (raz.length)/sum;
-            objP.pay = (pay.length)/sum;
+            let sum = cod.length + raz.length + pay.length;
+            objP.cod = (cod.length) / sum;
+            objP.raz = (raz.length) / sum;
+            objP.pay = (pay.length) / sum;
             return objP;
         }
     },
@@ -122,7 +162,7 @@ module.exports = {
             })
         }
     },
-    removePendings:() =>{
-        db.get().collection(collections.ORDER_COLLECTION).deleteMany({status:"payment pending"})
+    removePendings: () => {
+        db.get().collection(collections.ORDER_COLLECTION).deleteMany({ status: "payment pending" })
     }
 }

@@ -3,9 +3,12 @@
     <div class="container">
         <div style="margin-left: 1.9rem;">
             {{#each coupon}}
-            <a onclick="couponInsert('{{this.code}}')"><input type="text" disabled value="{{this.code}}-above ₹{{this.minPur}}"  class="text-dark mb-2 mr-2" style="cursor: pointer;border: solid 1px #40b310;background-color: white;"></a>
+            <a onclick="couponInsert('{{this.code}}')"><input type="text" disabled
+                    value="{{this.code}}-above ₹{{this.minPur}}" class="text-dark mb-2 mr-2"
+                    style="cursor: pointer;border: solid 1px #40b310;background-color: white;"></a>
             {{/each}}
-        <a href="/all-products"><input type="text" disabled value="SHOP MORE"  class="text-dark mb-2 mr-2" style="cursor: pointer;border: solid 1px #40b310;background-color: white;width: auto;"></a>
+            <a href="/all-products"><input type="text" disabled value="SHOP MORE" class="text-dark mb-2 mr-2"
+                    style="cursor: pointer;border: solid 1px #40b310;background-color: white;width: auto;"></a>
 
         </div>
         <div class="cupon_area">
@@ -21,14 +24,18 @@
                 <div class="col-lg-8">
                     <h3>Shipping Details</h3>
                     <span id="addNo" hidden></span>
+                    {{#if noaddr}}
                     {{#each add}}
-                    <div class="form-check mb-2" >
-                        <input class="form-check-input radio" onclick="changeAdd('{{@index}}', '{{this.name}}', '{{this.mobile}}', '{{this.street}}', '{{this.city}}', '{{this.pincode}}')" style="cursor: pointer;" type="radio" name="flexRadioDefault">
-                        <label class="form-check-label" for="flexRadioDefault1">    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input radio"
+                            onclick="changeAdd('{{@index}}', '{{this.name}}', '{{this.mobile}}', '{{this.street}}', '{{this.city}}', '{{this.pincode}}')"
+                            style="cursor: pointer;" type="radio" name="flexRadioDefault">
+                        <label class="form-check-label" for="flexRadioDefault1">
                             {{this.name}}, {{this.street}}, {{this.city}}, {{this.pincode}}
                         </label>
                     </div>
                     {{/each}}
+
                     <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="name" name="name" disabled
@@ -63,9 +70,9 @@
                         <div class="col-md-12 form-group p_star">
                             <input type="text" class="form-control w-75" id="pincode" name="pincode" disabled
                                 value="{{add.[0].pincode}}" />
-                        </div> 
+                        </div>
 
-
+                        
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
                                 <a href="/add-address?check=1" class="text-dark"
@@ -77,11 +84,18 @@
                                     style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;">Change
                                     address
                                     <span
-                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a> --}}
+                                        style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">?</span></a>
+                                --}}
                             </div>
 
                         </div>
                     </form>
+                    {{else}}
+                        <a href="/addresses"
+                            style="cursor: pointer;background-color: rgb(0, 0, 0);border-radius: 10px;padding: 5px;color: aliceblue;margin-left: 2rem;">Add
+                            address
+                            <span style="font-size:x-large;font-family: 'Courier New', Courier, monospace;">!</span></a>
+                        {{/if}}
                 </div>
                 <div class="col-lg-4">
                     <div class="order_box">

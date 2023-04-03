@@ -408,14 +408,18 @@ module.exports = {
     let userID = req.session.user;
     let qty = req.query.qty
     let size = req.query.size
-
+    let noaddr = false
     userHelpers.getAddCheckout(userID.mobile, qty,size).then((array) => {
       let add = array[0]
+      console.log(add[0]);
+      if(add[0]!==undefined){
+        noaddr = true
+      }
       let docs = array[1]
       let coupon = array[2]
       
 
-      res.render('user/checkout', { userID, userd, add, docs ,coupon})
+      res.render('user/checkout', { userID, userd, add, docs ,coupon, noaddr})
 
     })
   },
@@ -467,7 +471,7 @@ module.exports = {
     let paid = req.query.paid;
     let id = req.query.id;
     paypalHelpers.paidPaypalOrder(paid,id).then(()=>{
-      
+      // userID.cartNum =0
       userHelpers.getAllOrders(userID.mobile).then((orders) => {
         
         orders.map((order) => {

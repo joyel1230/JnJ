@@ -4,6 +4,7 @@
     <div class="cart_inner">
       <h4 style="font-weight: 700;margin-left: 0.7rem;">CART</h4>
       <div class="table-responsive">
+        {{#if cartArr}}
         <table class="table">
           <thead>
             <tr class="text-center">
@@ -16,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            {{#if cartArr}}
+            
             {{#each cartArr}}
             {{!-- {{#if this.cartItems.[0].deleted}}
             {{else}} --}}
@@ -67,9 +68,7 @@
             </tr>
             {{!-- {{/if}} --}}
             {{/each}}
-            {{else}}
-            <h1>YOUR CART IS EMPTY</h1>
-            {{/if}}
+            
             <tr class="text-center">
               <td></td>
               <td></td>
@@ -106,6 +105,22 @@
             </tr>
           </tbody>
         </table>
+        {{else}}
+            
+                <div class="container" style="height: 15rem;">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="">
+                                <div class="card-body text-center">
+                                    <h3 class="card-title">No Items Found</h3>
+                                    <p class="card-text">Sorry, there are currently no items available.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            {{/if}}
         <div class="checkout_btn_inner float-right">
           <a class="btn_1 mb-3" href="/">Continue Shopping</a>
          {{#if cartArr}}

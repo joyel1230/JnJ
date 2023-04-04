@@ -39,7 +39,7 @@
         <button class="btn btn-success mb-2" onclick="htmlToPdf()">Export To PDF</button>
 
         <button class="btn btn-success mb-2" onclick="htmlToExcel()">Export To Excel</button>
-
+        <div class="table-responsive">
         <table class="table" id="example">
             <thead>
                 <tr class="text-center">
@@ -140,6 +140,7 @@
                 {{/each}}
             </tbody>
         </table>
+        </div>
         <span style="user-select: none;">page <span id="curP">1</span> of <span id="totalP">4</span></span>
         <nav aria-label="Page navigation example" class="d-none d-lg-block">
             <ul class="pagination float-end">

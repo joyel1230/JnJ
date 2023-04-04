@@ -38,6 +38,7 @@
                 <button class="btn border-3 border-dark h-25" type="submit">Search</button>
             </form>
         </div> --}}
+        <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr class="text-center">
@@ -50,6 +51,7 @@
             <tbody class="table-group-divider">
                 {{#each banners}}
                 <tr class="text-center">
+                    
                     <td><img src="/image/{{this.image}}" style="width: 150px;height: 75px;" alt=""></td>
                     <td>{{this.description}}</td>
                     {{!-- {{#if this.status}} --}}
@@ -78,6 +80,7 @@
                 {{/each}}
             </tbody>
         </table>
+        </div>
         <nav aria-label="Page navigation example" class="d-none d-lg-block">
             <ul class="pagination float-end">
                 <li class="page-item">

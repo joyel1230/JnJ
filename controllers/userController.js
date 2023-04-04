@@ -443,9 +443,10 @@ module.exports = {
     let discount = req.query.discount;
     let total = req.query.total;
     let addr = req.query.addr;
-    req.session.user.cartNum = 0
+    
     let userID = req.session.user;
     userHelpers.addCashOrder(discount, total, userID.mobile, addr).then(() => {
+      req.session.user.cartNum = 0
       res.redirect('/orders')
     }).catch((response)=>{
       res.redirect('/add-address')

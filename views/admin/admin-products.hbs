@@ -71,72 +71,74 @@
                 <button class="btn border-3 border-dark h-25" type="submit">Search</button>
             </form>
         </div>
-        <table class="table">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col"></th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Options</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {{#each products}}
-                {{#if this.deleted}}
-                <div class="neumorphic-alert-box position-absolute del" style="left: 35%;" >
-                    <h1>Confirmation</h1>
-                    <p>Are you sure you want to unlist?</p>
-                    <div class="neumorphic-alert-buttons">
-                        <a href="/admin/delete-product/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <button
-                            onclick="noCancel({{@index}})"    class="neumorphic-alert-delete-btn">NO</button>
+            <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {{#each products}}
+                    {{#if this.deleted}}
+                    <div class="neumorphic-alert-box position-absolute del" style="left: 35%;">
+                        <h1>Confirmation</h1>
+                        <p>Are you sure you want to unlist?</p>
+                        <div class="neumorphic-alert-buttons">
+                            <a href="/admin/delete-product/{{this._id}}"><button
+                                    class="neumorphic-alert-cancel-btn ">YES</button></a>
+                            <button onclick="noCancel({{@index}})" class="neumorphic-alert-delete-btn">NO</button>
+                        </div>
                     </div>
-                </div>
-                {{else}}
-                <tr class="text-center">
-                    <th scope="row"><img src='/image/{{this.images.[0]}}' class="rounded-5"
-                            style="width: 40px;height: 40px;" alt=""></th>
-                    <td>{{this.name}}</td>
-                    <td>
-                        {{this.categoryAs.[0].category}}
-                    </td>
-                    <td>{{this.description}}</td>
-                    <td>₹{{this.price}}</td>
-                    <td class="stock">{{this.stock}}</td>
-                    <td>
+                    {{else}}
+                    <tr class="text-center">
+                        <th scope="row"><img src='/image/{{this.images.[0]}}' class="rounded-5"
+                                style="width: 40px;height: 40px;" alt=""></th>
+                        <td>{{this.name}}</td>
+                        <td>
+                            {{this.categoryAs.[0].category}}
+                        </td>
+                        <td>{{this.description}}</td>
+                        <td>₹{{this.price}}</td>
+                        <td class="stock">{{this.stock}}</td>
+                        <td>
 
-                        <span
-                            class="bg-success p-1 w-50 text-decoration-none bg-opacity-75 text-light rounded-4 instock">YES</span>
+                            <span
+                                class="bg-success p-1 w-50 text-decoration-none bg-opacity-75 text-light rounded-4 instock">YES</span>
 
-                        <span
-                            class="bg-danger p-1  text-decoration-none bg-opacity-75 text-light rounded-4 outstock ">NO</span>
+                            <span
+                                class="bg-danger p-1  text-decoration-none bg-opacity-75 text-light rounded-4 outstock ">NO</span>
 
 
-                    </td>
-                    <td><a href="/admin/edit-product/{{this._id}}"><img src="/images/admin/edit-icon.svg"
-                                style="width: 25px;" class="me-2" alt=""></a>
-                        <span onclick="deleteConfirm({{@index}})" style="cursor: pointer;"><img src="/images/admin/delete-icon.svg"
-                                style="width: 20px;" alt=""></span>
-                    </td>
-                </tr>
-                {{!-- delete --}}
-                <div class="neumorphic-alert-box position-absolute del" style="left: 35%;" >
-                    <h1>Confirmation</h1>
-                    <p>Are you sure you want to unlist?</p>
-                    <div class="neumorphic-alert-buttons">
-                        <a href="/admin/delete-product/{{this._id}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <button
-                            onclick="noCancel({{@index}})"    class="neumorphic-alert-delete-btn">NO</button>
+                        </td>
+                        <td><a href="/admin/edit-product/{{this._id}}"><img src="/images/admin/edit-icon.svg"
+                                    style="width: 25px;" class="me-2" alt=""></a>
+                            <span onclick="deleteConfirm({{@index}})" style="cursor: pointer;"><img
+                                    src="/images/admin/delete-icon.svg" style="width: 20px;" alt=""></span>
+                        </td>
+                    </tr>
+                    {{!-- delete --}}
+                    <div class="neumorphic-alert-box position-absolute del" style="left: 35%;">
+                        <h1>Confirmation</h1>
+                        <p>Are you sure you want to unlist?</p>
+                        <div class="neumorphic-alert-buttons">
+                            <a href="/admin/delete-product/{{this._id}}"><button
+                                    class="neumorphic-alert-cancel-btn ">YES</button></a>
+                            <button onclick="noCancel({{@index}})" class="neumorphic-alert-delete-btn">NO</button>
+                        </div>
                     </div>
-                </div>
-                {{/if}}
-                {{/each}}
-            </tbody>
-        </table>
+                    {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+    </div>
         <nav aria-label="Page navigation example" class="d-none d-lg-block">
             <ul class="pagination float-end">
                 <li class="page-item">
@@ -157,9 +159,13 @@
 </div>
 
 <style>
-    table {width:7cm; height:7cm; border: 1px solid;
-  page-break-after: always;
-  }
+    table {
+        width: 7cm;
+        height: 7cm;
+        border: 1px solid;
+        page-break-after: always;
+    }
+
     .neumorphic-alert-box {
         background-color: #f2f2f2;
         border-radius: 10px;
@@ -207,7 +213,6 @@
     .open-pop {
         display: block;
     }
-
 </style>
 
 <script>
@@ -277,13 +282,13 @@
 
     }
     function deleteConfirm(i) {
-        i= Number(i)
-    let pop = document.getElementsByClassName('del');
+        i = Number(i)
+        let pop = document.getElementsByClassName('del');
         pop[i].classList.add('open-pop');
     }
-    function noCancel(i){
+    function noCancel(i) {
         i = Number(i)
-    let pop = document.getElementsByClassName('del');
+        let pop = document.getElementsByClassName('del');
         pop[i].classList.remove('open-pop');
     }
 </script>

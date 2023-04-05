@@ -3,77 +3,75 @@
     <div class="container">
         <div class="row d-flex justify-content-between " style="padding-top: 20vh;">
             <div class="col-4" style="width: 30vw;">
-            <h2>{{#if index}}Edit Address{{else}}Add Address{{/if}}</h2>
-                
+                <h2>{{#if index}}Edit Address{{else}}Add Address{{/if}}</h2>
+
                 <form class="w-100" action="/address?ind={{index}}&check={{check}}" method="post">
-               
+
                     <div class="form-group">
                         <span id="nameS"></span>
                         <label for="">Full name</label>
-                        <input  type="text" class="form-control" id="fullname" name="name" value="{{add.name}}"
-                           required >
+                        <input type="text" class="form-control" id="fullname" name="name" value="{{add.name}}" required>
                     </div>
                     {{!-- <div class="form-group">
                         <label for="">House name</label>
-                        <input  type="text" class="form-control" id="house" name="house" value="{{user.email}}"
-                           required >
+                        <input type="text" class="form-control" id="house" name="house" value="{{user.email}}" required>
                     </div> --}}
                     <div class="form-group">
                         <span id="mobileS"></span>
                         <label for="mobile">Mobile number</label>
-                        <input oninput="isValid1()"  type="tel" class="form-control" id="mobile" name="mobile" 
-                           required value="{{add.mobile}}" >
+                        <input oninput="isValid1()" type="tel" class="form-control" id="mobile" name="mobile" required
+                            value="{{add.mobile}}">
                     </div>
                     <div class="form-group">
                         <span id="streetS1"></span>
                         <label for="">Street</label>
-                        <input  type="text" class="form-control" id="street" name="street" value="{{add.street}}"
-                          required  >
+                        <input type="text" class="form-control" id="street" name="street" value="{{add.street}}"
+                            required>
                     </div>
                     <div class="form-group">
                         <span id="streetS2"></span>
                         <label for="">City</label>
-                        <input  type="text" class="form-control" id="city" name="city" value="{{add.city}}"
-                          required  >
+                        <input type="text" class="form-control" id="city" name="city" value="{{add.city}}" required>
                     </div>
-                    
+
 
             </div>
 
 
             <div class="banner_img col-4" style="width: 30vw;margin-top: 7vh;margin-right: 20vw;">
-                
 
-                    
-                    <div class="form-group">
-                        <span id="streetS3"></span>
-                        <label for="" class="" >State</label>
-                        {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
-                        --}}
 
-                        <input  type="text" class="form-control" id="state" name="state" required value="{{add.state}}">
-                    </div>
-                    <div class="form-group">
-                        <span id="streetS4"></span>
-                        <label for="" >Country</label>
-                        {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
-                        --}}
 
-                        <input  type="text" class="form-control" id="country" name="country" value="{{add.country}}"
-                          required  >
-                    </div>
-                    <div class="form-group">
-                      <span id="pinS"></span>
-                        <label for="" >Pincode</label>
-                        {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
-                        --}}
-                        <input onblur="isValid()" type="text" class="form-control" id="pincode" name="pincode" value="{{add.pincode}}"
-                          required >
-                    </div>
-                        <label for="" style="width: 20rem;margin-bottom: 4vh;"></label>
+                <div class="form-group">
+                    <span id="streetS3"></span>
+                    <label for="" class="">State</label>
+                    {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
+                    --}}
 
-                    <button type="submit" onclick="return isValid()" class="btn btn-block mb-2"
-                        style="background-color: black;color: white;">{{#if index}}Submit & Set as default{{else}}Submit{{/if}}</button>
+                    <input type="text" class="form-control" id="state" name="state" required value="{{add.state}}">
+                </div>
+                <div class="form-group">
+                    <span id="streetS4"></span>
+                    <label for="">Country</label>
+                    {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
+                    --}}
+
+                    <input type="text" class="form-control" id="country" name="country" value="{{add.country}}"
+                        required>
+                </div>
+                <div class="form-group">
+                    <span id="pinS"></span>
+                    <label for="">Pincode</label>
+                    {{!-- <i class="fa fa-eye" style="position: absolute;margin-top: 3rem;cursor: pointer;"></i>
+                    --}}
+                    <input onblur="isValid()" type="text" class="form-control" id="pincode" name="pincode"
+                        value="{{add.pincode}}" required>
+                </div>
+                <label for="" style="width: 20rem;margin-bottom: 4vh;"></label>
+
+                <button type="submit" onclick="return isValid()" class="btn btn-block mb-2"
+                    style="background-color: black;color: white;">{{#if index}}Submit & Set as
+                    default{{else}}Submit{{/if}}</button>
 
                 </form>
             </div>
@@ -82,8 +80,13 @@
 </section>
 <!-- banner part start-->
 <style>
-    span{
+    span {
         color: red;
     }
 </style>
 <script src="javascripts/addAddress.js"></script>
+<div>
+            <div>
+
+                        </div>
+</div>

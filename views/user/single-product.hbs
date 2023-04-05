@@ -29,11 +29,11 @@
                 <h2>{{product.price}}</h2>
                 <ul class="list">
                   <li>
-                    <a class="active" >
+                    <a class="active">
                       <span>Category</span> : {{category.category}}</a>
                   </li>
                   <li>
-                    <a > <span>Availibility</span> :
+                    <a> <span>Availibility</span> :
 
                       {{!-- <span id="stk">{{product.stock}}</span> --}}
                       {{#if stks}}
@@ -66,8 +66,8 @@
                 </div>
                 <input type="text" value="{{avg}}" hidden id="avgStar">
                 <div class="rating mt-3" id="mainStar">
-                  
-                  
+
+
                 </div>
 
               </div>
@@ -85,8 +85,8 @@
                 <h4>{{this.name}}</h4>
                 <input type="text" class="starCount" value="{{this.rating}}" hidden>
                 <div class="media threeReviews">
-                  <div class="media-body starTag"> 
-                    
+                  <div class="media-body starTag">
+
                   </div>
                 </div>
                 <p>
@@ -132,15 +132,17 @@
 
               <form class="row contact_form" action="/add-review" method="post" novalidate="novalidate">
                 <input type="text" name="ratingCount" id="ratingCount" value="1" hidden>
-                <input type="text" name="proId" value="{{product._id}}"  hidden>
-                <input type="text" name="user" value="{{userID.mobile}}"  hidden>
-                <input type="text" name="slug" value="{{product.slug}}"  hidden>
+                <input type="text" name="proId" value="{{product._id}}" hidden>
+                <input type="text" name="user" value="{{userID.mobile}}" hidden>
+                <input type="text" name="slug" value="{{product.slug}}" hidden>
                 <div class="col-md-12">
                   <div class="form-group">
                     {{#if userID.username}}
-                    <input type="text" class="form-control" name="name" value="{{userID.username}}" hidden placeholder="Your Full name" required />
+                    <input type="text" class="form-control" name="name" value="{{userID.username}}" hidden
+                      placeholder="Your Full name" required />
                     {{else}}
-                    <input type="text" class="form-control" name="name" value="guest user" hidden placeholder="Your Full name" required />
+                    <input type="text" class="form-control" name="name" value="guest user" hidden
+                      placeholder="Your Full name" required />
                     {{/if}}
                   </div>
                 </div>
@@ -190,49 +192,53 @@
     float: left;
     margin-top: 20px;
   }
+
   .scrollable {
-    height: 200px; /* set the height of the div */
-    overflow: auto; /* enable scrolling */
-    
+    height: 200px;
+    /* set the height of the div */
+    overflow: auto;
+    /* enable scrolling */
+
   }
 
 
-/* for webkit-based browsers */
-.scrollable::-webkit-scrollbar {
-  width: 10px; /* width of the scrollbar */
-  
-}
+  /* for webkit-based browsers */
+  .scrollable::-webkit-scrollbar {
+    width: 10px;
+    /* width of the scrollbar */
 
-.scrollable::-webkit-scrollbar-track {
-  background: #fff; /* color of the track */
-  border-radius: 30px;
+  }
 
-}
+  .scrollable::-webkit-scrollbar-track {
+    background: #fff;
+    /* color of the track */
+    border-radius: 30px;
 
-.scrollable::-webkit-scrollbar-thumb {
-  background: #000000; /* color of the thumb */
-  border-radius: 30px;
-}
+  }
 
-
+  .scrollable::-webkit-scrollbar-thumb {
+    background: #000000;
+    /* color of the thumb */
+    border-radius: 30px;
+  }
 </style>
 
 <script>
-  $(function(){
+  $(function () {
     let starCout = document.getElementsByClassName('starCount')
     let starTag = document.getElementsByClassName('starTag')
-    for(let i=0;i<starCout.length;i++){
+    for (let i = 0; i < starCout.length; i++) {
       let star = Number(starCout[i].value)
-      if(star==5){
-        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>'
-      }else if(star==4){
-        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i>'
-      }else if(star==3){
-        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
-      }else if(star==2){
-        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
-      }else{
-        starTag[i].innerHTML ='<i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      if (star == 5) {
+        starTag[i].innerHTML = '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>'
+      } else if (star == 4) {
+        starTag[i].innerHTML = '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i>'
+      } else if (star == 3) {
+        starTag[i].innerHTML = '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      } else if (star == 2) {
+        starTag[i].innerHTML = '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
+      } else {
+        starTag[i].innerHTML = '<i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i>'
       }
     }
 
@@ -240,17 +246,17 @@
     let avgStar = +document.getElementById('avgStar').value
     let mainStar = document.getElementById('mainStar')
 
-    if(avgStar==5){
-        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>'
-      }else if(avgStar==4){
-        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span>'
-      }else if(avgStar==3){
-        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
-      }else if(avgStar==2){
-        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
-      }else{
-        mainStar.innerHTML ='<span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
-      }
+    if (avgStar == 5) {
+      mainStar.innerHTML = '<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>'
+    } else if (avgStar == 4) {
+      mainStar.innerHTML = '<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span>'
+    } else if (avgStar == 3) {
+      mainStar.innerHTML = '<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+    } else if (avgStar == 2) {
+      mainStar.innerHTML = '<span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+    } else {
+      mainStar.innerHTML = '<span class="star">&#9733;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span><span class="star">&#9734;</span>'
+    }
   })
 
 

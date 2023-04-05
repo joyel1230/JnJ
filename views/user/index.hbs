@@ -68,18 +68,17 @@
             <div class="col-lg-12">
                 <div class="product_list_slider owl-carousel">
 
-                    <div class="single_product_list_slider" >
+                    <div class="single_product_list_slider">
                         <div class="row" style="display: block!important;" id="myDiv">
                             {{#each products}}
                             {{#if this.deleted}}
                             {{else}}
-                            <div class="col-lg-3 col-sm-6" style="float: left;" >
-                                
+                            <div class="col-lg-3 col-sm-6" style="float: left;">
+
                                 <div class="single_product_item">
 
                                     <div class="single_product_text">
-                                        <a href="/single-product/{{this.slug}}"><img 
-                                                src="/image/{{this.images.[0]}}"
+                                        <a href="/single-product/{{this.slug}}"><img src="/image/{{this.images.[0]}}"
                                                 style="max-width: 250px;border-radius: 20px;height: 230px;" alt=""></a>
 
                                         <h4 class="px-3">{{this.name}}</h4>
@@ -96,20 +95,20 @@
                                         {{!-- <a href="/add-to-cart/{{this._id}}" class="add_cart w-75 ab">+ add to
                                             cart</a> --}}
 
-                                            {{#if this.stock}}
-                                                <a class="add_cart w-75 ab addtocart" onclick="addedto(this)"><button
+                                        {{#if this.stock}}
+                                        <a class="add_cart w-75 ab addtocart" onclick="addedto(this)"><button
                                                 onclick="addToCart('{{this._id}}')" class="addto px-3"
-                                                style="background-color: #00000000;border: none;color: #000000;">+ add to
+                                                style="background-color: #00000000;border: none;color: #000000;">+ add
+                                                to
                                                 cart</button>
-                                                <button
-                                                class="added px-3" 
+                                            <button class="added px-3"
                                                 style="background-color: #00000000;border: none;color: #000000;"></button>
                                             {{!-- <span class="added px-3"></span> --}}
                                         </a>
-                                            {{else}}
-                                                    <a class="ab"><span class="text-danger m-2">Out of Stock</span></a>
-                                            {{/if}}
-                                        
+                                        {{else}}
+                                        <a class="ab"><span class="text-danger m-2">Out of Stock</span></a>
+                                        {{/if}}
+
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +236,7 @@
 
 
     let addTo = document.getElementsByClassName('added')
-    for(let i=0;i<addTo.length;i++){
+    for (let i = 0; i < addTo.length; i++) {
         addTo[i].style.display = 'none'
     }
 
@@ -256,10 +255,10 @@
         element.querySelector('.added').style.display = 'block'
 
         element.querySelector('.added').textContent = '+ add to cart';
-        setTimeout(()=>{
+        setTimeout(() => {
             element.querySelector('.added').disabled = true
             element.querySelector('.added').textContent = 'added';
-        },500)
+        }, 500)
         // Call the addToCart function with the appropriate argument
 
     }
@@ -267,6 +266,6 @@
         thi.querySelector('.hrtno').style.display = 'none'
         thi.querySelector('.hrt').classList.remove('dis')
     }
- 
+
 
 </script>

@@ -34,7 +34,7 @@
                     <option selected value="{{product.categoryAs.[0]._id}}">{{product.categoryAs.[0].category}}
                     </option>
                     {{#each category}}
-                    <option  value={{this._id}}>{{this.category}}</option>
+                    <option value={{this._id}}>{{this.category}}</option>
                     {{/each}}
 
                 </select>
@@ -53,7 +53,7 @@
                 <input type="text" name="stock" id="stock" class="form-control w-50" value="{{product.stock}}" required>
 
                 <label for="" class="form-label">Image</label>
-                <img src="/image/{{product.images.[0]}}" class="m-2" style="width: 100px;height: auto;"  alt="">
+                <img src="/image/{{product.images.[0]}}" class="m-2" style="width: 100px;height: auto;" alt="">
                 <input type="file" name="image" class="form-control" value="{{product.name}}">
             </div>
 
@@ -66,21 +66,21 @@
 </section>
 
 <script>
- /* $(document).ready(function() {
-			$('#zoom-img').elevateZoom({
-				zoomType: "inner",
-				cursor: "crosshair",
-				zoomWindowFadeIn: 500,
-				zoomWindowFadeOut: 750,
-				gallery: 'gallery-id',
-				galleryActiveClass: 'active',
-				imageCrossfade: true,
-				constrainType: "width",
-				constrainSize: 400,
-				borderSize: 1,
-				borderColour: "#888"
-			});
-		}); */
+    /* $(document).ready(function() {
+               $('#zoom-img').elevateZoom({
+                   zoomType: "inner",
+                   cursor: "crosshair",
+                   zoomWindowFadeIn: 500,
+                   zoomWindowFadeOut: 750,
+                   gallery: 'gallery-id',
+                   galleryActiveClass: 'active',
+                   imageCrossfade: true,
+                   constrainType: "width",
+                   constrainSize: 400,
+                   borderSize: 1,
+                   borderColour: "#888"
+               });
+           }); */
     function isValid() {
         let stock = document.getElementById('stock').value.trim()
         let price = document.getElementById('price').value.trim()

@@ -124,8 +124,7 @@
                                                 style="background-color: #00000000;border: none;color: #000000;">+ add
                                                 to
                                                 cart</button>
-                                                <button
-                                                class="added px-3" 
+                                            <button class="added px-3"
                                                 style="background-color: #00000000;border: none;color: #000000;"></button>
                                             {{!-- <span class="added px-3"></span> --}}
                                         </a>
@@ -147,17 +146,17 @@
         </div>
         {{else}}
         <div class="container" style="height: 15rem;">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="">
-                                <div class="card-body text-center">
-                                    <h3 class="card-title">No Products Found</h3>
-                                    <p class="card-text">Sorry, there are currently no products available.</p>
-                                </div>
-                            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="">
+                        <div class="card-body text-center">
+                            <h3 class="card-title">No Products Found</h3>
+                            <p class="card-text">Sorry, there are currently no products available.</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
         {{/if}}
     </div>
 
@@ -169,8 +168,8 @@
     }
 </style>
 <script>
-     let addTo = document.getElementsByClassName('added')
-    for(let i=0;i<addTo.length;i++){
+    let addTo = document.getElementsByClassName('added')
+    for (let i = 0; i < addTo.length; i++) {
         addTo[i].style.display = 'none'
     }
 
@@ -178,10 +177,10 @@
         element.querySelector('.addto').style.display = 'none';
         element.querySelector('.added').style.display = 'block'
         element.querySelector('.added').textContent = '+ add to cart';
-        setTimeout(()=>{
+        setTimeout(() => {
             element.querySelector('.added').disabled = true
             element.querySelector('.added').textContent = 'added';
-        },500)
+        }, 500)
         // Call the addToCart function with the appropriate argument
 
     }

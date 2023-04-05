@@ -11,17 +11,19 @@
         </div>
         <div class="row w-75 align-items-center d-flex justify-content-center">
             <form class="mt-4 p-0  col-12 col-md-10 text-white" action="/admin/login" method="post">
-            {{#if msg}}
-            <span class="text-danger bg-white rounded-3">Invalid Email or Password</span>
-            {{/if}}
+                {{#if msg}}
+                <span class="text-danger bg-white rounded-3">Invalid Email or Password</span>
+                {{/if}}
 
                 <div class="mb-4">
                     <!-- <label for="username" class="form-label">Email</label> -->
-                    <input type="email" class="form-control" name="email" value="admin@gmail.com" id="email" placeholder="Email" required>
+                    <input type="email" class="form-control" name="email" value="admin@gmail.com" id="email"
+                        placeholder="Email" required>
                 </div>
                 <div class="mb-4">
                     <!-- <label for="" class="form-label">Password</label> -->
-                    <input type="password" class="form-control" name="password" value="" id="password" placeholder="Password" required>
+                    <input type="password" class="form-control" name="password" value="" id="password"
+                        placeholder="Password" required>
                     <div class="d-flex justify-content-between">
                         <!-- <a class="forgot text-light ps-5 pe-4" href="forgot.html">forgot password ?</a> -->
                     </div>

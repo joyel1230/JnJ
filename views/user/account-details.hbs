@@ -7,7 +7,7 @@
                 <img id="userImgView" src='/image/{{user.image}}' onclick="clickImg()" class="rounded-circle"
                     style="width: 50px;height: 50px;cursor: pointer;border: 1px solid #000;" alt=""
                     onerror="this.src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'">
-                    
+
                 {{!-- <img src="img/banner_img1.png" alt=""> --}}
                 <form class="w-100" action="/update-ac" method="post" enctype="multipart/form-data">
                     <input type="file" accept=".jpg" name="image" id="click" onchange="viewimage(event)"
@@ -86,6 +86,7 @@
         </div>
     </div>
 </section>
+<div>
 <!-- banner part start-->
 <style>
     label {

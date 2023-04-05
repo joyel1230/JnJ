@@ -16,9 +16,9 @@
 
             </tr>
           </thead>
-          
+
           <tbody>
-            
+
             {{#each wishArr}}
             {{!-- {{#if this.wishItems.[0].deleted}}
             {{else}} --}}
@@ -60,26 +60,26 @@
             </tr>
             {{!-- {{/if}} --}}
             {{/each}}
-            
+
           </tbody>
-          
+
         </table>
         {{else}}
-            
-                <div class="container" style="height: 15rem;">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="">
-                                <div class="card-body text-center">
-                                    <h3 class="card-title">No Items Found</h3>
-                                    <p class="card-text">Sorry, there are currently no items available.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+        <div class="container" style="height: 15rem;">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="">
+                <div class="card-body text-center">
+                  <h3 class="card-title">No Items Found</h3>
+                  <p class="card-text">Sorry, there are currently no items available.</p>
                 </div>
-                
-            {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{/if}}
         <div class="checkout_btn_inner float-right">
           <a class="btn_1" href="/">Continue Shopping</a>
           <a class="btn_1 checkout_btn_1" href="/cart">Cart</a>

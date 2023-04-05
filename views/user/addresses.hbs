@@ -26,31 +26,37 @@
                             pincode: {{this.pincode}}
                         </p>
                         <a href="/edit-address?ind={{@index}}" class="card-link">EDIT</a>
-                        <a onclick="canConR({{@index}})" style="cursor: pointer;"  class="card-link text-danger float-right">DELETE</a>
+                        <a onclick="canConR({{@index}})" style="cursor: pointer;"
+                            class="card-link text-danger float-right">DELETE</a>
                         {{!-- <a href="#" class="card-link">Another link</a> --}}
                     </div>
                 </div>
-                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;z-index: 3;top: 40%;" id="">
+                <div class="neumorphic-alert-box position-absolute px-5 del3" style="left: 35%;z-index: 3;top: 40%;"
+                    id="">
                     <h1>Confirmation</h1>
                     <p>Do you want to delete?</p>
                     <div class="neumorphic-alert-buttons">
-                        <a href="/delete-address/{{@index}}"><button class="neumorphic-alert-cancel-btn ">YES</button></a>
-                        <a onclick="canConR1({{@index}})" ><button
-                                class="neumorphic-alert-delete-btn">NO</button></a>
+                        <a href="/delete-address/{{@index}}"><button
+                                class="neumorphic-alert-cancel-btn ">YES</button></a>
+                        <a onclick="canConR1({{@index}})"><button class="neumorphic-alert-delete-btn">NO</button></a>
                     </div>
                 </div>
                 {{/each}}
-                
-                <a href="/add-address" class="card-link" style="font-size: larger;"><div class="card m-4" style="width: 18rem;">
-                    <div class="card-body d-flex justify-content-center align-items-center" style="border: 2px dashed rgb(0, 0, 0);">
-                        {{!-- <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="card-link">Card link</a> --}}
-                        <i style="font-weight: 900;padding:50px 0;color: #000;" class="ti-plus  fa-lg"></i>
+
+                <a href="/add-address" class="card-link" style="font-size: larger;">
+                    <div class="card m-4" style="width: 18rem;">
+                        <div class="card-body d-flex justify-content-center align-items-center"
+                            style="border: 2px dashed rgb(0, 0, 0);">
+                            {{!-- <h5 class="card-title">Card title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <a href="#" class="card-link">Card link</a> --}}
+                            <i style="font-weight: 900;padding:50px 0;color: #000;" class="ti-plus  fa-lg"></i>
+                        </div>
                     </div>
-                </div></a>
+                </a>
 
 
                 {{!--
@@ -68,12 +74,12 @@
 <!-- banner part start-->
 <script>
     let box = document.getElementsByClassName('del3')
-  
-    function canConR1(ind){
+
+    function canConR1(ind) {
         ind = Number(ind)
         box[ind].classList.remove('open-pop')
     }
-    function canConR(ind){
+    function canConR(ind) {
         ind = Number(ind)
         box[ind].classList.add('open-pop')
     }
@@ -83,7 +89,8 @@
         font-size: 1.5vw;
         font-weight: 500;
     }
-        .neumorphic-alert-box {
+
+    .neumorphic-alert-box {
         background-color: #f2f2f2;
         border-radius: 10px;
         box-shadow:
@@ -91,7 +98,7 @@
             10px 10px 20px rgba(0, 0, 0, 0.2);
         padding: 20px;
         text-align: center;
-       display: none;
+        display: none;
     }
 
     .neumorphic-alert-buttons {
@@ -130,7 +137,8 @@
     .open-pop {
         display: block;
     }
-    .close{
+
+    .close {
         display: none;
     }
 </style>

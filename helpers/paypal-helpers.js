@@ -1,22 +1,19 @@
 const { ObjectId } = require("mongodb");
-const db = require('../config/connection');
-const collections = require('../config/collections');
-const reportHelpers = require('../helpers/report-helpers')
-const oneUSD = 73.098
-
+const db = require("../config/connection");
+const collections = require("../config/collections");
+const reportHelpers = require("../helpers/report-helpers");
+const oneUSD = 73.098;
 
 const paypal = require("paypal-rest-sdk");
 
 paypal.configure({
   mode: "sandbox", //sandbox or live
-  client_id:
-    process.env.PAY_KEY_ID,
-  client_secret:
-    process.env.PAY_KEY_SECRET,
+  client_id: process.env.PAY_KEY_ID,
+  client_secret: process.env.PAY_KEY_SECRET,
 });
 module.exports = {
   payWithPaypal: async (id, res, total) => {
-    total = (total / oneUSD).toFixed(2)
+    total = (total / oneUSD).toFixed(2);
     const create_payment_json = {
       intent: "sale",
       payer: {
@@ -51,65 +48,85 @@ module.exports = {
   },
   addPaypalOrder: (discount, total, mob, addr) => {
     return new Promise(async (resolve, reject) => {
-      let user = await db.get().collection(collections.USER_COLLECTIONS).findOne({ mobile: mob })
+      let user = await db
+        .get()
+        .collection(collections.USER_COLLECTIONS)
+        .findOne({ mobile: mob });
       if (!user.address) {
-        reject(true)
+        reject(true);
       } else {
         if (user.address.length == 0) {
-          reject(true)
+          reject(true);
         } else {
-          db.get().collection(collections.ORDER_COLLECTION).insertOne({
-            userMobile: mob,
-            products: user.cart,
-            address: user.address[addr],
-            payMethod: 'Paypal',
-            discount: Number(discount),
-            total: Number(total),
-            createdOn: new Date(),
-            status: 'payment pending'
-          }).then((response) => {
-            resolve(response.insertedId)
-          })
+          db.get()
+            .collection(collections.ORDER_COLLECTION)
+            .insertOne({
+              userMobile: mob,
+              products: user.cart,
+              address: user.address[addr],
+              payMethod: "Paypal",
+              discount: Number(discount),
+              total: Number(total),
+              createdOn: new Date(),
+              status: "payment pending",
+            })
+            .then((response) => {
+              resolve(response.insertedId);
+            });
         }
       }
-
-    })
+    });
   },
   paidPaypalOrder: (paid, id) => {
     return new Promise(async (resolve, reject) => {
-      if (paid == 'true') {
-        let order = await db.get().collection(collections.ORDER_COLLECTION).findOne({ _id: ObjectId(id) })
-        let cart = order.products
+      if (paid == "true") {
+        let order = await db
+          .get()
+          .collection(collections.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(id) });
+        let cart = order.products;
         for (let i = 0; i < cart.length; i++) {
-          db.get().collection(collections.PRODUCT_COLLECTIONS).updateOne({
-              _id: cart[i].proId
-          }, {
-              $inc: {
-                  stock: -(cart[i].qty)
+          db.get()
+            .collection(collections.PRODUCT_COLLECTIONS)
+            .updateOne(
+              {
+                _id: cart[i].proId,
+              },
+              {
+                $inc: {
+                  stock: -cart[i].qty,
+                },
               }
-          }
-          )
-      }
-        db.get().collection(collections.USER_COLLECTIONS).updateOne({ mobile: order.userMobile }, {
-          $unset: {
-            cart: ''
-          }
-        })
-        db.get().collection(collections.ORDER_COLLECTION).updateOne({ _id: ObjectId(id) },
-          {
-            $set:
+            );
+        }
+        db.get()
+          .collection(collections.USER_COLLECTIONS)
+          .updateOne(
+            { mobile: order.userMobile },
             {
-              status: 'processing'
+              $unset: {
+                cart: "",
+              },
             }
-          }).then((response) => {
-            resolve(true)
-          })
-          
-      }else{
-        reportHelpers.removePendings()
+          );
+        db.get()
+          .collection(collections.ORDER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(id) },
+            {
+              $set: {
+                status: "processing",
+              },
+            }
+          )
+          .then((response) => {
+            resolve(true);
+          });
+      } else {
+        reportHelpers.removePendings();
       }
-      
-      resolve(true)
-    })
-  }
-}
+
+      resolve(true);
+    });
+  },
+};

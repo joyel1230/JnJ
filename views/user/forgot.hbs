@@ -3,7 +3,7 @@
 </head>
 
 {{!-- popup --}}
-{{!-- 
+{{!--
 <div class="position-absolute popup" id="popup">
   <h2>Done Successfully!</h2>
   <p>OK to Continue</p>
@@ -21,9 +21,9 @@
     </div>
     <div class="row m-2">
       <form class="me-5 mt-5 pe-3 w-100 text-white" action="/password" method="post">
-      {{#if pop}}
-      <span style="background-color: white;color: red;padding: 1px;">OTP ERROR</span>
-      {{/if}}
+        {{#if pop}}
+        <span style="background-color: white;color: red;padding: 1px;">OTP ERROR</span>
+        {{/if}}
         <div class="mb-1">
           <label for="username" class="form-label">Mobile Number</label>
           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number"
@@ -36,7 +36,7 @@
           {{!-- <span>(hint : 0000)</span> --}}
           <input type="text" class="form-control" id="OTP" name="OTP" placeholder="OTP">
         </div>
-        
+
         <span id="sameOTP" class="text-danger bg-white rounded-3"></span>
         <div class="">
           <label for="" class="form-label">Create Password</label>

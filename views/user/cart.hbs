@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            
+
             {{#each cartArr}}
             {{!-- {{#if this.cartItems.[0].deleted}}
             {{else}} --}}
@@ -25,10 +25,11 @@
               <td>
                 <div class="media">
                   <div class="d-flex">
-                    <a href="/single-product/{{this.cartItems.[0].slug}}"><img src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" /></a>
+                    <a href="/single-product/{{this.cartItems.[0].slug}}"><img
+                        src="/image/{{this.cartItems.[0].images.[0]}}" style="width: 80px;height: auto;" alt="" /></a>
                   </div>
                   <div class="media-body">
-                    
+
                     <p>{{this.cartItems.[0].name}}</p>
                   </div>
                 </div>
@@ -42,12 +43,14 @@
                   <input class="input-number" type="text" value="1" min="1" max="5">
                   <span class="input-number-increment"> <i class="ti-angle-up"></i></span> --}}
                   {{!-- <i class="ti-angle-down" style="cursor: pointer;" onclick="changeSize({{@index}})"></i> --}}
-                  <span style="margin: 0.5rem;" class="size" name="size">{{#if this.cart.size}}{{this.cart.size}}{{else}}sm{{/if}}</span>
-                  <i class="ti-angle-right" style="cursor: pointer;margin-left: 1px;" onclick="changeSize({{@index}})"></i>
+                  <span style="margin: 0.5rem;" class="size" name="size">{{#if
+                    this.cart.size}}{{this.cart.size}}{{else}}sm{{/if}}</span>
+                  <i class="ti-angle-right" style="cursor: pointer;margin-left: 1px;"
+                    onclick="changeSize({{@index}})"></i>
                 </div>
               </td>
               <td>
-                  <span class="text-danger nomore  position-absolute" style="margin-top: -1rem;"></span>
+                <span class="text-danger nomore  position-absolute" style="margin-top: -1rem;"></span>
                 <div class="product_count" style="user-select: none;">
                   {{!-- <span class="input-number-decrement"> <i class="ti-angle-down"></i></span>
                   <input class="input-number" type="text" value="1" min="1" max="5">
@@ -63,12 +66,13 @@
               </td>
               <td class="">
                 <a href="/cart-remove/{{this.cartItems.[0]._id}}"
-                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                  style="color: black;font-weight: 700;font-size:x-large;"><i class="fa fa-trash"
+                    aria-hidden="true"></i></a>
               </td>
             </tr>
             {{!-- {{/if}} --}}
             {{/each}}
-            
+
             <tr class="text-center">
               <td></td>
               <td></td>
@@ -94,7 +98,7 @@
                   <ul class="list">
 
                     <li class="active">
-                      <a >Free Shipping</a>
+                      <a>Free Shipping</a>
                     </li>
 
                   </ul>
@@ -106,26 +110,26 @@
           </tbody>
         </table>
         {{else}}
-            
-                <div class="container" style="height: 15rem;">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="">
-                                <div class="card-body text-center">
-                                    <h3 class="card-title">No Items Found</h3>
-                                    <p class="card-text">Sorry, there are currently no items available.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+        <div class="container" style="height: 15rem;">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="">
+                <div class="card-body text-center">
+                  <h3 class="card-title">No Items Found</h3>
+                  <p class="card-text">Sorry, there are currently no items available.</p>
                 </div>
-                
-            {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{/if}}
         <div class="checkout_btn_inner float-right">
           <a class="btn_1 mb-3" href="/">Continue Shopping</a>
-         {{#if cartArr}}
+          {{#if cartArr}}
           <a class="btn_1 checkout_btn_1" href="" onclick="pushQty()" id="proCheck">Proceed to checkout</a>
-          <a class="btn_1 checkout_btn_1"  href="/cart" id="proCheck1"></a>
+          <a class="btn_1 checkout_btn_1" href="/cart" id="proCheck1"></a>
           {{/if}}
         </div>
       </div>
@@ -134,20 +138,20 @@
 <!--================End Cart Area =================-->
 
 <script>
-  $(function(){
+  $(function () {
     let qtyElems = document.getElementsByClassName('qty');
     let stkElems = document.getElementsByClassName('stkQty');
     let count = true;
-    for(let i=0;i<qtyElems.length;i++){
+    for (let i = 0; i < qtyElems.length; i++) {
       let stk = +stkElems[i].innerHTML
-      if(stk<=0){
-        qtyElems[i].innerHTML = 0 ;
+      if (stk <= 0) {
+        qtyElems[i].innerHTML = 0;
         document.getElementById('proCheck').style.display = 'none'
         document.getElementById('proCheck1').innerHTML = 'Remove zero quantity items'
         count = false;
       }
     }
-    if(count){
+    if (count) {
       document.getElementById('proCheck1').style.display = 'none'
     }
   })
@@ -157,16 +161,16 @@
   function pushQty() {
     const qtyArr = document.getElementsByClassName('qty')
     const sizeArr = document.getElementsByClassName('size')
-    let qty=[]
-    let size=[]
+    let qty = []
+    let size = []
     for (let i = 0; i < qtyArr.length; i++) {
       qty.push(Number(qtyArr[i].innerHTML))
     }
     for (let i = 0; i < sizeArr.length; i++) {
       size.push(sizeArr[i].innerHTML.trim())
     }
-    let url= `/checkout?qty=${qty}&size=${size}`
-    proCheck.setAttribute("href",encodeURI(url))
+    let url = `/checkout?qty=${qty}&size=${size}`
+    proCheck.setAttribute("href", encodeURI(url))
     return qty;
   }
 
@@ -180,7 +184,7 @@
 
     let qty = Number(qtyElems[index].innerHTML);
     let stk = Number(stkElems[index].innerHTML);
-    nomoreElems[index].innerHTML =''
+    nomoreElems[index].innerHTML = ''
     let onePrice = Number(onePriceElems[index].innerHTML);
     if (qty > 1) {
       qtyElems[index].innerHTML = qty - 1;
@@ -204,16 +208,16 @@
 
     let qty = Number(qtyElems[index].innerHTML);
     let stk = Number(stkElems[index].innerHTML);
-    if(qty>=stk){
-      if(stk<=0){
+    if (qty >= stk) {
+      if (stk <= 0) {
         qtyElems[index].innerHTML = 0
-      nomoreElems[index].innerHTML = 'no stock'
-      return;
+        nomoreElems[index].innerHTML = 'no stock'
+        return;
       }
       nomoreElems[index].innerHTML = 'no more'
       return;
     }
-    nomoreElems[index].innerHTML =''
+    nomoreElems[index].innerHTML = ''
     let onePrice = Number(onePriceElems[index].innerHTML);
     if (qty < 5) {
       qtyElems[index].innerHTML = qty + 1;
@@ -239,24 +243,24 @@
   subTotal();
 
   let qtyElems = document.getElementsByClassName('qty');
-    let onePriceElems = document.getElementsByClassName('onePrice');
-    let totalElems = document.getElementsByClassName('totalPrice');
-    let sum=0;
-    let subtotal = document.getElementById('subtotal')
-    for(let i=0;i<qtyElems.length;i++){
-    totalElems[i].innerHTML=Number(qtyElems[i].innerHTML)*Number(onePriceElems[i].innerHTML)
-    sum+=Number(totalElems[i].innerHTML)
-    }
-    subtotal.innerHTML=sum;
+  let onePriceElems = document.getElementsByClassName('onePrice');
+  let totalElems = document.getElementsByClassName('totalPrice');
+  let sum = 0;
+  let subtotal = document.getElementById('subtotal')
+  for (let i = 0; i < qtyElems.length; i++) {
+    totalElems[i].innerHTML = Number(qtyElems[i].innerHTML) * Number(onePriceElems[i].innerHTML)
+    sum += Number(totalElems[i].innerHTML)
+  }
+  subtotal.innerHTML = sum;
 
 
-    function changeSize(index){
-      let size = document.getElementsByClassName('size')
-      size1 =size[index].innerHTML.trim()
-      if(size1=='sm'){
-        size[index].innerHTML='md'
-      }else{
-        size[index].innerHTML='sm'
-      }
+  function changeSize(index) {
+    let size = document.getElementsByClassName('size')
+    size1 = size[index].innerHTML.trim()
+    if (size1 == 'sm') {
+      size[index].innerHTML = 'md'
+    } else {
+      size[index].innerHTML = 'sm'
     }
+  }
 </script>

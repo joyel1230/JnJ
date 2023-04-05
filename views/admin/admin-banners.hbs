@@ -39,47 +39,48 @@
             </form>
         </div> --}}
         <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">banner</th>
-                    <th scope="col">description</th>
-                    <th scope="col">Active</th>
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">banner</th>
+                        <th scope="col">description</th>
+                        <th scope="col">Active</th>
 
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {{#each banners}}
-                <tr class="text-center">
-                    
-                    <td><img src="/image/{{this.image}}" style="width: 150px;height: 75px;" alt=""></td>
-                    <td>{{this.description}}</td>
-                    {{!-- {{#if this.status}} --}}
-                    <td>
-                        {{!-- <a class="btn rounded-circle greenBanner" style="background-color: red;"
-                            onclick="selectBanner('{{this._id}}','{{@index}}')"></a> --}}
-                        {{#if status}}
-                        <label class="switch">
-                            <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')" class="checked"
-                                checked>
-                            <span class="slider round"></span>
-                        </label>
-                        {{else}}
-                        <label class="switch">
-                            <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')"  class="checked">
-                            <span class="slider round"></span>
-                        </label>
-                        {{/if}}
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {{#each banners}}
+                    <tr class="text-center">
+
+                        <td><img src="/image/{{this.image}}" style="width: 150px;height: 75px;" alt=""></td>
+                        <td>{{this.description}}</td>
+                        {{!-- {{#if this.status}} --}}
+                        <td>
+                            {{!-- <a class="btn rounded-circle greenBanner" style="background-color: red;"
+                                onclick="selectBanner('{{this._id}}','{{@index}}')"></a> --}}
+                            {{#if status}}
+                            <label class="switch">
+                                <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')"
+                                    class="checked" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            {{else}}
+                            <label class="switch">
+                                <input type="checkbox" onclick="selectBanner('{{this._id}}','{{@index}}')"
+                                    class="checked">
+                                <span class="slider round"></span>
+                            </label>
+                            {{/if}}
 
 
-                    </td>
-                    {{!-- {{else}} --}}
+                        </td>
+                        {{!-- {{else}} --}}
 
-                    {{!-- {{/if}} --}}
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                        {{!-- {{/if}} --}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
         <nav aria-label="Page navigation example" class="d-none d-lg-block">
             <ul class="pagination float-end">
@@ -113,9 +114,13 @@
 
 </script>
 <style>
-       table {width:7cm; height:7cm; border: 1px solid;
-  page-break-after: always;
-  }
+    table {
+        width: 7cm;
+        height: 7cm;
+        border: 1px solid;
+        page-break-after: always;
+    }
+
     .switch {
         position: relative;
         display: inline-block;

@@ -1,79 +1,78 @@
- 
- <head>
-    <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
-    <link rel="stylesheet" href="/css/style.css">
+<head>
+  <link rel="stylesheet" href="/stylesheets/admin/admin-home.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <div class="dropdown bg-black pb-1">
-    <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        ADMIN
-    </button>
-    <ul class="dropdown-menu bg-black profile">
-        <li><a class="dropdown-item" href="/admin">Home</a></li>
-        <li><a class="dropdown-item" href="/admin/products">Products</a></li>
-        <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
-        <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
-        <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
-        <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
-    </ul>
-    <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
-                alt=""></a></span>
+  <button class="btn text-white dropdown-toggle  bg-black" type="button" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    ADMIN
+  </button>
+  <ul class="dropdown-menu bg-black profile">
+    <li><a class="dropdown-item" href="/admin">Home</a></li>
+    <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+    <li><a class="dropdown-item" href="/admin/users">Customers</a></li>
+    <li><a class="dropdown-item" href="/admin/orders">Orders</a></li>
+    <li><a class="dropdown-item" href="/admin/coupons">Coupons</a></li>
+    <li><a class="dropdown-item" href="/admin/banners">Banners</a></li>
+  </ul>
+  <span class="float-end"><a href="/admin/logout" title="logout"><img src="/images/user/logout.png" class="logout"
+        alt=""></a></span>
 </div>
- <!--================ confirmation part start =================-->
-  <section class="confirmation_part padding_top pb-5 bgcl" style="margin-top: 0rem;">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="confirmation_tittle">
-            {{!-- <span>Thank you.</span> --}}
-          </div>
+<!--================ confirmation part start =================-->
+<section class="confirmation_part padding_top pb-5 bgcl" style="margin-top: 0rem;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="confirmation_tittle">
+          {{!-- <span>Thank you.</span> --}}
         </div>
-        <div class="col-lg-6 col-lx-4 ">
-          <div class="single_confirmation_details bgd1" style="border: 1px solid #000;border-radius: 10px;">
-            <h4>order info</h4>
-            <ul>
-              <li>
-                <p>order number</p><span>: {{orderNumber}}</span>
-              </li>
-              <li>
-                <p>ordered on</p><span>: {{order.[0].createdOn}}</span>
-              </li>
-              <li>
-                <p>status</p><span>: {{order.[0].status}}</span>
-              </li>
-              <li>
-                <p>payment method</p><span>: {{order.[0].payMethod}}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6 col-lx-4 ">
-          <div class="single_confirmation_details bgd1" style="border: 1px solid #000;border-radius: 10px;">
-            <h4>shipping Address</h4>
-            <ul>
-              <li>
-                <p>Street</p><span>: {{order.[0].address.street}}</span>
-              </li>
-              <li>
-                <p>city</p><span>: {{order.[0].address.city}}</span>
-              </li>
-              <li>
-                <p>country</p><span>: {{order.[0].address.country}}</span>
-              </li>
-              <li>
-                <p>pincode</p><span>: {{order.[0].address.pincode}}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
       </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="order_details_iner bgd1" style="border: 1px solid #000;border-radius: 10px;">
-            <h3>Order Details</h3>
-            <div class="table-responsive">
+      <div class="col-lg-6 col-lx-4 ">
+        <div class="single_confirmation_details bgd1" style="border: 1px solid #000;border-radius: 10px;">
+          <h4>order info</h4>
+          <ul>
+            <li>
+              <p>order number</p><span>: {{orderNumber}}</span>
+            </li>
+            <li>
+              <p>ordered on</p><span>: {{order.[0].createdOn}}</span>
+            </li>
+            <li>
+              <p>status</p><span>: {{order.[0].status}}</span>
+            </li>
+            <li>
+              <p>payment method</p><span>: {{order.[0].payMethod}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-lx-4 ">
+        <div class="single_confirmation_details bgd1" style="border: 1px solid #000;border-radius: 10px;">
+          <h4>shipping Address</h4>
+          <ul>
+            <li>
+              <p>Street</p><span>: {{order.[0].address.street}}</span>
+            </li>
+            <li>
+              <p>city</p><span>: {{order.[0].address.city}}</span>
+            </li>
+            <li>
+              <p>country</p><span>: {{order.[0].address.country}}</span>
+            </li>
+            <li>
+              <p>pincode</p><span>: {{order.[0].address.pincode}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="order_details_iner bgd1" style="border: 1px solid #000;border-radius: 10px;">
+          <h3>Order Details</h3>
+          <div class="table-responsive">
             <table class="table table-borderless">
               <thead>
                 <tr style="text-align: center;">
@@ -87,14 +86,14 @@
 
                 {{#each order}}
                 <tr style="text-align: center;">
-                    <span style="display: none;" class="onePrice">{{this.items.[0].price}}</span>
+                  <span style="display: none;" class="onePrice">{{this.items.[0].price}}</span>
                   <th colspan="2"><span>{{this.items.[0].name}}</span></th>
                   <th><span class="">{{#if this.products.size}}{{this.products.size}} {{else}}sm{{/if}} </span></th>
                   <th><span class="qty">{{this.products.qty}}</span></th>
                   <th>₹<span class="oneTotal"></span>.00</th>
                 </tr>
                 {{/each}}
-                            
+
                 <tr style="text-align: center;">
                   <th colspan="3">Subtotal</th>
                   <th>₹<span id="subtotal"></span>.00</th>
@@ -111,32 +110,33 @@
                 </tr>
               </tfoot>
             </table>
-            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!--================ confirmation part end =================-->
+  </div>
+</section>
+<!--================ confirmation part end =================-->
 <script>
-    let subtotal =document.getElementById('subtotal')
-    let discount =Number(document.getElementById('discount').innerHTML)
-    let total =Number(document.getElementById('total').innerHTML)
-    subtotal.innerHTML=discount+total
-    let op =document.getElementsByClassName('onePrice')
-    let qty =document.getElementsByClassName('qty')
-    let ot =document.getElementsByClassName('oneTotal')
-    for(let i=0;i<op.length;i++){
-        ot[i].innerHTML=Number(op[i].innerHTML)*Number(qty[i].innerHTML)
-    }
+  let subtotal = document.getElementById('subtotal')
+  let discount = Number(document.getElementById('discount').innerHTML)
+  let total = Number(document.getElementById('total').innerHTML)
+  subtotal.innerHTML = discount + total
+  let op = document.getElementsByClassName('onePrice')
+  let qty = document.getElementsByClassName('qty')
+  let ot = document.getElementsByClassName('oneTotal')
+  for (let i = 0; i < op.length; i++) {
+    ot[i].innerHTML = Number(op[i].innerHTML) * Number(qty[i].innerHTML)
+  }
 
 </script>
 <style>
-    .bgcl{
-        background-color: rgb(255, 255, 255)!important;
-        height: ;
-    }
-    .bgd1{
-        background-color: aliceblue!important;
-    }
+  .bgcl {
+    background-color: rgb(255, 255, 255) !important;
+    height: ;
+  }
+
+  .bgd1 {
+    background-color: aliceblue !important;
+  }
 </style>

@@ -15,7 +15,6 @@ const userd = true;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const myNumber = process.env.TWILIO_MY_NUMBER;
-// const myOTP = process.env.TWILIO_MY_OTP;
 const client = require("twilio")(accountSid, authToken);
 
 module.exports = {
@@ -28,7 +27,6 @@ module.exports = {
   },
   getHome: (req, res, next) => {
     reportHelpers.searches();
-    // console.log(req);
     let userID = req.session.user;
     return new Promise((resolve, reject) => {
       productHelpers.getAllProducts().then((array) => {
@@ -47,7 +45,6 @@ module.exports = {
         if (userID?.blocked) {
           res.redirect("/logout");
         } else {
-          // console.log(products);
           products.map((product) => {
             product.price = product.price.toLocaleString("en-IN", {
               style: "currency",
@@ -68,7 +65,6 @@ module.exports = {
         }
       });
     });
-    // console.log(userID);
   },
   getLogin: (req, res) => {
     if (req.session.login) {
@@ -106,16 +102,6 @@ module.exports = {
               .catch((err) => {
                 res.render("user/mobile", { block: true });
               });
-
-            // let myOTP = Math.floor(Math.random() * 9000) + 1000;
-            // req.session.OTP = myOTP
-            // client.messages
-            //   .create({
-            //     body: 'OTP: ' + myOTP + ' MOB: ' + mob,
-            //     from: myNumber,
-            //     to: '+919633667502'
-            //   })
-            //   .then(message => console.log(message.sid));
           }
         })
         .catch((err) => {
@@ -135,15 +121,6 @@ module.exports = {
         .services("VA25a92551fa5e3c0f98c42a1d8d1878e1")
         .verifications.create({ to: mob, channel: "sms" })
         .then((verification) => console.log(verification.status));
-      // let myOTP = Math.floor(Math.random() * 9000) + 1000;
-      // req.session.OTP = myOTP
-      // client.messages
-      //   .create({
-      //     body: 'OTP: ' + myOTP + ' MOB: ' + mob,
-      //     from: myNumber,
-      //     to: '+919633667502'
-      //   })
-      //   .then(message => console.log(message.sid));
       res.render("user/forgot", { newMobile });
     }
   },
@@ -154,22 +131,16 @@ module.exports = {
     mobileNew += newMobile;
     const OTP = req.body.OTP;
 
-    // if (req.session.OTP == req.body.OTP) {
-    //   otp = true;
-    // }
-
     client.verify.v2
       .services("VA25a92551fa5e3c0f98c42a1d8d1878e1")
       .verificationChecks.create({ to: mobileNew, code: OTP })
       .then((verification_check) => {
         console.log(verification_check.status);
         if (verification_check.status === "approved") {
-          // console.log(verification_check.status+'yes');
           userHelpers.doSignup(req.body).then((response) => {
             res.render("user/login", { mobile, pop: true });
           });
         } else {
-          // console.log(verification_check.status+'no');
           res.render("user/forgot", { newMobile, pop: true });
         }
       })
@@ -189,18 +160,12 @@ module.exports = {
           req.session.login = true;
           req.session.user = response.user;
           req.session.user.cartNum = response.cartNum;
-          // console.log(req.session.cart);
           userHelpers
             .active(req.session.user?.mobile)
-            .then((response) => {
-              // console.log(true);
-            })
+            .then((response) => {})
             .catch((err) => {
               console.log(err);
             });
-
-          // console.log(req.session.user);
-          // console.log(req.session.user?.mobile);
           res.redirect("/");
         } else {
           let err = "Invalid password";
@@ -214,9 +179,7 @@ module.exports = {
   getLogout: (req, res) => {
     userHelpers
       .inActive(req.session.user?.mobile)
-      .then((response) => {
-        // console.log(true);
-      })
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -236,7 +199,6 @@ module.exports = {
     userHelpers
       .getAllWishlist(userMob)
       .then((wishArr) => {
-        // console.log(wishArr);
         res.render("user/wishlist", { userd, wishArr, userID });
       })
       .catch((err) => {
@@ -283,8 +245,6 @@ module.exports = {
   },
   getAddCart: (req, res) => {
     let proId = req.params.id;
-    // console.log(req.originalUrl);
-    // console.log(slug);
     let userMob = req.session.user.mobile;
 
     userHelpers
@@ -293,10 +253,8 @@ module.exports = {
         obj.user = req.session.login;
         req.session.user.cartNum = obj.cart;
         if (obj.wish) {
-          // res.redirect('/wishlist')
           res.json({ status: true, cart: obj.cart, user: obj.user });
         } else {
-          // res.redirect('/cart')
           res.json({ status: true, cart: obj.cart, user: obj.user });
         }
       })
@@ -324,7 +282,6 @@ module.exports = {
     res.render("user/single-blog", { userd });
   },
   getSingleProductId: (req, res) => {
-    // const slug = (req.originalUrl).split('/').pop();
     let proId = req.params.slug;
     let userID = req.session.user;
     console.log(req.body.stat);
@@ -352,7 +309,6 @@ module.exports = {
         } else {
           var stks = false;
         }
-        // console.log(userd);
         product.price = product.price.toLocaleString("en-IN", {
           style: "currency",
           currency: "INR",
@@ -379,7 +335,6 @@ module.exports = {
     userHelpers
       .getAccDetails(userID.mobile)
       .then((user) => {
-        // console.log(user);
         res.render("user/account-details", { userd, userID, user });
       })
       .catch((err) => {
@@ -537,7 +492,6 @@ module.exports = {
     userHelpers
       .checkCoupon(code, total, userID.mobile)
       .then((discount) => {
-        // console.log(discount);
         if (discount) {
           res.json({ status: true });
         } else {
@@ -587,7 +541,6 @@ module.exports = {
     paypalHelpers
       .paidPaypalOrder(paid, id)
       .then(() => {
-        // userID.cartNum =0
         userHelpers
           .getAllOrders(userID.mobile)
           .then((orders) => {

@@ -629,8 +629,10 @@ module.exports = {
           },
         ])
         .toArray();
-      if (add.address) {
+      if (add.address?.length) {
         add = add.address;
+      } else {
+        add = false;
       }
       let array = [add, cartArr];
       array.push(coupon);
@@ -686,20 +688,27 @@ module.exports = {
       resolve(false);
     });
   },
-  addCashOrder: (discount, total, mob, addr) => {
+  addCashOrder: (discount, total, mob, addr, wallet) => {
     return new Promise(async (resolve, reject) => {
       let user = await db
         .get()
         .collection(collections.USER_COLLECTIONS)
         .findOne({ mobile: mob });
-      console.log(user.cart);
-      console.log(user.cart[0].proId);
+      // console.log(user.cart);
+      // console.log(user.cart[0].proId);
+      let wall = user.wallet - Math.floor(user.wallet / 4);
       if (!user.address) {
         reject(true);
       } else {
         if (user.address.length == 0) {
           reject(true);
         } else {
+          if (wallet === "true") {
+            db.get()
+              .collection(collections.USER_COLLECTIONS)
+              .updateOne({ mobile: mob }, { $set: { wallet: wall } });
+          }
+
           db.get()
             .collection(collections.ORDER_COLLECTION)
             .insertOne({
@@ -711,6 +720,7 @@ module.exports = {
               total: Number(total),
               createdOn: new Date(),
               status: "processing",
+              wallet: Math.floor(user.wallet / 4),
             })
             .then(async (r) => {
               let cart = user.cart;
@@ -747,7 +757,7 @@ module.exports = {
       }
     });
   },
-  addPayOrder: (discount, total, mob, addr) => {
+  addPayOrder: (discount, total, mob, addr, wallet) => {
     return new Promise(async (resolve, reject) => {
       let user = await db
         .get()
@@ -761,6 +771,11 @@ module.exports = {
         if (user.address.length == 0) {
           reject(true);
         } else {
+          if (wallet === "true") {
+            db.get()
+              .collection(collections.USER_COLLECTIONS)
+              .updateOne({ mobile: mob }, { $set: { walletUsed: true } });
+          }
           db.get()
             .collection(collections.ORDER_COLLECTION)
             .insertOne({
@@ -884,16 +899,46 @@ module.exports = {
           { _id: ObjectId(id) },
           { $set: { status: "Cancelled", closedOn: new Date() } }
         );
-      db.get()
-        .collection(collections.USER_COLLECTIONS)
-        .updateOne(
-          { mobile: order.userMobile },
-          {
-            $inc: {
-              wallet: order.total,
-            },
-          }
-        );
+      if (order.payMethod !== "COD") {
+        if (order.wallet>0) {
+          db.get()
+          .collection(collections.USER_COLLECTIONS)
+          .updateOne(
+            { mobile: order.userMobile },
+            {
+              $inc: {
+                wallet: order.total+order.wallet,
+              },
+            }
+          );
+        } else {
+          db.get()
+          .collection(collections.USER_COLLECTIONS)
+          .updateOne(
+            { mobile: order.userMobile },
+            {
+              $inc: {
+                wallet: order.total,
+              },
+            }
+          );
+        }
+        
+      }else{
+        if (order.wallet>0) {
+          db.get()
+          .collection(collections.USER_COLLECTIONS)
+          .updateOne(
+            { mobile: order.userMobile },
+            {
+              $inc: {
+                wallet: order.wallet,
+              },
+            }
+          );
+        }
+      }
+
       resolve(order.total);
     });
   },
@@ -936,6 +981,27 @@ module.exports = {
         .get()
         .collection(collections.ORDER_COLLECTION)
         .findOne({ _id: ObjectId(id) });
+      let user = await db
+        .get()
+        .collection(collections.USER_COLLECTIONS)
+        .findOne({ mobile: order.userMobile });
+      let wall = user.wallet - Math.floor(user.wallet / 4);
+      if (user.walletUsed) {
+        db.get()
+          .collection(collections.USER_COLLECTIONS)
+          .updateOne(
+            { mobile: order.userMobile },
+            { $set: { wallet: wall, walletUsed: false } }
+          );
+        await db
+          .get()
+          .collection(collections.ORDER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(id) },
+            { $set: { wallet: Math.floor(user.wallet / 4) } }
+          );
+      }
+
       let cart = order.products;
       for (let i = 0; i < cart.length; i++) {
         db.get()

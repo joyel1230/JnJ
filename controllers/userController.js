@@ -460,14 +460,13 @@ module.exports = {
     let userID = req.session.user;
     let qty = req.query.qty;
     let size = req.query.size;
-    let noaddr = false;
+    let noaddr = true;
     userHelpers
       .getAddCheckout(userID.mobile, qty, size)
       .then((array) => {
         let add = array[0];
-        console.log(add[0]);
-        if (add[0] !== undefined) {
-          noaddr = true;
+        if (!add) {
+          noaddr = false
         }
         let docs = array[1];
         let coupon = array[2];
@@ -506,10 +505,11 @@ module.exports = {
     let discount = req.query.discount;
     let total = req.query.total;
     let addr = req.query.addr;
+    let wallet = req.query.wallet;
 
     let userID = req.session.user;
     userHelpers
-      .addCashOrder(discount, total, userID.mobile, addr)
+      .addCashOrder(discount, total, userID.mobile, addr, wallet)
       .then(() => {
         req.session.user.cartNum = 0;
         res.redirect("/orders");
@@ -522,9 +522,10 @@ module.exports = {
     let discount = req.query.discount;
     let total = req.query.total;
     let addr = req.query.addr;
+    let wallet = req.query.wallet;
     let userID = req.session.user;
     userHelpers
-      .addPayOrder(discount, total, userID.mobile, addr)
+      .addPayOrder(discount, total, userID.mobile, addr, wallet)
       .then((orderId) => {
         userHelpers.generateRazorPay(orderId, total).then((order) => {
           res.json({ order: order, status: false });
@@ -674,10 +675,11 @@ module.exports = {
     let discount = req.query.discount;
     let total = req.query.total;
     let addr = req.query.addr;
+    let wallet = req.query.wallet;
     let userID = req.session.user;
     console.log(discount, total);
     paypalHelpers
-      .addPaypalOrder(discount, total, userID.mobile, addr)
+      .addPaypalOrder(discount, total, userID.mobile, addr, wallet)
       .then((id) => {
         paypalHelpers.payWithPaypal(id, res, total);
       })

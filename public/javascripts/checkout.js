@@ -40,18 +40,20 @@ function paypal() {
 }
 function cashOrder() {
   let discount = Number(document.getElementById("discount").innerHTML);
+  let walletStatus = document.getElementById("walletTrue").innerHTML;
   let total = Number(document.getElementById("total").innerHTML);
   let pro1 = document.getElementById("pro1");
   let addNO = Number(document.getElementById("addNo").innerHTML);
-  let url = `/cash-order?discount=${discount}&total=${total}&addr=${addNO}`;
+  let url = `/cash-order?discount=${discount}&total=${total}&addr=${addNO}&wallet=${walletStatus}`;
   pro1.setAttribute("href", encodeURI(url));
 }
 function payOrder() {
   let discount = Number(document.getElementById("discount").innerHTML);
   let total = Number(document.getElementById("total").innerHTML);
   let addNO = Number(document.getElementById("addNo").innerHTML);
+  let walletStatus = document.getElementById("walletTrue").innerHTML;
   $.ajax({
-    url: `/pay-order?discount=${discount}&total=${total}&addr=${addNO}`,
+    url: `/pay-order?discount=${discount}&total=${total}&addr=${addNO}&wallet=${walletStatus}`,
     method: "get",
     success: (response) => {
       if (response.status) {
@@ -115,8 +117,9 @@ function paypalOrder() {
   let total = Number(document.getElementById("total").innerHTML);
   let pro3 = document.getElementById("pro3");
   let addNO = Number(document.getElementById("addNo").innerHTML);
+  let walletStatus = document.getElementById("walletTrue").innerHTML;
 
-  let url = `/paypal-order?discount=${discount}&total=${total}&addr=${addNO}`;
+  let url = `/paypal-order?discount=${discount}&total=${total}&addr=${addNO}&wallet=${walletStatus}`;
   pro3.setAttribute("href", encodeURI(url));
 }
 

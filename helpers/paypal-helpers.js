@@ -46,7 +46,7 @@ module.exports = {
       }
     });
   },
-  addPaypalOrder: (discount, total, mob, addr) => {
+  addPaypalOrder: (discount, total, mob, addr, wallet) => {
     return new Promise(async (resolve, reject) => {
       let user = await db
         .get()
@@ -58,6 +58,11 @@ module.exports = {
         if (user.address.length == 0) {
           reject(true);
         } else {
+          if (wallet === "true") {
+            db.get()
+              .collection(collections.USER_COLLECTIONS)
+              .updateOne({ mobile: mob }, { $set: { walletUsed: true } });
+          }
           db.get()
             .collection(collections.ORDER_COLLECTION)
             .insertOne({
@@ -99,6 +104,26 @@ module.exports = {
               }
             );
         }
+        let user = db
+          .get()
+          .collection(collections.USER_COLLECTIONS)
+          .findOne({ mobile: order.userMobile });
+        let wall = user.wallet - Math.floor(user.wallet / 4);
+        if (user.walletUsed) {
+          db.get()
+            .collection(collections.USER_COLLECTIONS)
+            .updateOne(
+              { mobile: order.userMobile },
+              { $set: { wallet: wall, walletUsed: false } }
+            );
+          db.get()
+            .collection(collections.ORDER_COLLECTION)
+            .updateOne(
+              { _id: ObjectId(id) },
+              { $set: { wallet: Math.floor(user.wallet / 4) } }
+            );
+        }
+
         db.get()
           .collection(collections.USER_COLLECTIONS)
           .updateOne(

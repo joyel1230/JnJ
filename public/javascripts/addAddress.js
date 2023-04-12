@@ -8,7 +8,7 @@ function isValid() {
 
   if (mob.length === 10 && /^\d+$/.test(mob)) {
     document.getElementById("mobileS").innerHTML = "";
-    if (/^[a-zA-Z]+$/.test(street)) {
+    if (true) {
       document.getElementById("streetS1").innerHTML = "";
       if (/^[a-zA-Z]+$/.test(city)) {
         document.getElementById("streetS2").innerHTML = "";

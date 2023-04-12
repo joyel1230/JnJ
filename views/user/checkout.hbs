@@ -24,7 +24,7 @@
                 <div class="col-lg-8">
                     <h3>Shipping Details</h3>
                     <span id="addNo" hidden></span>
-                    {{#if true}}
+                    {{#if noaddr}}
                     {{#each add}}
                     <div class="form-check mb-2">
                         <input class="form-check-input radio"
@@ -129,12 +129,21 @@
                                     <span>-₹<span id="discount">{{docs.[0].discount}}</span></span>
                                 </a>
                             </li>
+
                             <li>
                                 <a>Total
                                     <span>₹<span id="total"></span></span>
                                 </a>
                             </li>
                         </ul>
+                        <div class="my-2">
+                            <span id="wallet" hidden>{{userID.wallet}}</span>
+                            <input onclick="walletCalc()" type="checkbox" id="checkWallet">
+                            Use 25% wallet balance <span id="walletErr"></span>
+
+                        </div>
+
+
                         <div class="payment_item">
                             <div class="">
 
@@ -189,6 +198,7 @@
         </div>
     </div>
 </section>
+<span id="walletTrue" hidden></span>
 <!--================End Checkout Area =================-->
 <style>
     .qwerty:hover {
@@ -197,3 +207,27 @@
     }
 </style>
 <script src="/javascripts/checkout.js"></script>
+<script>
+
+    var totalM = +document.getElementById('total').innerHTML
+
+    function walletCalc() {
+        let wallCheck = document.getElementById('checkWallet')
+        if (wallCheck.checked) {
+            let wallet = +document.getElementById('wallet').innerHTML
+            let total = +document.getElementById('total').innerHTML
+            wallet = Math.floor(wallet / 4)
+            if (wallet < total) {
+                document.getElementById('total').innerHTML = total - wallet
+                document.getElementById('walletErr').innerHTML = ''
+                document.getElementById('walletTrue').innerHTML = 'true'
+            } else {
+                document.getElementById('walletErr').innerHTML = ", sorry can't use"
+                document.getElementById('walletTrue').innerHTML = ''
+            }
+        } else {
+            document.getElementById('total').innerHTML = totalM
+            document.getElementById('walletTrue').innerHTML = ''
+        }
+    }
+</script>
